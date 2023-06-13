@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorshipsScreen extends StatelessWidget {
   const WorshipsScreen({super.key});
@@ -10,12 +11,12 @@ class WorshipsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: colorScheme.primary,
         title: Text(
-          'Богослужения',
+          AppLocalizations.of(context)!.worshipsTitle,
           style: TextStyle(color: colorScheme.onPrimary),
         ),
       ),
-      body: const Center(
-        child: Text('Здесь будут Богослужения'),
+      body: Center(
+        child: Text(AppLocalizations.of(context)!.worshipsDescription),
       ),
     );
   }
