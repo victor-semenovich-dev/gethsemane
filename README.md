@@ -1,16 +1,10 @@
-# gethsemane
+# Gethsemane
 
 A Gethsemane Church project.
 
-## Getting Started
+## Build and run the project
 
-This project is a starting point for a Flutter application.
+Create a config.json and define the following values:
+API_GETH_BASIC_AUTH_USERNAME and API_GETH_BASIC_AUTH_PASSWORD - for api.geth.by basic authentication.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Run the `flutter run --dart-define-from-file=config.json` command
