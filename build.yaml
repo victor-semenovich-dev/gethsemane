@@ -2,6 +2,14 @@ targets:
   $default:
     builders:
       source_gen|combining_builder:
+        generate_for:
+          - "lib/data/remote/model/**.dart"
         options:
           build_extensions:
             '^lib/{{}}.dart': 'lib/generated/{{}}.g.dart'
+      chopper_generator:
+        generate_for:
+          - "lib/data/remote/service/**.dart"
+        options:
+          build_extensions:
+            '^lib/{{}}.dart': 'lib/generated/{{}}.chopper.dart'

@@ -32,6 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 /config.json
+/lib/generated
 *.chopper.dart
 
 # Symbolication related

@@ -3,10 +3,9 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 
-class GethAuthenticator extends Authenticator {
+class GethAuthInterceptor extends RequestInterceptor {
   @override
-  FutureOr<Request?> authenticate(Request request, Response<dynamic> response,
-      [Request? originalRequest]) {
+  FutureOr<Request> onRequest(Request request) {
     const username = String.fromEnvironment('API_GETH_BASIC_AUTH_USERNAME');
     const password = String.fromEnvironment('API_GETH_BASIC_AUTH_PASSWORD');
     final basicAuth =
