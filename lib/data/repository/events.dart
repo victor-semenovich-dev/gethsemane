@@ -14,7 +14,7 @@ class EventsRepositoryImpl extends EventsRepository {
 
   @override
   Future<void> loadEvents() async {
-    final response = await eventsService.getEvents();
+    final response = await eventsService.getEvents(date: '2023-06-01');
     if (response.isSuccessful) {
       final eventDtoList = response.body;
       if (eventDtoList != null) {
