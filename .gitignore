@@ -33,7 +33,6 @@ migrate_working_dir/
 /build/
 /config.json
 /lib/generated
-*.chopper.dart
 
 # Symbolication related
 app.*.symbols

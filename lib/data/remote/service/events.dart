@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:gethsemane/data/remote/model/event.dart';
 
-part 'events.chopper.dart';
+part '../../../generated/data/remote/service/events.chopper.dart';
 
 @ChopperApi(baseUrl: '/events')
 abstract class EventsService extends ChopperService {

@@ -140,10 +140,11 @@ packages:
   chopper_generator:
     dependency: "direct dev"
     description:
-      name: chopper_generator
-      sha256: b3860ae94129012b636c3b68af25ad9a326aa2203afa118ab7b6fbc0ca98144d
-      url: "https://pub.dev"
-    source: hosted
+      path: chopper_generator
+      ref: "feat/issue-443-build-extensions"
+      resolved-ref: dbd2577a9a93a71182f69a5a65719bb2c035a9fa
+      url: "https://github.com/techouse/chopper.git"
+    source: git
     version: "6.0.1"
   clock:
     dependency: transitive
