@@ -1,4 +1,3 @@
-import 'package:chopper/chopper.dart';
 import 'package:gethsemane/data/local/database.dart';
 import 'package:gethsemane/data/remote/service/events.dart';
 import 'package:gethsemane/data/util/mappings.dart';
@@ -6,16 +5,16 @@ import 'package:gethsemane/domain/repository/events.dart';
 
 class EventsRepositoryImpl extends EventsRepository {
   final AppDatabase database;
-  final ChopperClient gethClient;
+  final EventsService eventsService;
 
   EventsRepositoryImpl({
     required this.database,
-    required this.gethClient,
+    required this.eventsService,
   });
 
   @override
   Future<void> loadEvents() async {
-    final response = await gethClient.getService<EventsService>().getEvents();
+    final response = await eventsService.getEvents();
     if (response.isSuccessful) {
       final eventDtoList = response.body;
       if (eventDtoList != null) {
