@@ -3,6 +3,7 @@ targets:
     builders:
       source_gen|combining_builder:
         generate_for:
+          - "lib/data/local/database.dart"
           - "lib/data/remote/model/**.dart"
         options:
           build_extensions:
@@ -13,3 +14,6 @@ targets:
         options:
           build_extensions:
             '^lib/{{}}.dart': 'lib/generated/{{}}.chopper.dart'
+      drift_dev:
+        options:
+          store_date_time_values_as_text: true

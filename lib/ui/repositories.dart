@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gethsemane/data/local/database.dart';
 import 'package:gethsemane/data/remote/client.dart';
 import 'package:gethsemane/data/repository/events.dart';
 import 'package:gethsemane/domain/repository/events.dart';
@@ -13,8 +14,14 @@ class RepositoriesProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<AppDatabase>(
+          create: (context) => AppDatabase(),
+        ),
         RepositoryProvider<EventsRepository>(
-          create: (context) => EventsRepositoryImpl(gethClient),
+          create: (context) => EventsRepositoryImpl(
+            database: context.read(),
+            gethClient: gethClient,
+          ),
         ),
       ],
       child: child,
