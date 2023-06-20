@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gethsemane/ui/worships/worships_cubit.dart';
 import 'package:gethsemane/ui/worships/worships_state.dart';
 
-class WorshipsScreen extends StatelessWidget {
+class WorshipsScreen extends StatefulWidget {
   const WorshipsScreen({super.key});
+
+  @override
+  State<WorshipsScreen> createState() => _WorshipsScreenState();
+}
+
+class _WorshipsScreenState extends State<WorshipsScreen> {
+  int _pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +22,24 @@ class WorshipsScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: colorScheme.primary,
             title: Text(
-              AppLocalizations.of(context)!.worshipsTitle,
+              state.worshipEvents.isNotEmpty
+                  ? state.worshipEvents[_pageIndex].title
+                  : '',
               style: TextStyle(color: colorScheme.onPrimary),
             ),
           ),
-          body: Center(
-            child: Text(AppLocalizations.of(context)!.worshipsDescription),
+          body: PageView(
+            onPageChanged: (i) => setState(() => _pageIndex = i),
+            children: state.worshipEvents
+                .map(
+                  (e) => Center(
+                    child: Text(
+                      e.id.toString(),
+                      style: const TextStyle(fontSize: 40),
+                    ),
+                  ),
+                )
+                .toList(),
           ),
         );
       },
