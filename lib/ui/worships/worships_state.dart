@@ -1,0 +1,3 @@
+class WorshipsState {
+  WorshipsState();
+}

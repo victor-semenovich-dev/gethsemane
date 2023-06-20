@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 
 class Event extends Table {
   @override
-  String? get tableName => 'FEntity';
+  String? get tableName => 'FEvent';
 
   IntColumn get id => integer()();
   IntColumn get categoryId => integer()();
