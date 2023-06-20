@@ -49,17 +49,10 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: ^2.4.5 # Dart code generation
-  chopper_generator: ^6.0.1 # An HTTP client code generation
+  chopper_generator: ^6.0.2 # An HTTP client code generation
   json_serializable: ^6.7.0 # JSON code generation
   flutter_lints: ^2.0.0 # Recommended lints
   drift_dev: ^2.9.0 # The generator and development tools for the drift package
-
-dependency_overrides:
-  chopper_generator:
-    git:
-      url: https://github.com/techouse/chopper.git
-      ref: feat/issue-443-build-extensions
-      path: chopper_generator
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
