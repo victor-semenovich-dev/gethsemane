@@ -1,16 +1,16 @@
 import 'package:gethsemane/data/local/database.dart';
 
-class WorshipsState {
+class WorshipsPagerState {
   final List<EventData> worshipEvents;
 
-  WorshipsState({
+  WorshipsPagerState({
     this.worshipEvents = const [],
   });
 
-  WorshipsState copyWith({
+  WorshipsPagerState copyWith({
     List<EventData>? worshipEvents,
   }) =>
-      WorshipsState(
+      WorshipsPagerState(
         worshipEvents: worshipEvents ?? this.worshipEvents,
       );
 }

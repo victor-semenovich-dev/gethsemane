@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gethsemane/domain/repository/events.dart';
-import 'package:gethsemane/ui/worships/worships_state.dart';
+import 'package:gethsemane/ui/worships_pager/worships_pager_state.dart';
 
-class WorshipsCubit extends Cubit<WorshipsState> {
+class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
   final EventsRepository eventsRepository;
 
   late StreamSubscription _worshipEventsSubscription;
 
-  WorshipsCubit({
+  WorshipsPagerCubit({
     required this.eventsRepository,
-  }) : super(WorshipsState()) {
+  }) : super(WorshipsPagerState()) {
     eventsRepository.syncEvents();
     _worshipEventsSubscription =
         eventsRepository.getActualWorshipEvents().listen((worshipEvents) {
