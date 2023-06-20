@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:gethsemane/data/local/database.dart';
 import 'package:gethsemane/data/remote/service/events.dart';
 import 'package:gethsemane/data/util/datetime.dart';
@@ -5,6 +6,8 @@ import 'package:gethsemane/data/util/mappings.dart';
 import 'package:gethsemane/domain/repository/events.dart';
 
 class EventsRepositoryImpl extends EventsRepository {
+  final worshipEventId = 10;
+
   final AppDatabase database;
   final EventsService eventsService;
 
@@ -31,5 +34,16 @@ class EventsRepositoryImpl extends EventsRepository {
         });
       }
     }
+  }
+
+  @override
+  Stream<List<EventData>> getActualWorshipEvents() {
+    return (database.event.select()
+          ..where((tbl) =>
+              tbl.categoryId.equals(worshipEventId) & tbl.isDraft.equals(false))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.date, mode: OrderingMode.desc),
+          ]))
+        .watch();
   }
 }
