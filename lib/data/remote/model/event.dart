@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part '../../../generated/data/remote/model/event.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class EventDTO {
   final int id;
   final int categoryId;

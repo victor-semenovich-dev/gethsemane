@@ -1,4 +1,7 @@
 {
-  "worshipsTitle": "Богослужения",
-  "worshipsDescription": "Здесь будут Богослужения"
+  "worshipTitleLong": "{date} ({weekday}, {partOfDay})",
+  "worshipTitleShort": "{date} ({weekday})",
+
+  "partOfDayMorning": "утро",
+  "partOfDayEvening": "вечер"
 }

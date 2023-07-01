@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gethsemane/domain/extensions/datetime.dart';
 import 'package:gethsemane/ui/worship/worship_page_provider.dart';
 import 'package:gethsemane/ui/worships_pager/worships_pager_cubit.dart';
 import 'package:gethsemane/ui/worships_pager/worships_pager_state.dart';
@@ -24,10 +25,11 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute> {
             backgroundColor: colorScheme.primary,
             title: Text(
               state.worshipEvents.isNotEmpty
-                  ? state.worshipEvents[_pageIndex].title
+                  ? state.worshipEvents[_pageIndex].date.eventTitle(context)
                   : '',
               style: TextStyle(color: colorScheme.onPrimary),
             ),
+            centerTitle: false,
           ),
           body: PageView(
             onPageChanged: (i) => setState(() => _pageIndex = i),
