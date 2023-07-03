@@ -68,7 +68,12 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
       );
     } else {
       return PageView(
-        onPageChanged: (i) => setState(() => _pageIndex = i),
+        onPageChanged: (i) {
+          if (state.worshipEvents.length - i < 3) {
+            context.read<WorshipsPagerCubit>().syncEvents();
+          }
+          setState(() => _pageIndex = i);
+        },
         children: state.worshipEvents
             .map((e) => WorshipPageProvider(id: e.id))
             .toList(),
