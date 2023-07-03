@@ -13,7 +13,7 @@ class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
   WorshipsPagerCubit({
     required this.eventsRepository,
   }) : super(WorshipsPagerState()) {
-    syncEvents(); // TODO this method should be called again after ON_START events
+    syncEvents();
     _worshipEventsSubscription =
         eventsRepository.getActualWorshipEvents().listen((worshipEvents) {
       emit(state.copyWith(worshipEvents: worshipEvents));

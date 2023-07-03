@@ -13,8 +13,28 @@ class WorshipsPagerRoute extends StatefulWidget {
   State<WorshipsPagerRoute> createState() => _WorshipsPagerRouteState();
 }
 
-class _WorshipsPagerRouteState extends State<WorshipsPagerRoute> {
+class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
+    with WidgetsBindingObserver {
   int _pageIndex = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context.read<WorshipsPagerCubit>().syncEvents();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
