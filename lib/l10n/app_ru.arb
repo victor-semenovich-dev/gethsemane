@@ -3,5 +3,9 @@
   "worshipTitleShort": "{date} ({weekday})",
 
   "partOfDayMorning": "утро",
-  "partOfDayEvening": "вечер"
+  "partOfDayEvening": "вечер",
+
+  "buttonRetry": "Повторить",
+
+  "errorCommon": "Произошла ошибка.\nПроверьте подключение к интернету."
 }

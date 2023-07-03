@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gethsemane/domain/extensions/datetime.dart';
+import 'package:gethsemane/ui/common/retry_widget.dart';
 import 'package:gethsemane/ui/worship/worship_page_provider.dart';
 import 'package:gethsemane/ui/worships_pager/worships_pager_cubit.dart';
 import 'package:gethsemane/ui/worships_pager/worships_pager_state.dart';
@@ -31,12 +32,17 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute> {
             ),
             centerTitle: false,
           ),
-          body: PageView(
-            onPageChanged: (i) => setState(() => _pageIndex = i),
-            children: state.worshipEvents
-                .map((e) => WorshipPageProvider(id: e.id))
-                .toList(),
-          ),
+          body: state.isError
+              ? RetryWidget(
+                  onRetryClick: () =>
+                      context.read<WorshipsPagerCubit>().syncEvents(),
+                )
+              : PageView(
+                  onPageChanged: (i) => setState(() => _pageIndex = i),
+                  children: state.worshipEvents
+                      .map((e) => WorshipPageProvider(id: e.id))
+                      .toList(),
+                ),
         );
       },
     );
