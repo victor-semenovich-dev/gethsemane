@@ -24,6 +24,8 @@ class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
     try {
       emit(state.copyWith(isError: false, isInProgress: true));
       await eventsRepository.syncEvents();
+      final events = await eventsRepository.getActualWorshipEvents().first;
+      emit(state.copyWith(worshipEvents: events, isInProgress: false));
     } catch (e) {
       Logger.root.log(Level.SEVERE, e);
       final events = await eventsRepository.getActualWorshipEvents().first;
