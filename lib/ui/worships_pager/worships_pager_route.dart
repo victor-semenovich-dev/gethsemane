@@ -41,6 +41,22 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
     final colorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<WorshipsPagerCubit, WorshipsPagerState>(
       builder: (context, state) {
+        final Widget body;
+        if (state.isInProgress && state.worshipEvents.isEmpty) {
+          body = const Center(child: CircularProgressIndicator());
+        } else if (state.isError && state.worshipEvents.isEmpty) {
+          body = RetryWidget(
+            onRetryClick: () => context.read<WorshipsPagerCubit>().syncEvents(),
+          );
+        } else {
+          body = PageView(
+            onPageChanged: (i) => setState(() => _pageIndex = i),
+            children: state.worshipEvents
+                .map((e) => WorshipPageProvider(id: e.id))
+                .toList(),
+          );
+        }
+
         return Scaffold(
           appBar: AppBar(
             backgroundColor: colorScheme.primary,
@@ -52,17 +68,7 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
             ),
             centerTitle: false,
           ),
-          body: state.isError
-              ? RetryWidget(
-                  onRetryClick: () =>
-                      context.read<WorshipsPagerCubit>().syncEvents(),
-                )
-              : PageView(
-                  onPageChanged: (i) => setState(() => _pageIndex = i),
-                  children: state.worshipEvents
-                      .map((e) => WorshipPageProvider(id: e.id))
-                      .toList(),
-                ),
+          body: body,
         );
       },
     );
