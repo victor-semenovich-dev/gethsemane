@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:gethsemane/data/local/database.dart';
-import 'package:gethsemane/data/remote/model/event.dart';
+import 'package:gethsemane/data/remote/model/event_dto.dart';
 
 EventCompanion eventDtoToDbEntity(EventDTO dto) => EventCompanion(
       id: Value(dto.id),

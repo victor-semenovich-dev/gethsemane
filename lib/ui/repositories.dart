@@ -23,7 +23,7 @@ class RepositoriesProvider extends StatelessWidget {
         RepositoryProvider<EventsRepository>(
           create: (context) => EventsRepositoryImpl(
             database: context.read(),
-            eventsService: context.read<HttpClients>().geth.getService(),
+            apiGethService: context.read<HttpClients>().geth.getService(),
           ),
         ),
       ],

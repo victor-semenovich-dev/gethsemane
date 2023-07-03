@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part '../../../generated/data/remote/model/event.g.dart';
+part '../../../generated/data/remote/model/event_dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class EventDTO {
