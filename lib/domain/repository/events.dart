@@ -6,7 +6,7 @@ abstract class EventsRepository {
   /// (30 days before now).
   ///
   /// All events before [dateFrom] will be removed.
-  Future<void> syncEvents({DateTime? dateFrom});
+  Future<void> loadEvents({DateTime? dateFrom});
 
   /// Get a list of worship events that are not marked as draft
   Stream<List<EventData>> getActualWorshipEvents();

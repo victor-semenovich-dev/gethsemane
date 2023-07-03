@@ -32,7 +32,7 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<WorshipsPagerCubit>().syncEvents();
+      context.read<WorshipsPagerCubit>().loadEvents();
     }
   }
 
@@ -64,13 +64,13 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
   Widget _body(WorshipsPagerState state) {
     if (state.isError && state.worshipEvents.isEmpty) {
       return RetryWidget(
-        onRetryClick: () => context.read<WorshipsPagerCubit>().syncEvents(),
+        onRetryClick: () => context.read<WorshipsPagerCubit>().loadEvents(),
       );
     } else {
       return PageView(
         onPageChanged: (i) {
           if (state.worshipEvents.length - i < 3) {
-            context.read<WorshipsPagerCubit>().syncEvents();
+            context.read<WorshipsPagerCubit>().loadEvents();
           }
           setState(() => _pageIndex = i);
         },

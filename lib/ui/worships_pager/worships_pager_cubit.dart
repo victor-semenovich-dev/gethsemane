@@ -13,22 +13,26 @@ class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
   WorshipsPagerCubit({
     required this.eventsRepository,
   }) : super(WorshipsPagerState()) {
-    syncEvents();
+    loadEvents();
     _worshipEventsSubscription =
         eventsRepository.getActualWorshipEvents().listen((worshipEvents) {
       emit(state.copyWith(worshipEvents: worshipEvents));
     });
   }
 
-  void syncEvents() async {
+  void loadEvents() async {
     if (!state.isInProgress) {
-      // TODO manage date from
       try {
         emit(state.copyWith(isError: false, isInProgress: true));
-        await eventsRepository.syncEvents();
+        final dateFrom = (state.dateFrom ?? DateTime.now())
+            .subtract(const Duration(days: 30));
+        await eventsRepository.loadEvents(dateFrom: dateFrom);
         final events = await eventsRepository.getActualWorshipEvents().first;
-        emit(state.copyWith(worshipEvents: events, isInProgress: false));
-        // TODO consider loaded too small events
+        emit(state.copyWith(
+            worshipEvents: events, isInProgress: false, dateFrom: dateFrom));
+        if (events.length < 3) {
+          loadEvents();
+        }
       } catch (e) {
         Logger.root.log(Level.SEVERE, e);
         final events = await eventsRepository.getActualWorshipEvents().first;

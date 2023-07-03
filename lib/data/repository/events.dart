@@ -17,11 +17,9 @@ class EventsRepositoryImpl extends EventsRepository {
   });
 
   @override
-  Future<void> syncEvents({DateTime? dateFrom}) async {
-    final DateTime dateFromActual =
-        dateFrom ?? DateTime.now().subtract(const Duration(days: 30));
-    final response =
-        await eventsService.getEvents(date: yyyyMMdd.format(dateFromActual));
+  Future<void> loadEvents({DateTime? dateFrom}) async {
+    final response = await eventsService.getEvents(
+        date: dateFrom == null ? null : yyyyMMdd.format(dateFrom));
     if (response.isSuccessful) {
       final eventDtoList = response.body;
       if (eventDtoList != null) {
