@@ -10,7 +10,7 @@ abstract class ApiGethService extends ChopperService {
       _$ApiGethService(client);
 
   @Get(path: '/sermoners')
-  Future<Response<List<AuthorDTO>>> getAuthors();
+  Future<Response<List<AuthorDTO>>> getAuthors({@Query() int? id});
 
   /// Fetch all events from the specified [date].
   /// If the [date] is not specified, fetch events from the current date.

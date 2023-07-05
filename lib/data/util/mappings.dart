@@ -1,6 +1,14 @@
 import 'package:drift/drift.dart';
 import 'package:gethsemane/data/local/database.dart';
+import 'package:gethsemane/data/remote/model/author_dto.dart';
 import 'package:gethsemane/data/remote/model/event_dto.dart';
+
+AuthorCompanion authorDtoToDbEntity(AuthorDTO dto) => AuthorCompanion(
+      id: Value(dto.id),
+      name: Value(dto.name),
+      biography: Value(dto.biography),
+      sermonsCount: Value(dto.sermonsCount),
+    );
 
 EventCompanion eventDtoToDbEntity(EventDTO dto) => EventCompanion(
       id: Value(dto.id),
