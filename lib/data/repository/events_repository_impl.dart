@@ -3,7 +3,7 @@ import 'package:gethsemane/data/local/database.dart';
 import 'package:gethsemane/data/remote/service/api_geth_service.dart';
 import 'package:gethsemane/data/util/dateformat.dart';
 import 'package:gethsemane/data/util/mappings.dart';
-import 'package:gethsemane/domain/repository/events.dart';
+import 'package:gethsemane/domain/repository/events_repository.dart';
 
 class EventsRepositoryImpl extends EventsRepository {
   final worshipEventId = 10;
@@ -31,6 +31,8 @@ class EventsRepositoryImpl extends EventsRepository {
           );
         });
       }
+    } else {
+      throw response.error ?? 'An error occurred: ${response.statusCode}';
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:gethsemane/data/remote/model/author_dto.dart';
 import 'package:gethsemane/data/remote/model/event_dto.dart';
 
 part '../../../generated/data/remote/service/api_geth_service.chopper.dart';
@@ -7,6 +8,9 @@ part '../../../generated/data/remote/service/api_geth_service.chopper.dart';
 abstract class ApiGethService extends ChopperService {
   static ApiGethService create([ChopperClient? client]) =>
       _$ApiGethService(client);
+
+  @Get(path: '/sermoners')
+  Future<Response<List<AuthorDTO>>> getAuthors();
 
   /// Fetch all events from the specified [date].
   /// If the [date] is not specified, fetch events from the current date.
