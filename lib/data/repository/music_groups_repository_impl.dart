@@ -1,5 +1,6 @@
 import 'package:gethsemane/data/local/database.dart';
 import 'package:gethsemane/data/remote/service/api_gethsemane_service.dart';
+import 'package:gethsemane/data/util/mappings.dart';
 import 'package:gethsemane/domain/repository/music_groups_repository.dart';
 
 class MusicGroupsRepositoryImpl extends MusicGroupsRepository {
@@ -17,7 +18,13 @@ class MusicGroupsRepositoryImpl extends MusicGroupsRepository {
     if (response.isSuccessful) {
       final musicGroupDtoList = response.body;
       if (musicGroupDtoList != null) {
-        database.batch((batch) {});
+        database.batch((batch) {
+          batch.deleteAll(database.musicGroup);
+          batch.insertAllOnConflictUpdate(
+            database.musicGroup,
+            musicGroupDtoList.map((dto) => musicGroupDtoToDbEntity(dto)),
+          );
+        });
       }
     } else {
       throw response.error ?? 'An error occurred: ${response.statusCode}';
