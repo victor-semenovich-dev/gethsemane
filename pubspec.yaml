@@ -43,6 +43,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.15 # the latest sqlite3 version (required by the drift)
   path_provider: ^2.0.15 # commonly used locations on the filesystem
   path: ^1.8.3 # path manipulation
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:
