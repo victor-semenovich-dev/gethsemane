@@ -1,6 +1,5 @@
 import 'package:chopper/chopper.dart';
 import 'package:gethsemane/data/remote/model/event_dto.dart';
-import 'package:gethsemane/data/remote/model/worship_dto.dart';
 
 part '../../../generated/data/remote/service/api_geth_service.chopper.dart';
 
@@ -15,7 +14,4 @@ abstract class ApiGethService extends ChopperService {
   /// [date] - a date in the YYYY-MM-DD format.
   @Get(path: '/events')
   Future<Response<List<EventDTO>>> getEvents({@Query() String? date});
-
-  @Get(path: '/mobile/worship/{id}')
-  Future<Response<WorshipDTO>> getWorship(@Path() int id);
 }
