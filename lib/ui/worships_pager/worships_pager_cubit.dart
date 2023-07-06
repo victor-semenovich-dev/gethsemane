@@ -23,14 +23,19 @@ class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
     });
   }
 
+  void reloadEvents() async {
+    emit(state.copyWith(dateFrom: DateTime.now()));
+    loadMoreEvents();
+  }
+
   void loadInitialData() async {
     emit(state.copyWith(isInProgress: true));
     await loadInitialDataUseCase.invoke();
-    await loadEvents(updateProgress: false);
+    await loadMoreEvents(updateProgress: false);
     emit(state.copyWith(isInProgress: false));
   }
 
-  Future<void> loadEvents({bool updateProgress = true}) async {
+  Future<void> loadMoreEvents({bool updateProgress = true}) async {
     if (!updateProgress || !state.isInProgress) {
       try {
         emit(state.copyWith(
@@ -47,7 +52,7 @@ class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
           dateFrom: dateFrom,
         ));
         if (events.length < 3) {
-          loadEvents();
+          loadMoreEvents();
         }
       } catch (e) {
         Logger.root.log(Level.SEVERE, e);

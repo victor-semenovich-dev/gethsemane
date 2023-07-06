@@ -16,10 +16,12 @@ class WorshipsPagerRoute extends StatefulWidget {
 class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
     with WidgetsBindingObserver {
   int _pageIndex = 0;
+  late PageController _pageController;
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    _pageController = PageController(initialPage: _pageIndex);
     super.initState();
   }
 
@@ -32,14 +34,25 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<WorshipsPagerCubit>().loadEvents();
+      // TODO reload from the latest dateFrom
+      context.read<WorshipsPagerCubit>().reloadEvents();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return BlocBuilder<WorshipsPagerCubit, WorshipsPagerState>(
+    return BlocConsumer<WorshipsPagerCubit, WorshipsPagerState>(
+      listener: (context, state) {
+        if (_pageIndex >= state.worshipEvents.length) {
+          setState(() {
+            _pageIndex = 0;
+            _pageController.jumpToPage(0);
+          });
+        }
+        // TODO check load more events
+        // TODO check current page id
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -64,19 +77,25 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
   Widget _body(WorshipsPagerState state) {
     if (state.isError && state.worshipEvents.isEmpty) {
       return RetryWidget(
-        onRetryClick: () => context.read<WorshipsPagerCubit>().loadEvents(),
+        onRetryClick: () => context.read<WorshipsPagerCubit>().reloadEvents(),
       );
     } else {
-      return PageView(
+      return PageView.builder(
+        itemCount: state.worshipEvents.length,
+        controller: _pageController,
+        itemBuilder: (BuildContext context, int index) {
+          final event = state.worshipEvents[index];
+          return WorshipPageProvider(
+            key: ValueKey(event.id),
+            id: event.id,
+          );
+        },
         onPageChanged: (i) {
           if (state.worshipEvents.length - i < 3) {
-            context.read<WorshipsPagerCubit>().loadEvents();
+            context.read<WorshipsPagerCubit>().loadMoreEvents();
           }
           setState(() => _pageIndex = i);
         },
-        children: state.worshipEvents
-            .map((e) => WorshipPageProvider(id: e.id))
-            .toList(),
       );
     }
   }
