@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gethsemane/domain/extensions/datetime.dart';
@@ -15,26 +18,26 @@ class WorshipsPagerRoute extends StatefulWidget {
 
 class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
     with WidgetsBindingObserver {
-  int _pageIndex = 0;
+  int? _currentEventId;
   late PageController _pageController;
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    _pageController = PageController(initialPage: _pageIndex);
+    _pageController = PageController();
     super.initState();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // TODO reload from the latest dateFrom
       context.read<WorshipsPagerCubit>().reloadEvents();
     }
   }
@@ -44,57 +47,79 @@ class _WorshipsPagerRouteState extends State<WorshipsPagerRoute>
     final colorScheme = Theme.of(context).colorScheme;
     return BlocConsumer<WorshipsPagerCubit, WorshipsPagerState>(
       listener: (context, state) {
-        if (_pageIndex >= state.worshipEvents.length) {
-          setState(() {
-            _pageIndex = 0;
-            _pageController.jumpToPage(0);
-          });
+        final pageIndex = (_pageController.page ?? 0).round();
+        // If the current is the first page, stay on the first page.
+        // Otherwise, try to stay on the current event page.
+        // If the current event is not found, jump to the first page.
+        if (pageIndex > 0 &&
+            (pageIndex >= state.worshipEvents.length ||
+                state.worshipEvents[pageIndex].id != _currentEventId)) {
+          final correctIndex = max(
+              state.worshipEvents
+                  .indexWhere((event) => event.id == _currentEventId),
+              0);
+          debugPrint('correct index - $correctIndex');
+          _pageController.jumpToPage(correctIndex);
         }
-        // TODO check load more events
-        // TODO check current page id
+      },
+      listenWhen: (WorshipsPagerState previous, WorshipsPagerState current) {
+        return !listEquals(previous.worshipEvents, current.worshipEvents);
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: colorScheme.primary,
-            title: Text(
-              state.worshipEvents.isNotEmpty
-                  ? state.worshipEvents[_pageIndex].date.eventTitle(context)
-                  : '',
-              style: TextStyle(color: colorScheme.onPrimary),
+            // The FutureBuilder is needed to build the Text title widget after the PageView has been built.
+            // So we will be able to use the _pageController.
+            title: FutureBuilder(
+              future: Future.value(true),
+              builder: (context, snapshot) {
+                final pageIndex = (_pageController.page ?? 0).round();
+                return Text(
+                  state.worshipEvents.isNotEmpty
+                      ? state.worshipEvents[pageIndex].date.eventTitle(context)
+                      : '',
+                  style: TextStyle(color: colorScheme.onPrimary),
+                );
+              },
             ),
             actions: [
               if (state.isInProgress) _actionProgress(),
             ],
             centerTitle: false,
           ),
-          body: _body(state),
+          body: _body(),
         );
       },
     );
   }
 
-  Widget _body(WorshipsPagerState state) {
-    if (state.isError && state.worshipEvents.isEmpty) {
+  Widget _body() {
+    final cubit = context.read<WorshipsPagerCubit>();
+    if (cubit.state.isError && cubit.state.worshipEvents.isEmpty) {
       return RetryWidget(
         onRetryClick: () => context.read<WorshipsPagerCubit>().reloadEvents(),
       );
     } else {
       return PageView.builder(
-        itemCount: state.worshipEvents.length,
+        itemCount: cubit.state.worshipEvents.length,
         controller: _pageController,
         itemBuilder: (BuildContext context, int index) {
-          final event = state.worshipEvents[index];
+          final event = cubit.state.worshipEvents[index];
           return WorshipPageProvider(
             key: ValueKey(event.id),
             id: event.id,
           );
         },
         onPageChanged: (i) {
-          if (state.worshipEvents.length - i < 3) {
+          if (cubit.state.worshipEvents.length - i <
+                  WorshipsPagerCubit.loadMoreEventsThreshold &&
+              !cubit.state.isInProgress) {
             context.read<WorshipsPagerCubit>().loadMoreEvents();
           }
-          setState(() => _pageIndex = i);
+          setState(() {
+            _currentEventId = cubit.state.worshipEvents[i].id;
+          });
         },
       );
     }

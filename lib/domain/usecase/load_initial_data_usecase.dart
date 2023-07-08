@@ -12,7 +12,7 @@ class LoadInitialDataUseCase {
     required this.musicGroupsRepository,
   });
 
-  Future<void> invoke() async {
+  Future<void> perform() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       if (prefs.getBool('isInitialDataLoaded') != true) {

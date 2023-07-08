@@ -10,59 +10,61 @@ class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
   final LoadInitialDataUseCase loadInitialDataUseCase;
   final EventsRepository eventsRepository;
 
+  static const loadMoreEventsPeriod = Duration(days: 30);
+  static const loadMoreEventsThreshold = 3;
+
   late StreamSubscription _worshipEventsSubscription;
 
   WorshipsPagerCubit({
     required this.loadInitialDataUseCase,
     required this.eventsRepository,
   }) : super(WorshipsPagerState()) {
-    loadInitialData();
+    _loadInitialData();
     _worshipEventsSubscription =
         eventsRepository.getActualWorshipEvents().listen((worshipEvents) {
       emit(state.copyWith(worshipEvents: worshipEvents));
     });
   }
 
-  void reloadEvents() async {
-    emit(state.copyWith(dateFrom: DateTime.now()));
-    loadMoreEvents();
-  }
-
-  void loadInitialData() async {
+  void _loadInitialData() async {
     emit(state.copyWith(isInProgress: true));
-    await loadInitialDataUseCase.invoke();
-    await loadMoreEvents(updateProgress: false);
+    await loadInitialDataUseCase.perform();
+    await _loadEventsFrom(DateTime.now().subtract(loadMoreEventsPeriod));
     emit(state.copyWith(isInProgress: false));
   }
 
-  Future<void> loadMoreEvents({bool updateProgress = true}) async {
-    if (!updateProgress || !state.isInProgress) {
-      try {
-        emit(state.copyWith(
-          isError: false,
-          isInProgress: updateProgress ? true : null,
-        ));
-        final dateFrom = (state.dateFrom ?? DateTime.now())
-            .subtract(const Duration(days: 30));
-        await eventsRepository.loadEvents(dateFrom: dateFrom);
-        final events = await eventsRepository.getActualWorshipEvents().first;
-        emit(state.copyWith(
-          worshipEvents: events,
-          isInProgress: updateProgress ? false : null,
-          dateFrom: dateFrom,
-        ));
-        if (events.length < 3) {
-          loadMoreEvents();
-        }
-      } catch (e) {
-        Logger.root.log(Level.SEVERE, e);
-        final events = await eventsRepository.getActualWorshipEvents().first;
-        emit(state.copyWith(
-          isError: true,
-          worshipEvents: events,
-          isInProgress: updateProgress ? false : null,
-        ));
+  void reloadEvents() async {
+    final dateFrom = state.dateFrom;
+    if (dateFrom != null) {
+      emit(state.copyWith(isInProgress: true));
+      await _loadEventsFrom(dateFrom);
+      emit(state.copyWith(isInProgress: false));
+    }
+  }
+
+  void loadMoreEvents() async {
+    final stateDateFrom = state.dateFrom;
+    if (stateDateFrom != null) {
+      emit(state.copyWith(isInProgress: true));
+      final dateFrom = stateDateFrom.subtract(loadMoreEventsPeriod);
+      await _loadEventsFrom(dateFrom);
+      emit(state.copyWith(isInProgress: false));
+    }
+  }
+
+  Future<void> _loadEventsFrom(DateTime dateFrom) async {
+    try {
+      emit(state.copyWith(isError: false));
+      await eventsRepository.loadEvents(dateFrom: dateFrom);
+      final events = await eventsRepository.getActualWorshipEvents().first;
+      emit(state.copyWith(worshipEvents: events, dateFrom: dateFrom));
+      if (events.length < loadMoreEventsThreshold) {
+        await _loadEventsFrom(dateFrom.subtract(loadMoreEventsPeriod));
       }
+    } catch (e) {
+      Logger.root.log(Level.SEVERE, e);
+      final events = await eventsRepository.getActualWorshipEvents().first;
+      emit(state.copyWith(isError: true, worshipEvents: events));
     }
   }
 
