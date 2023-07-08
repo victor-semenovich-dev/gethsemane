@@ -21,7 +21,7 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
     if (response.isSuccessful) {
       final worshipDto = response.body;
       if (worshipDto != null) {
-        database.batch((batch) async {
+        await database.batch((batch) async {
           batch.update(
             database.sermon,
             const SermonCompanion(eventId: Value(null)),

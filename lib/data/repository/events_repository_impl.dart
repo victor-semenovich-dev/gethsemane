@@ -23,7 +23,7 @@ class EventsRepositoryImpl extends EventsRepository {
     if (response.isSuccessful) {
       final eventDtoList = response.body;
       if (eventDtoList != null) {
-        database.batch((batch) {
+        await database.batch((batch) {
           batch.deleteAll(database.event);
           batch.insertAllOnConflictUpdate(
             database.event,

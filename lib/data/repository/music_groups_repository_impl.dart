@@ -18,7 +18,7 @@ class MusicGroupsRepositoryImpl extends MusicGroupsRepository {
     if (response.isSuccessful) {
       final musicGroupDtoList = response.body;
       if (musicGroupDtoList != null) {
-        database.batch((batch) {
+        await database.batch((batch) {
           batch.deleteAll(database.musicGroup);
           batch.insertAllOnConflictUpdate(
             database.musicGroup,

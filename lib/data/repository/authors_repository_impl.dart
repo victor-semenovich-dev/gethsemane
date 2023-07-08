@@ -18,7 +18,7 @@ class AuthorsRepositoryImpl extends AuthorsRepository {
     if (response.isSuccessful) {
       final authorDtoList = response.body;
       if (authorDtoList != null) {
-        database.batch((batch) {
+        await database.batch((batch) {
           batch.deleteAll(database.author);
           batch.insertAllOnConflictUpdate(
             database.author,
