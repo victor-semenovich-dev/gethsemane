@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:flutter/material.dart';
 import 'package:gethsemane/data/local/database.dart';
 import 'package:gethsemane/data/local/model/sermon.dart';
 import 'package:gethsemane/data/remote/service/api_geth_mobile_service.dart';
@@ -28,12 +29,15 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
           );
           batch.insertAllOnConflictUpdate(
               database.sermon,
-              worshipDto.sermons.map((dto) => worshipSermonDtoToDbEntity(
-                  dto, id, SermonType.sermon, worshipDto.date)));
+              worshipDto.sermons.map((dto) => worshipSermonDtoToDbEntity(dto,
+                  id, SermonType.sermon, DateUtils.dateOnly(worshipDto.date))));
           batch.insertAllOnConflictUpdate(
               database.sermon,
               worshipDto.witnesses.map((dto) => worshipSermonDtoToDbEntity(
-                  dto, id, SermonType.witness, worshipDto.date)));
+                  dto,
+                  id,
+                  SermonType.witness,
+                  DateUtils.dateOnly(worshipDto.date))));
         });
       }
     } else {
