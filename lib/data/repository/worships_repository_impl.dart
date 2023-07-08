@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:drift/drift.dart';
 import 'package:gethsemane/data/local/database.dart';
+import 'package:gethsemane/data/local/model/sermon.dart';
 import 'package:gethsemane/data/remote/service/api_geth_mobile_service.dart';
+import 'package:gethsemane/data/util/mappings.dart';
 import 'package:gethsemane/domain/repository/worships_repository.dart';
 
 class WorshipsRepositoryImpl extends WorshipsRepository {
@@ -18,7 +20,21 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
     if (response.isSuccessful) {
       final worshipDto = response.body;
       if (worshipDto != null) {
-        debugPrint('dto - $worshipDto');
+        database.batch((batch) async {
+          batch.update(
+            database.sermon,
+            const SermonCompanion(eventId: Value(null)),
+            where: ((sermon) => sermon.eventId.equals(id)),
+          );
+          batch.insertAllOnConflictUpdate(
+              database.sermon,
+              worshipDto.sermons.map((dto) => worshipSermonDtoToDbEntity(
+                  dto, id, SermonType.sermon, worshipDto.date)));
+          batch.insertAllOnConflictUpdate(
+              database.sermon,
+              worshipDto.witnesses.map((dto) => worshipSermonDtoToDbEntity(
+                  dto, id, SermonType.witness, worshipDto.date)));
+        });
       }
     } else {
       throw response.error ?? 'An error occurred: ${response.statusCode}';

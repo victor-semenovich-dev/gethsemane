@@ -1,8 +1,10 @@
 import 'package:drift/drift.dart';
 import 'package:gethsemane/data/local/database.dart';
+import 'package:gethsemane/data/local/model/sermon.dart';
 import 'package:gethsemane/data/remote/model/author_dto.dart';
 import 'package:gethsemane/data/remote/model/event_dto.dart';
 import 'package:gethsemane/data/remote/model/music_group_dto.dart';
+import 'package:gethsemane/data/remote/model/worship_dto.dart';
 
 AuthorCompanion authorDtoToDbEntity(AuthorDTO dto) => AuthorCompanion(
       id: Value(dto.id),
@@ -33,4 +35,20 @@ MusicGroupCompanion musicGroupDtoToDbEntity(MusicGroupDTO dto) =>
       leader: Value(dto.leader),
       image: Value(dto.image),
       isActive: Value(dto.isActive),
+    );
+
+SermonCompanion worshipSermonDtoToDbEntity(
+  WorshipSermonDTO dto,
+  int eventId,
+  SermonType type,
+  DateTime date,
+) =>
+    SermonCompanion(
+      id: Value(dto.id),
+      title: Value(dto.title),
+      type: Value(type),
+      authorId: Value(dto.authorId),
+      date: Value(date),
+      remoteAudio: Value(dto.audio),
+      eventId: Value(eventId),
     );
