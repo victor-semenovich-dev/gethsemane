@@ -4,7 +4,7 @@ part '../../../generated/data/remote/model/worship_dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class WorshipDTO {
-  final String id;
+  final int id;
   final DateTime date;
   final String title;
   final String? shortDesc;

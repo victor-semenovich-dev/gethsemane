@@ -5,9 +5,11 @@ import 'package:gethsemane/data/remote/client.dart';
 import 'package:gethsemane/data/repository/authors_repository_impl.dart';
 import 'package:gethsemane/data/repository/events_repository_impl.dart';
 import 'package:gethsemane/data/repository/music_groups_repository_impl.dart';
+import 'package:gethsemane/data/repository/worships_repository_impl.dart';
 import 'package:gethsemane/domain/repository/authors_repository.dart';
 import 'package:gethsemane/domain/repository/events_repository.dart';
 import 'package:gethsemane/domain/repository/music_groups_repository.dart';
+import 'package:gethsemane/domain/repository/worships_repository.dart';
 import 'package:gethsemane/domain/usecase/load_initial_data_usecase.dart';
 
 class RepositoriesProvider extends StatelessWidget {
@@ -48,6 +50,12 @@ class RepositoriesProvider extends StatelessWidget {
           create: (context) => EventsRepositoryImpl(
             database: context.read(),
             apiGethService: context.read<HttpClients>().geth.getService(),
+          ),
+        ),
+        RepositoryProvider<WorshipsRepository>(
+          create: (context) => WorshipsRepositoryImpl(
+            database: context.read(),
+            apiGethMobileService: context.read<HttpClients>().geth.getService(),
           ),
         ),
       ],

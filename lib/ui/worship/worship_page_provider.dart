@@ -11,7 +11,10 @@ class WorshipPageProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => WorshipCubit(id: id),
+      create: (context) => WorshipCubit(
+        id: id,
+        worshipsRepository: context.read(),
+      ),
       child: const WorshipPage(),
     );
   }
