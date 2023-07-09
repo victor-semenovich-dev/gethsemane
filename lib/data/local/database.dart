@@ -6,13 +6,14 @@ import 'package:gethsemane/data/local/model/author.dart';
 import 'package:gethsemane/data/local/model/event.dart';
 import 'package:gethsemane/data/local/model/music_group.dart';
 import 'package:gethsemane/data/local/model/sermon.dart';
+import 'package:gethsemane/data/local/model/song.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 part '../../generated/data/local/database.g.dart';
 
-@DriftDatabase(tables: [Event, Author, MusicGroup, Sermon])
+@DriftDatabase(tables: [Event, Author, MusicGroup, Sermon, Song])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

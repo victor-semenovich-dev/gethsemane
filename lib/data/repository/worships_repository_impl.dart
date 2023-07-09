@@ -22,6 +22,7 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
       final worshipDto = response.body;
       if (worshipDto != null) {
         await database.batch((batch) async {
+          // sermons and witnesses
           batch.update(
             database.sermon,
             const SermonCompanion(eventId: Value(null)),
@@ -38,6 +39,17 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
                   id,
                   SermonType.witness,
                   DateUtils.dateOnly(worshipDto.date))));
+
+          // songs
+          batch.update(
+            database.song,
+            const SongCompanion(eventId: Value(null)),
+            where: ((song) => song.eventId.equals(id)),
+          );
+          batch.insertAllOnConflictUpdate(
+              database.song,
+              worshipDto.songs.map((dto) => worshipSongDtoToDbEntity(
+                  dto, id, DateUtils.dateOnly(worshipDto.date))));
         });
       }
     } else {

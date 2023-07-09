@@ -52,3 +52,17 @@ SermonCompanion worshipSermonDtoToDbEntity(
       remoteAudio: Value(dto.audio),
       eventId: Value(eventId),
     );
+
+SongCompanion worshipSongDtoToDbEntity(
+  WorshipSongDTO dto,
+  int eventId,
+  DateTime date,
+) =>
+    SongCompanion(
+      id: Value(dto.id),
+      musicGroupId: Value(dto.musicGroupId),
+      eventId: Value(eventId),
+      title: Value(dto.title),
+      date: Value(date),
+      remoteAudio: Value(dto.audio),
+    );
