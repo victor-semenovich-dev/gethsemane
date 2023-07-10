@@ -50,6 +50,17 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
               database.song,
               worshipDto.songs.map((dto) => worshipSongDtoToDbEntity(
                   dto, id, DateUtils.dateOnly(worshipDto.date))));
+
+          // photos
+          batch.update(
+            database.photo,
+            const PhotoCompanion(eventId: Value(null)),
+            where: ((photo) => photo.eventId.equals(id)),
+          );
+          batch.insertAllOnConflictUpdate(
+              database.photo,
+              worshipDto.photos
+                  .map((dto) => worshipPhotoDtoToDbEntity(dto, id)));
         });
       }
     } else {

@@ -87,7 +87,7 @@ class WorshipSongDTO {
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class WorshipPhotoDTO {
   final int id;
-  final String title;
+  final String? title;
   final String preview;
   final String photo;
   final DateTime date;

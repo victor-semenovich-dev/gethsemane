@@ -66,3 +66,13 @@ SongCompanion worshipSongDtoToDbEntity(
       date: Value(date),
       remoteAudio: Value(dto.audio),
     );
+
+PhotoCompanion worshipPhotoDtoToDbEntity(WorshipPhotoDTO dto, int eventId) =>
+    PhotoCompanion(
+      id: Value(dto.id),
+      eventId: Value(eventId),
+      title: Value(dto.title),
+      date: Value(dto.date),
+      previewUrl: Value(dto.preview),
+      remoteUrl: Value(dto.photo),
+    );
