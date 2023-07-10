@@ -6,7 +6,7 @@ part '../../../generated/data/remote/model/worship_dto.g.dart';
 class WorshipDTO {
   final int id;
   final DateTime date;
-  final String title;
+  final String? title;
   final String? shortDesc;
   final String? audio;
   final String? video;

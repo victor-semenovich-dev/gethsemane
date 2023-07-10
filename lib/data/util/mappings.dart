@@ -37,6 +37,16 @@ MusicGroupCompanion musicGroupDtoToDbEntity(MusicGroupDTO dto) =>
       isActive: Value(dto.isActive),
     );
 
+WorshipCompanion worshipDtoToDbEntity(WorshipDTO dto) => WorshipCompanion(
+      id: Value(dto.id),
+      date: Value(dto.date),
+      title: Value(dto.title),
+      shortDesc: Value(dto.shortDesc),
+      audio: Value(dto.audio),
+      video: Value(dto.video),
+      poster: Value(dto.poster),
+    );
+
 SermonCompanion worshipSermonDtoToDbEntity(
   WorshipSermonDTO dto,
   int eventId,

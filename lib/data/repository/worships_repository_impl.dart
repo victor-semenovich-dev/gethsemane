@@ -22,6 +22,9 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
       final worshipDto = response.body;
       if (worshipDto != null) {
         await database.batch((batch) async {
+          batch.insert(database.worship, worshipDtoToDbEntity(worshipDto),
+              mode: InsertMode.insertOrReplace);
+
           // sermons and witnesses
           batch.update(
             database.sermon,
