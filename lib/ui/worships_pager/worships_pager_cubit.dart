@@ -69,8 +69,8 @@ class WorshipsPagerCubit extends Cubit<WorshipsPagerState> {
   }
 
   @override
-  Future<void> close() {
-    _worshipEventsSubscription.cancel();
+  Future<void> close() async {
+    await _worshipEventsSubscription.cancel();
     return super.close();
   }
 }

@@ -4,7 +4,9 @@ import 'package:gethsemane/data/local/database.dart';
 import 'package:gethsemane/data/local/model/sermon.dart';
 import 'package:gethsemane/data/remote/service/api_geth_mobile_service.dart';
 import 'package:gethsemane/data/util/mappings.dart';
+import 'package:gethsemane/domain/model/worship_extended.dart';
 import 'package:gethsemane/domain/repository/worships_repository.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 class WorshipsRepositoryImpl extends WorshipsRepository {
   final AppDatabase database;
@@ -16,7 +18,7 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
   });
 
   @override
-  Future<void> getWorship(int id) async {
+  Future<void> loadWorship(int id) async {
     final response = await apiGethMobileService.getWorship(id);
     if (response.isSuccessful) {
       final worshipDto = response.body;
@@ -69,5 +71,34 @@ class WorshipsRepositoryImpl extends WorshipsRepository {
     } else {
       throw response.error ?? 'An error occurred: ${response.statusCode}';
     }
+  }
+
+  @override
+  Stream<WorshipExtended> getWorship(int id) {
+    final worshipDataStream = (database.select(database.worship)
+          ..where((tbl) => tbl.id.equals(id)))
+        .watchSingle();
+    final sermonListDataStream = (database.select(database.sermon)
+          ..where((tbl) => tbl.eventId.equals(id))
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.title)]))
+        .watch();
+    final songListDataStream = (database.select(database.song)
+          ..where((tbl) => tbl.eventId.equals(id))
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.title)]))
+        .watch();
+    final photoListDataStream = (database.select(database.photo)
+          ..where((tbl) => tbl.eventId.equals(id))
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.id)]))
+        .watch();
+    return worshipDataStream.cast<dynamic>().combineLatestAll([
+      sermonListDataStream,
+      songListDataStream,
+      photoListDataStream
+    ]).map((data) => WorshipExtended(
+          worshipData: data[0],
+          sermonDataList: data[1],
+          songDataList: data[2],
+          photoDataList: data[3],
+        ));
   }
 }
