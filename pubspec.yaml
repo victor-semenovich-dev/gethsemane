@@ -45,6 +45,7 @@ dependencies:
   path: ^1.8.3 # path manipulation
   shared_preferences: ^2.2.0
   stream_transform: ^2.1.0
+  youtube_player_flutter: ^8.1.2
 
 dev_dependencies:
   flutter_test:
