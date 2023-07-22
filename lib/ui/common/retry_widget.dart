@@ -10,7 +10,9 @@ class RetryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Wrap(
+        direction: Axis.vertical,
         alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
