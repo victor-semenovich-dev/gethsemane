@@ -1,16 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gethsemane/domain/model/worship_extended.dart';
+import 'package:gethsemane/ui/common/retry_widget.dart';
 import 'package:gethsemane/ui/worship/worship_cubit.dart';
+import 'package:gethsemane/ui/worship/worships_state.dart';
 
 class WorshipPage extends StatelessWidget {
   const WorshipPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<WorshipCubit, WorshipState>(builder: (context, state) {
+      final worship = state.worship;
+      if (state.isError && worship == null) {
+        return RetryWidget(
+          onRetryClick: () => context.read<WorshipCubit>().loadWorship(),
+        );
+      } else if (state.isInProgress && worship == null) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (worship != null) {
+        return _worshipWidget(worship);
+      } else {
+        return Container();
+      }
+    });
+  }
+
+  Widget _worshipWidget(WorshipExtended worship) {
     return Center(
-      child: Text(
-        context.read<WorshipCubit>().id.toString(),
-        style: const TextStyle(fontSize: 40),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          worship.worshipData.toJsonString(),
+        ),
       ),
     );
   }
