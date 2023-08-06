@@ -36,7 +36,7 @@ dependencies:
   intl: any
   flutter_bloc: ^8.1.3 # Cubit architecture
   go_router: ^10.0.0 # Declarative navigation
-  chopper: ^6.1.4 # HTTP client
+  chopper: ^7.0.1 # HTTP client
   json_annotation: ^4.8.1 # JSON code generation
   logging: ^1.2.0 # Logs
   drift: ^2.9.0 # Reactive persistence library
@@ -52,7 +52,7 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: ^2.4.5 # Dart code generation
-  chopper_generator: ^6.0.2 # An HTTP client code generation
+  chopper_generator: ^7.0.1 # An HTTP client code generation
   json_serializable: ^6.7.0 # JSON code generation
   flutter_lints: ^2.0.0 # Recommended lints
   drift_dev: ^2.9.0 # The generator and development tools for the drift package

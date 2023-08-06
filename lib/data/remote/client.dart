@@ -26,7 +26,10 @@ class HttpClients {
             EventDTO: EventDTO.fromJsonFactory,
             WorshipDTO: WorshipDTO.fromJsonFactory,
           }),
-          interceptors: [GethAuthInterceptor(), HttpLoggingInterceptor()],
+          interceptors: [
+            GethAuthInterceptor(),
+            const HttpLoggingInterceptor(),
+          ],
         ),
         gethsemane = ChopperClient(
           baseUrl: Uri.parse('http://api.gethsemane.by'),
@@ -36,6 +39,9 @@ class HttpClients {
           converter: const JsonSerializableConverter({
             MusicGroupDTO: MusicGroupDTO.fromJsonFactory,
           }),
-          interceptors: [GethsemaneAuthInterceptor(), HttpLoggingInterceptor()],
+          interceptors: [
+            GethsemaneAuthInterceptor(),
+            const HttpLoggingInterceptor(),
+          ],
         );
 }

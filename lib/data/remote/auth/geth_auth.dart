@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 
-class GethAuthInterceptor extends RequestInterceptor {
+class GethAuthInterceptor implements RequestInterceptor {
   @override
   FutureOr<Request> onRequest(Request request) {
     const username = String.fromEnvironment('API_GETH_BASIC_AUTH_USERNAME');

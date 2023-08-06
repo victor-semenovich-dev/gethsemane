@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:chopper/chopper.dart';
 
-class GethsemaneAuthInterceptor extends RequestInterceptor {
+class GethsemaneAuthInterceptor implements RequestInterceptor {
   @override
   FutureOr<Request> onRequest(Request request) {
     const xApiKey = String.fromEnvironment('API_GETHSEMANE_X_API_KEY');
