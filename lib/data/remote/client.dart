@@ -28,7 +28,7 @@ class HttpClients {
           }),
           interceptors: [
             GethAuthInterceptor(),
-            const HttpLoggingInterceptor(),
+            HttpLoggingInterceptor(),
           ],
         ),
         gethsemane = ChopperClient(
@@ -41,7 +41,7 @@ class HttpClients {
           }),
           interceptors: [
             GethsemaneAuthInterceptor(),
-            const HttpLoggingInterceptor(),
+            HttpLoggingInterceptor(),
           ],
         );
 }
