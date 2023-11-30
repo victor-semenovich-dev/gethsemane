@@ -11,3 +11,8 @@ Create a config.json and define the following values:
 - API_GETHSEMANE_X_API_KEY - for api.gethsemane.by authentication.
 
 Run the `flutter run --dart-define-from-file=config.json` command
+
+## Resources
+
+https://api.gethsemane.by/index.html - Swagger API
+

@@ -19,7 +19,10 @@ class WorshipPage extends StatelessWidget {
       } else if (state.isInProgress && worship == null) {
         return const Center(child: CircularProgressIndicator());
       } else if (worship != null) {
-        return WorshipWidget(worship: worship);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: WorshipWidget(worship: worship),
+        );
       } else {
         return Container();
       }

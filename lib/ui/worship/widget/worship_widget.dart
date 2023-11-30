@@ -1,46 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:gethsemane/domain/model/worship_extended.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:gethsemane/ui/worship/widget/youtube_widget.dart';
 
-class WorshipWidget extends StatefulWidget {
+class WorshipWidget extends StatelessWidget {
   final WorshipExtended worship;
 
   const WorshipWidget({super.key, required this.worship});
 
   @override
-  State<WorshipWidget> createState() => _WorshipWidgetState();
-}
-
-class _WorshipWidgetState extends State<WorshipWidget> {
-  late YoutubePlayerController? _youtubeController;
-
-  @override
-  void initState() {
-    super.initState();
-    final youtubeVideoId = widget.worship.worshipData.video;
-    if (youtubeVideoId != null) {
-      _youtubeController = YoutubePlayerController(
-        initialVideoId: youtubeVideoId,
-        flags: const YoutubePlayerFlags(
-          autoPlay: false,
-        ),
-      );
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_youtubeController != null) {
-      return Wrap(
-        direction: Axis.vertical,
-        children: [
-          YoutubePlayer(
-            controller: _youtubeController!,
-          ),
-        ],
-      );
-    } else {
-      return Container();
-    }
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            YoutubeWidget(
+              poster: worship.worshipData.poster,
+              onClick: () {},
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -24,9 +24,9 @@ class WorshipCubit extends Cubit<WorshipState> {
     try {
       emit(state.copyWith(isInProgress: true, isError: false));
       await worshipsRepository.loadWorship(id);
-      emit(state.copyWith(isInProgress: false));
+      if (!isClosed) emit(state.copyWith(isInProgress: false));
     } catch (e) {
-      emit(state.copyWith(isInProgress: false, isError: true));
+      if (!isClosed) emit(state.copyWith(isInProgress: false, isError: true));
     }
   }
 
