@@ -4,16 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import by.geth.gethsemane.ui.route.main.MainRoute
+import by.geth.gethsemane.ui.route.home.HomeRoute
 
 @Composable
 fun AppNavHost() {
     NavHost(
         navController = rememberNavController(),
-        startDestination = Main,
+        startDestination = Home,
     ) {
-        composable<Main> {
-            MainRoute()
+        composable<Home> {
+            HomeRoute()
         }
     }
 }
