@@ -6,15 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import by.geth.gethsemane.ui.route.main.MainRoute
 
-const val MAIN_ROUTE = "main"
-
 @Composable
 fun AppNavHost() {
     NavHost(
         navController = rememberNavController(),
-        startDestination = MAIN_ROUTE,
+        startDestination = Main,
     ) {
-        composable(route = MAIN_ROUTE) {
+        composable<Main> {
             MainRoute()
         }
     }
