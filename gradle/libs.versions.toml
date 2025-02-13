@@ -1,17 +1,19 @@
 [versions]
 agp = "8.8.0"
+kotlin = "2.1.0"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
 androidx-activityCompose = "1.10.0"
 androidx-lifecycle = "2.8.4"
 compose-multiplatform = "1.7.0"
-kotlin = "2.1.0"
+navigation = "2.8.0-alpha10"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
