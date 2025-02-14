@@ -24,6 +24,18 @@ koin-compose = { group = "io.insert-koin", name = "koin-compose"}
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel"}
 koin-compose-viewmodel-navigation = { group = "io.insert-koin", name = "koin-compose-viewmodel-navigation"}
 
+[bundles]
+androidx-lifecycle = [
+    "androidx-lifecycle-viewmodel",
+    "androidx-lifecycle-viewmodel-compose",
+    "androidx-lifecycle-runtime-compose",
+]
+koin = [
+    "koin-compose",
+    "koin-compose-viewmodel",
+    "koin-compose-viewmodel-navigation",
+]
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
