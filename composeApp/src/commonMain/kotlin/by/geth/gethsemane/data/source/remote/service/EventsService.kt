@@ -5,10 +5,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-class EventsService(private val httpClient: HttpClient) {
+class EventsService(private val apiGethByClient: HttpClient) {
     suspend fun getEvents(): Result<List<EventDTO>> {
         try {
-            return Result.success(httpClient.get("https://api.geth.by/events").body())
+            return Result.success(apiGethByClient.get("/events").body())
         } catch (t: Throwable) {
             t.printStackTrace()
             return Result.failure(t)
