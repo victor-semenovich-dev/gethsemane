@@ -12,6 +12,7 @@ kotlinx-serialization-json = "1.7.3"
 navigation = "2.8.0-alpha10"
 koin = "4.0.2"
 ktor = "3.1.0"
+buildConfig = "5.5.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -25,6 +26,7 @@ koin-compose = { group = "io.insert-koin", name = "koin-compose"}
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel"}
 koin-compose-viewmodel-navigation = { group = "io.insert-koin", name = "koin-compose-viewmodel-navigation"}
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
@@ -43,6 +45,7 @@ koin = [
 ]
 ktor = [
     "ktor-client-core",
+    "ktor-client-auth",
     "ktor-client-content-negotiation",
     "ktor-serialization-kotlinx-json",
 ]
@@ -54,3 +57,4 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-mu
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization" }
+gradleBuildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }

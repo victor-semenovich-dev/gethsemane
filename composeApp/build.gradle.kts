@@ -1,6 +1,9 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -8,6 +11,12 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.gradleBuildConfig)
+}
+
+buildConfig {
+    buildConfigField("BASIC_AUTH_USERNAME", getLocalProperty("basicAuthUsername"))
+    buildConfigField("BASIC_AUTH_PASSWORD", getLocalProperty("basicAuthPassword"))
 }
 
 kotlin {
@@ -89,3 +98,14 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+fun getLocalProperty(key: String, file: String = "local.properties"): String {
+    val properties = Properties()
+    val localProperties = File(file)
+    if (localProperties.isFile) {
+        InputStreamReader(FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
+            properties.load(reader)
+        }
+    } else error("File from not found")
+
+    return properties.getProperty(key)
+}
