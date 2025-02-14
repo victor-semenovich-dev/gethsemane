@@ -8,14 +8,8 @@ class EventsRepositoryImpl(
     private val eventsService: EventsService,
 ): EventsRepository {
     override suspend fun loadEvents(): Result<List<Event>> {
-        try {
-            val events = eventsService.getEvents().map {
-                Event(it.title)
-            }
-            return Result.success(events)
-        } catch (t: Throwable) {
-            t.printStackTrace()
-            return Result.failure(t)
+        return eventsService.getEvents().map { dtoList ->
+            dtoList.map { Event(it.title) }
         }
     }
 }

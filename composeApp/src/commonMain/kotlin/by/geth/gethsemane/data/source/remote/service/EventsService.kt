@@ -6,7 +6,12 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 class EventsService(private val httpClient: HttpClient) {
-    suspend fun getEvents(): List<EventDTO> {
-        return httpClient.get("https://api.geth.by/events").body()
+    suspend fun getEvents(): Result<List<EventDTO>> {
+        try {
+            return Result.success(httpClient.get("https://api.geth.by/events").body())
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            return Result.failure(t)
+        }
     }
 }
