@@ -1,7 +1,10 @@
 package by.geth.gethsemane.ui.route.schedule
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -75,7 +78,9 @@ fun ScheduleFailure() {
 
 @Composable
 fun ScheduleSuccess(events: List<Event>) {
-    LazyColumn {
+    LazyColumn(
+        contentPadding = WindowInsets.navigationBars.asPaddingValues(),
+    ) {
         items(events) { event ->
             Text(
                 modifier = Modifier.padding(8.dp),
