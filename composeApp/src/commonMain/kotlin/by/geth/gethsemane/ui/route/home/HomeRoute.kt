@@ -11,6 +11,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import by.geth.gethsemane.ui.Schedule
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
+import gethsemane.composeapp.generated.resources.Res
+import gethsemane.composeapp.generated.resources.gethsemane
+import gethsemane.composeapp.generated.resources.schedule
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun HomeRoute(
@@ -20,7 +24,7 @@ fun HomeRoute(
         topBar = {
             CustomTopAppBar(
                 navController = navController,
-                title = "Гефсимания",
+                title = stringResource(Res.string.gethsemane),
                 showBackButton = false,
             )
         },
@@ -33,7 +37,7 @@ fun HomeRoute(
                     navController.navigate(Schedule)
                 },
             ) {
-                Text("Расписание")
+                Text(stringResource(Res.string.schedule))
             }
         }
     }
