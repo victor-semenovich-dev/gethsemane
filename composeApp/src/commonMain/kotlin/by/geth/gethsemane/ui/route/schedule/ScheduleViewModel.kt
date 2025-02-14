@@ -16,14 +16,17 @@ class ScheduleViewModel(
     val uiState: StateFlow<ScheduleUiState> = _uiState.asStateFlow()
 
     init {
-        _loadData()
+        loadData()
     }
 
-    private fun _loadData() {
+    private fun loadData() {
         viewModelScope.launch {
             _uiState.value = ScheduleUiState.Loading
-            val events = eventsRepository.loadEvents()
-            _uiState.value = ScheduleUiState.Success(events)
+            eventsRepository.loadEvents().onSuccess { events ->
+                _uiState.value = ScheduleUiState.Success(events)
+            }.onFailure { reason ->
+                _uiState.value = ScheduleUiState.Failure(reason)
+            }
         }
     }
 }
@@ -34,5 +37,7 @@ sealed class ScheduleUiState {
     data class Success(
         val events: List<Event>,
     ): ScheduleUiState()
-    data object Failure: ScheduleUiState()
+    data class Failure(
+        val reason: Throwable,
+    ): ScheduleUiState()
 }

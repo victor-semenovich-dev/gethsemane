@@ -44,7 +44,7 @@ fun ScheduleRoute(
             ScheduleUiState.Loading -> {
                 ScheduleLoading()
             }
-            ScheduleUiState.Failure -> {
+            is ScheduleUiState.Failure -> {
                 ScheduleFailure()
             }
             is ScheduleUiState.Success -> {
