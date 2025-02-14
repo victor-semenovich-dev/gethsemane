@@ -2,13 +2,15 @@ package by.geth.gethsemane.ui.route.schedule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import by.geth.gethsemane.domain.repository.EventsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ScheduleViewModel: ViewModel() {
+class ScheduleViewModel(
+    private val eventsRepository: EventsRepository,
+): ViewModel() {
     private val _uiState: MutableStateFlow<ScheduleUiState> = MutableStateFlow(ScheduleUiState.None)
     val uiState: StateFlow<ScheduleUiState> = _uiState.asStateFlow()
 
@@ -19,7 +21,7 @@ class ScheduleViewModel: ViewModel() {
     private fun _loadData() {
         viewModelScope.launch {
             _uiState.value = ScheduleUiState.Loading
-            delay(3000)
+            eventsRepository.loadEvents()
             _uiState.value = ScheduleUiState.Success
         }
     }
