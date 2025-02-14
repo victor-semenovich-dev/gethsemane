@@ -1,16 +1,21 @@
 package by.geth.gethsemane.data.repository
 
+import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.domain.repository.EventsRepository
-import kotlinx.coroutines.delay
 
-class EventsRepositoryImpl: EventsRepository {
+class EventsRepositoryImpl(
+    private val eventsService: EventsService,
+): EventsRepository {
     override suspend fun loadEvents(): Result<List<Event>> {
-        delay(3000)
-        return Result.success(listOf(
-            Event(title = "Богослужение 16.02 (ВС, утро)"),
-            Event(title = "Богослужение 16.02 (ВС, вечер)"),
-            Event(title = "Богослужение 20.02 (ЧТ)"),
-        ))
+        try {
+            val events = eventsService.getEvents().map {
+                Event(it.title)
+            }
+            return Result.success(events)
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            return Result.failure(t)
+        }
     }
 }
