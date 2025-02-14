@@ -9,12 +9,12 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val httpModule = module {
-    single<HttpClient> {
+    single<HttpClient>(named("api.geth.by")) {
         HttpClient {
             defaultRequest {
                 url("https://api.geth.by")
@@ -29,7 +29,10 @@ val httpModule = module {
 }
 
 val servicesModule = module {
-    singleOf(::EventsService)
+    single<EventsService> {
+        val httpClient: HttpClient by inject(qualifier = named("api.geth.by"))
+        EventsService(httpClient = httpClient)
+    }
 }
 
 val repositoriesModule = module {
