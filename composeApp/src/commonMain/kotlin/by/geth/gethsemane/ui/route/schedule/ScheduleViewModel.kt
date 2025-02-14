@@ -2,6 +2,7 @@ package by.geth.gethsemane.ui.route.schedule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.domain.repository.EventsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +22,8 @@ class ScheduleViewModel(
     private fun _loadData() {
         viewModelScope.launch {
             _uiState.value = ScheduleUiState.Loading
-            eventsRepository.loadEvents()
-            _uiState.value = ScheduleUiState.Success
+            val events = eventsRepository.loadEvents()
+            _uiState.value = ScheduleUiState.Success(events)
         }
     }
 }
@@ -30,6 +31,8 @@ class ScheduleViewModel(
 sealed class ScheduleUiState {
     data object None: ScheduleUiState()
     data object Loading: ScheduleUiState()
-    data object Success: ScheduleUiState()
+    data class Success(
+        val events: List<Event>,
+    ): ScheduleUiState()
     data object Failure: ScheduleUiState()
 }

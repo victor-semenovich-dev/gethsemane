@@ -3,6 +3,8 @@ package by.geth.gethsemane.ui.route.schedule
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.failure_data_loading
@@ -44,8 +47,8 @@ fun ScheduleRoute(
             ScheduleUiState.Failure -> {
                 ScheduleFailure()
             }
-            ScheduleUiState.Success -> {
-                ScheduleSuccess()
+            is ScheduleUiState.Success -> {
+                ScheduleSuccess((scheduleUiState as ScheduleUiState.Success).events)
             }
         }
     }
@@ -71,12 +74,13 @@ fun ScheduleFailure() {
 }
 
 @Composable
-fun ScheduleSuccess() {
-    Box(Modifier.fillMaxSize()) {
-        Text(
-            modifier = Modifier.align(Alignment.Center).padding(8.dp),
-            text = "Data loaded successfully",
-            textAlign = TextAlign.Center,
-        )
+fun ScheduleSuccess(events: List<Event>) {
+    LazyColumn {
+        items(events) { event ->
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text = event.title,
+            )
+        }
     }
 }
