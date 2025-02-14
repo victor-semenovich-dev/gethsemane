@@ -14,18 +14,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.failure_data_loading
 import gethsemane.composeapp.generated.resources.schedule
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ScheduleRoute(
     navController: NavController,
-    scheduleViewModel: ScheduleViewModel = viewModel { ScheduleViewModel() }
+    scheduleViewModel: ScheduleViewModel = koinViewModel()
 ) {
     val scheduleUiState by scheduleViewModel.uiState.collectAsState()
     Scaffold(
