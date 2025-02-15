@@ -6,7 +6,7 @@ import by.geth.gethsemane.di.repositoriesModule
 import by.geth.gethsemane.di.servicesModule
 import by.geth.gethsemane.di.viewModelsModule
 import by.geth.gethsemane.ui.AppNavHost
-import by.geth.gethsemane.ui.AppTheme
+import by.geth.gethsemane.ui.theme.AppTheme
 import org.koin.compose.KoinApplication
 
 @Composable
