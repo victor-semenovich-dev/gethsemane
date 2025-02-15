@@ -8,12 +8,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.format
+import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.format.byUnicodePattern
 
 class ScheduleViewModel(
     private val eventsRepository: EventsRepository,
 ): ViewModel() {
     private val _uiState: MutableStateFlow<ScheduleUiState> = MutableStateFlow(ScheduleUiState.None)
     val uiState: StateFlow<ScheduleUiState> = _uiState.asStateFlow()
+
+    private val formatPattern = "dd.MM.yyyy HH:mm"
+
+    @OptIn(FormatStringsInDatetimeFormats::class)
+    private val dateTimeFormat = LocalDateTime.Format {
+        byUnicodePattern(formatPattern)
+    }
 
     init {
         loadData()
@@ -28,6 +39,10 @@ class ScheduleViewModel(
                 _uiState.value = ScheduleUiState.Failure(reason)
             }
         }
+    }
+
+    fun format(dateTime: LocalDateTime): String {
+        return dateTime.format(dateTimeFormat)
     }
 }
 

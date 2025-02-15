@@ -1,6 +1,7 @@
 package by.geth.gethsemane.ui.route.schedule
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,15 +26,16 @@ import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.failure_data_loading
 import gethsemane.composeapp.generated.resources.schedule
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ScheduleRoute(
     navController: NavController,
-    scheduleViewModel: ScheduleViewModel = koinViewModel()
+    viewModel: ScheduleViewModel = koinViewModel()
 ) {
-    val scheduleUiState by scheduleViewModel.uiState.collectAsState()
+    val scheduleUiState by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
             CustomTopAppBar(
@@ -51,7 +53,10 @@ fun ScheduleRoute(
                 ScheduleFailure()
             }
             is ScheduleUiState.Success -> {
-                ScheduleSuccess((scheduleUiState as ScheduleUiState.Success).events)
+                ScheduleSuccess(
+                    events = (scheduleUiState as ScheduleUiState.Success).events,
+                    formatDateTime = viewModel::format,
+                )
             }
         }
     }
@@ -77,15 +82,26 @@ fun ScheduleFailure() {
 }
 
 @Composable
-fun ScheduleSuccess(events: List<Event>) {
+fun ScheduleSuccess(
+    events: List<Event>,
+    formatDateTime: (LocalDateTime) -> String,
+) {
     LazyColumn(
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
     ) {
         items(events) { event ->
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = event.title,
-            )
+            ScheduleItem(event, formatDateTime)
         }
+    }
+}
+
+@Composable
+fun ScheduleItem(
+    event: Event,
+    formatDateTime: (LocalDateTime) -> String,
+) {
+    Column(modifier = Modifier.padding(8.dp)) {
+        Text(text = event.title)
+        Text(text = formatDateTime(event.dateTime))
     }
 }
