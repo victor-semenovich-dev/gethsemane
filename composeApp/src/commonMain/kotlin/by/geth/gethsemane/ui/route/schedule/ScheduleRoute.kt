@@ -4,21 +4,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Event
@@ -43,17 +46,22 @@ fun ScheduleRoute(
                 navController = navController,
             )
         },
-    ) {
+    ) { contentPadding ->
         when (scheduleUiState) {
             ScheduleUiState.None -> {}
             ScheduleUiState.Loading -> {
-                ScheduleLoading()
+                ScheduleLoading(modifier = Modifier.padding(contentPadding))
             }
             is ScheduleUiState.Failure -> {
-                ScheduleFailure()
+                ScheduleFailure(modifier = Modifier.padding(contentPadding))
             }
             is ScheduleUiState.Success -> {
                 ScheduleSuccess(
+                    modifier = Modifier.padding(
+                        top = contentPadding.calculateTopPadding(),
+                        start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
+                        end = contentPadding.calculateEndPadding(LayoutDirection.Rtl),
+                    ),
                     events = (scheduleUiState as ScheduleUiState.Success).events,
                     formatDateTime = viewModel::format,
                 )
@@ -63,30 +71,32 @@ fun ScheduleRoute(
 }
 
 @Composable
-fun ScheduleLoading() {
-    Box(Modifier.fillMaxSize()) {
+fun ScheduleLoading(modifier: Modifier = Modifier) {
+    Box(modifier.fillMaxSize()) {
         CircularProgressIndicator(Modifier.align(Alignment.Center))
     }
 }
 
 @Composable
-fun ScheduleFailure() {
-    Box(Modifier.fillMaxSize()) {
+fun ScheduleFailure(modifier: Modifier = Modifier) {
+    Box(modifier.fillMaxSize()) {
         Text(
             modifier = Modifier.align(Alignment.Center).padding(8.dp),
             text = stringResource(Res.string.failure_data_loading),
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.error,
+            color = MaterialTheme.colorScheme.error,
         )
     }
 }
 
 @Composable
 fun ScheduleSuccess(
+    modifier: Modifier = Modifier,
     events: List<Event>,
     formatDateTime: (LocalDateTime) -> String,
 ) {
     LazyColumn(
+        modifier = modifier,
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
     ) {
         items(events) { event ->
