@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -110,8 +112,11 @@ fun ScheduleItem(
     event: Event,
     formatDateTime: (LocalDateTime) -> String,
 ) {
-    Column(modifier = Modifier.padding(8.dp)) {
-        Text(text = event.title)
-        Text(text = formatDateTime(event.dateTime))
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            Text(text = event.title)
+            Text(text = formatDateTime(event.dateTime))
+        }
+        HorizontalDivider()
     }
 }
