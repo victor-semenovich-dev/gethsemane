@@ -17,6 +17,7 @@ plugins {
 buildConfig {
     buildConfigField("BASIC_AUTH_USERNAME", getLocalProperty("basicAuthUsername"))
     buildConfigField("BASIC_AUTH_PASSWORD", getLocalProperty("basicAuthPassword"))
+    buildConfigField("X_API_KEY", getLocalProperty("xApiKey"))
 }
 
 kotlin {

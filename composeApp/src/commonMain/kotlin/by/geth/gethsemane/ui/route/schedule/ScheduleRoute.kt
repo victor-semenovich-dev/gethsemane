@@ -26,12 +26,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import by.geth.gethsemane.domain.model.Event
+import by.geth.gethsemane.domain.model.Schedule
+import by.geth.gethsemane.domain.model.ScheduleItem
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.failure_data_loading
 import gethsemane.composeapp.generated.resources.schedule
-import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -64,8 +64,8 @@ fun ScheduleRoute(
                         start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
                         end = contentPadding.calculateEndPadding(LayoutDirection.Rtl),
                     ),
-                    events = (scheduleUiState as ScheduleUiState.Success).events,
-                    formatDateTime = viewModel::format,
+                    schedule = (scheduleUiState as ScheduleUiState.Success).schedule,
+                    buildSubtitle = viewModel::buildSubtitle,
                 )
             }
         }
@@ -94,28 +94,31 @@ fun ScheduleFailure(modifier: Modifier = Modifier) {
 @Composable
 fun ScheduleSuccess(
     modifier: Modifier = Modifier,
-    events: List<Event>,
-    formatDateTime: (LocalDateTime) -> String,
+    schedule: Schedule,
+    buildSubtitle: (ScheduleItem) -> String,
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
     ) {
-        items(events) { event ->
-            ScheduleItem(event, formatDateTime)
+        items(schedule.items) { scheduleItem ->
+            ScheduleItem(
+                title = scheduleItem.title,
+                subTitle = buildSubtitle(scheduleItem)
+            )
         }
     }
 }
 
 @Composable
 fun ScheduleItem(
-    event: Event,
-    formatDateTime: (LocalDateTime) -> String,
+    title: String,
+    subTitle: String,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = event.title)
-            Text(text = formatDateTime(event.dateTime))
+            Text(text = title)
+            Text(text = subTitle)
         }
         HorizontalDivider()
     }

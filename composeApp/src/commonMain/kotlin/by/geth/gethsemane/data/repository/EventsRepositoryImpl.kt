@@ -21,6 +21,8 @@ class EventsRepositoryImpl(
         return eventsService.getEvents().map { dtoList ->
             dtoList.map {
                 Event(
+                    id = it.id,
+                    musicGroupId = it.musicGroupId,
                     title = it.title,
                     dateTime = dateTimeFormat.parse(it.date)
                 )

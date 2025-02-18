@@ -2,9 +2,9 @@ package by.geth.gethsemane.domain.model
 
 import kotlinx.datetime.LocalDateTime
 
-data class Event(
+data class ScheduleItem(
     val id: Int,
-    val musicGroupId: Int?,
     val title: String,
     val dateTime: LocalDateTime,
+    val musicGroup: String?,
 )

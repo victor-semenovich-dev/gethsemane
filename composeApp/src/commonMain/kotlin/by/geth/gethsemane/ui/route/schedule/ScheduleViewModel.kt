@@ -2,8 +2,9 @@ package by.geth.gethsemane.ui.route.schedule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import by.geth.gethsemane.domain.model.Event
-import by.geth.gethsemane.domain.repository.EventsRepository
+import by.geth.gethsemane.domain.manager.ScheduleManager
+import by.geth.gethsemane.domain.model.Schedule
+import by.geth.gethsemane.domain.model.ScheduleItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,7 @@ import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
 
 class ScheduleViewModel(
-    private val eventsRepository: EventsRepository,
+    private val scheduleManager: ScheduleManager,
 ): ViewModel() {
     private val _uiState: MutableStateFlow<ScheduleUiState> = MutableStateFlow(ScheduleUiState.None)
     val uiState: StateFlow<ScheduleUiState> = _uiState.asStateFlow()
@@ -33,16 +34,18 @@ class ScheduleViewModel(
     private fun loadData() {
         viewModelScope.launch {
             _uiState.value = ScheduleUiState.Loading
-            eventsRepository.loadEvents().onSuccess { events ->
-                _uiState.value = ScheduleUiState.Success(events)
+            scheduleManager.loadSchedule().onSuccess { schedule ->
+                _uiState.value = ScheduleUiState.Success(schedule)
             }.onFailure { reason ->
                 _uiState.value = ScheduleUiState.Failure(reason)
             }
         }
     }
 
-    fun format(dateTime: LocalDateTime): String {
-        return dateTime.format(dateTimeFormat)
+    fun buildSubtitle(item: ScheduleItem): String {
+        val dateTime = item.dateTime.format(dateTimeFormat)
+        val musicGroup = item.musicGroup
+        return if (musicGroup != null) "$dateTime • $musicGroup" else dateTime
     }
 }
 
@@ -50,7 +53,7 @@ sealed class ScheduleUiState {
     data object None: ScheduleUiState()
     data object Loading: ScheduleUiState()
     data class Success(
-        val events: List<Event>,
+        val schedule: Schedule,
     ): ScheduleUiState()
     data class Failure(
         val reason: Throwable,
