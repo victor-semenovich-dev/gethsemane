@@ -12,6 +12,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.gradleBuildConfig)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 buildConfig {
@@ -44,6 +46,8 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -65,6 +69,9 @@ kotlin {
             implementation(libs.bundles.koin)
 
             implementation(libs.bundles.ktor)
+
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
         }
     }
 }
@@ -96,8 +103,13 @@ android {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     debugImplementation(compose.uiTooling)
+    ksp(libs.room.compiler)
 }
 
 fun getLocalProperty(key: String, file: String = "local.properties"): String {
