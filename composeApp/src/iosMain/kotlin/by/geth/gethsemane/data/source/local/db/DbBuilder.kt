@@ -11,7 +11,6 @@ fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
     val dbFilePath = NSHomeDirectory() + "/geth.db"
     return Room.databaseBuilder<AppDatabase>(
         name = dbFilePath,
-        factory =  { AppDatabase::class.instantiateImpl() }
     )
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)

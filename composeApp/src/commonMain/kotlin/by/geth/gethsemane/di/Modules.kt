@@ -5,9 +5,9 @@ import by.geth.gethsemane.data.repository.EventsRepositoryImpl
 import by.geth.gethsemane.data.repository.MusicGroupsRepositoryImpl
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.data.source.remote.service.MusicGroupsService
+import by.geth.gethsemane.domain.manager.ScheduleManager
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
-import by.geth.gethsemane.domain.manager.ScheduleManager
 import by.geth.gethsemane.ui.route.schedule.ScheduleViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
