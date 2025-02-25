@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = EventEntity.TABLE_NAME)
 data class EventEntity(
     @PrimaryKey
     @ColumnInfo("id")
@@ -22,11 +22,15 @@ data class EventEntity(
     @ColumnInfo("shortDesc")
     val shortDesc: String? = null,
     @ColumnInfo("isDraft")
-    val isDraft: Int,
+    val isDraft: Boolean,
     @ColumnInfo("isArchive")
-    val isArchive: Int,
+    val isArchive: Boolean,
     @ColumnInfo("musicGroupId")
     val musicGroupId: Int? = null,
     @ColumnInfo("video")
     val video: String? = null,
-)
+) {
+    companion object {
+        const val TABLE_NAME = "Events"
+    }
+}

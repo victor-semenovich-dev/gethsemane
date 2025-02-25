@@ -1,5 +1,8 @@
 package by.geth.gethsemane.data.repository
 
+import by.geth.gethsemane.data.source.local.db.dao.EventsDao
+import by.geth.gethsemane.data.source.local.db.model.EventEntity
+import by.geth.gethsemane.data.source.remote.model.EventDTO
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.domain.repository.EventsRepository
@@ -9,6 +12,7 @@ import kotlinx.datetime.format.byUnicodePattern
 
 class EventsRepositoryImpl(
     private val eventsService: EventsService,
+    private val eventsDao: EventsDao,
 ): EventsRepository {
     private val formatPattern = "yyyy-MM-dd HH:mm:ss"
 
@@ -19,14 +23,32 @@ class EventsRepositoryImpl(
 
     override suspend fun loadEvents(): Result<List<Event>> {
         return eventsService.getEvents().map { dtoList ->
-            dtoList.map {
-                Event(
-                    id = it.id,
-                    musicGroupId = it.musicGroupId,
-                    title = it.title,
-                    dateTime = dateTimeFormat.parse(it.date)
-                )
-            }
+            val entityList = dtoList.map { it.toDbModel() }
+            eventsDao.clear()
+            eventsDao.insertOrUpdate(*entityList.toTypedArray())
+
+            dtoList.map { it.toDomainModel() }
         }
     }
+    
+    private fun EventDTO.toDomainModel() = Event(
+        id = this.id,
+        musicGroupId = this.musicGroupId,
+        title = this.title,
+        dateTime = dateTimeFormat.parse(this.date),
+    )
+    
+    private fun EventDTO.toDbModel() = EventEntity(
+        id = this.id,
+        categoryId = this.categoryId,
+        title = this.title,
+        date = this.date,
+        note = this.note,
+        audio = this.audio,
+        shortDesc = this.shortDesc,
+        isDraft = this.isDraft != 0,
+        isArchive = this.isArchive != 0,
+        musicGroupId = this.musicGroupId,
+        video = this.video,
+    )
 }

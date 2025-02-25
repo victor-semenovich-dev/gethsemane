@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = MusicGroupEntity.TABLE_NAME)
 data class MusicGroupEntity(
     @PrimaryKey
     @ColumnInfo("id")
@@ -19,4 +19,8 @@ data class MusicGroupEntity(
     val image: String? = null,
     @ColumnInfo("isActive")
     val isActive: Boolean,
-)
+) {
+    companion object {
+        const val TABLE_NAME = "MusicGroups"
+    }
+}

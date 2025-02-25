@@ -3,6 +3,9 @@ package by.geth.gethsemane.di
 import Gethsemane.composeApp.BuildConfig
 import by.geth.gethsemane.data.repository.EventsRepositoryImpl
 import by.geth.gethsemane.data.repository.MusicGroupsRepositoryImpl
+import by.geth.gethsemane.data.source.local.db.AppDatabase
+import by.geth.gethsemane.data.source.local.db.dao.EventsDao
+import by.geth.gethsemane.data.source.local.db.dao.MusicGroupsDao
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.data.source.remote.service.MusicGroupsService
 import by.geth.gethsemane.domain.manager.ScheduleManager
@@ -75,9 +78,20 @@ val servicesModule = module {
     }
 }
 
+val daoModule = module {
+    single<EventsDao> {
+        val appDatabase: AppDatabase = get()
+        appDatabase.eventsDao()
+    }
+    single<MusicGroupsDao> {
+        val appDatabase: AppDatabase = get()
+        appDatabase.musicGroupsDao()
+    }
+}
+
 val repositoriesModule = module {
-    single<EventsRepository> { EventsRepositoryImpl(get()) }
-    single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get()) }
+    single<EventsRepository> { EventsRepositoryImpl(get(), get()) }
+    single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get()) }
 }
 
 val useCaseModule = module {
