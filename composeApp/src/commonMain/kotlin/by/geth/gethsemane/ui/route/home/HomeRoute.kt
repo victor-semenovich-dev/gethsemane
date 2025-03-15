@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import by.geth.gethsemane.ui.Schedule
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.gethsemane
+import gethsemane.composeapp.generated.resources.menu
 import gethsemane.composeapp.generated.resources.schedule
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -57,7 +58,7 @@ fun HomeRoute(
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
-                                contentDescription = null,
+                                contentDescription = stringResource(Res.string.menu),
                             )
                         }
                     }

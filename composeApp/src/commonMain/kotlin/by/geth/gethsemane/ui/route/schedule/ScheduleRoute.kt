@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Schedule
 import by.geth.gethsemane.domain.model.ScheduleItem
 import gethsemane.composeapp.generated.resources.Res
+import gethsemane.composeapp.generated.resources.back
 import gethsemane.composeapp.generated.resources.failure_data_loading
 import gethsemane.composeapp.generated.resources.schedule
 import org.jetbrains.compose.resources.stringResource
@@ -54,7 +55,7 @@ fun ScheduleRoute(
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
+                            contentDescription = stringResource(Res.string.back),
                         )
                     }
                 },

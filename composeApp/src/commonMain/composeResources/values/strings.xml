@@ -1,5 +1,7 @@
 <resources>
     <string name="gethsemane">Гефсимания</string>
+    <string name="menu">Меню</string>
+    <string name="back">Назад</string>
     <string name="schedule">Расписание</string>
     <string name="failure_data_loading">Ошибка загрузки данных</string>
 </resources>
