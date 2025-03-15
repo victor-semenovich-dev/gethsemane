@@ -1,43 +1,34 @@
 package by.geth.gethsemane.ui.route.schedule
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Schedule
-import by.geth.gethsemane.domain.model.ScheduleItem
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.back
-import gethsemane.composeapp.generated.resources.failure_data_loading
 import gethsemane.composeapp.generated.resources.schedule
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.format
+import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.format.byUnicodePattern
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -47,7 +38,6 @@ fun ScheduleRoute(
     navController: NavController,
     viewModel: ScheduleViewModel = koinViewModel()
 ) {
-    val scheduleUiState by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -59,79 +49,50 @@ fun ScheduleRoute(
                         )
                     }
                 },
-                title = {
-                    Text(text = stringResource(Res.string.schedule))
-                },
+                title = { Text(text = stringResource(Res.string.schedule)) },
             )
         },
     ) { contentPadding ->
-        when (scheduleUiState) {
-            ScheduleUiState.None -> {}
-            ScheduleUiState.Loading -> {
-                ScheduleLoading(modifier = Modifier.padding(contentPadding))
-            }
-            is ScheduleUiState.Failure -> {
-                ScheduleFailure(modifier = Modifier.padding(contentPadding))
-            }
-            is ScheduleUiState.Success -> {
-                ScheduleSuccess(
-                    modifier = Modifier.padding(
-                        top = contentPadding.calculateTopPadding(),
-                        start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
-                        end = contentPadding.calculateEndPadding(LayoutDirection.Rtl),
-                    ),
-                    schedule = (scheduleUiState as ScheduleUiState.Success).schedule,
-                    buildSubtitle = viewModel::buildSubtitle,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ScheduleLoading(modifier: Modifier = Modifier) {
-    Box(modifier.fillMaxSize()) {
-        CircularProgressIndicator(Modifier.align(Alignment.Center))
-    }
-}
-
-@Composable
-fun ScheduleFailure(modifier: Modifier = Modifier) {
-    Box(modifier.fillMaxSize()) {
-        Text(
-            modifier = Modifier.align(Alignment.Center).padding(8.dp),
-            text = stringResource(Res.string.failure_data_loading),
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.error,
+        ScheduleList(
+            modifier = Modifier.padding(
+                top = contentPadding.calculateTopPadding(),
+                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
+                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+            ),
+            schedule = viewModel.uiState.schedule,
         )
     }
 }
 
+@OptIn(FormatStringsInDatetimeFormats::class)
 @Composable
-fun ScheduleSuccess(
+fun ScheduleList(
     modifier: Modifier = Modifier,
     schedule: Schedule,
-    buildSubtitle: (ScheduleItem) -> String,
 ) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = WindowInsets.navigationBars.asPaddingValues(),
-    ) {
+    val dateTimeFormat = LocalDateTime.Format {
+        byUnicodePattern("dd.MM.yyyy HH:mm")
+    }
+    LazyColumn(modifier = modifier) {
         items(schedule.items) { scheduleItem ->
-            ScheduleItem(
+            val dateTime = scheduleItem.dateTime.format(dateTimeFormat)
+            val musicGroup = scheduleItem.musicGroup
+            val subtitle = if (musicGroup != null) "$dateTime • $musicGroup" else dateTime
+            ScheduleListItem(
                 title = scheduleItem.title,
-                subTitle = buildSubtitle(scheduleItem)
+                subTitle = subtitle,
             )
         }
     }
 }
 
 @Composable
-fun ScheduleItem(
+fun ScheduleListItem(
+    modifier: Modifier = Modifier,
     title: String,
     subTitle: String,
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(text = title)
             Text(text = subTitle)
