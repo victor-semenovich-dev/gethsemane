@@ -1,8 +1,11 @@
 package by.geth.gethsemane.domain.repository
 
 import by.geth.gethsemane.domain.model.MusicGroup
+import kotlinx.coroutines.flow.Flow
 
 interface MusicGroupsRepository {
-    suspend fun loadMusicGroups(): Result<List<MusicGroup>>
-    suspend fun loadMusicGroup(id: Int): Result<MusicGroup>
+    val musicGroupsFlow: Flow<List<MusicGroup>>
+
+    suspend fun loadMusicGroups(): Result<Unit>
+    suspend fun loadMusicGroup(id: Int): Result<Unit>
 }

@@ -8,6 +8,7 @@ import by.geth.gethsemane.domain.model.ScheduleItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format
@@ -34,10 +35,22 @@ class ScheduleViewModel(
     private fun loadData() {
         viewModelScope.launch {
             _uiState.value = ScheduleUiState.Loading
-            scheduleManager.loadSchedule().onSuccess { schedule ->
-                _uiState.value = ScheduleUiState.Success(schedule)
+            scheduleManager.scheduleFlow.collectLatest { schedule ->
+                if (schedule.items.isNotEmpty()) {
+                    _uiState.value = ScheduleUiState.Success(schedule)
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            scheduleManager.loadSchedule().onSuccess {
+                if (_uiState.value == ScheduleUiState.Loading) {
+                    _uiState.value = ScheduleUiState.None
+                }
             }.onFailure { reason ->
-                _uiState.value = ScheduleUiState.Failure(reason)
+                if (_uiState.value !is ScheduleUiState.Success) {
+                    _uiState.value = ScheduleUiState.Failure(reason)
+                }
             }
         }
     }
