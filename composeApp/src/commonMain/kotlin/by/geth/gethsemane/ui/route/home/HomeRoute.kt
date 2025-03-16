@@ -13,7 +13,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import by.geth.gethsemane.ui.Schedule
+import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.gethsemane
 import gethsemane.composeapp.generated.resources.menu
@@ -52,8 +52,8 @@ fun HomeRoute(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(Res.string.gethsemane)) },
+                CustomTopAppBar(
+                    title = stringResource(Res.string.gethsemane),
                     navigationIcon = {
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
                             Icon(
