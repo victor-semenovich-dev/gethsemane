@@ -10,9 +10,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -20,6 +24,7 @@ import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Schedule
 import by.geth.gethsemane.ui.widget.BackNavigationTopAppBar
 import gethsemane.composeapp.generated.resources.Res
+import gethsemane.composeapp.generated.resources.failure_data_loading
 import gethsemane.composeapp.generated.resources.schedule
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format
@@ -34,7 +39,11 @@ fun ScheduleRoute(
     navController: NavController,
     viewModel: ScheduleViewModel = koinViewModel()
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             BackNavigationTopAppBar(
                 title = stringResource(Res.string.schedule),
@@ -54,6 +63,14 @@ fun ScheduleRoute(
             ScheduleList(
                 schedule = viewModel.uiState.schedule,
             )
+        }
+    }
+
+    val errorMessage = stringResource(Res.string.failure_data_loading)
+    LaunchedEffect(viewModel.uiState.error) {
+        if (viewModel.uiState.error != null) {
+            snackbarHostState.showSnackbar(errorMessage)
+            viewModel.consumeError()
         }
     }
 }
