@@ -8,9 +8,11 @@ import by.geth.gethsemane.data.source.local.db.dao.EventsDao
 import by.geth.gethsemane.data.source.local.db.dao.MusicGroupsDao
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.data.source.remote.service.MusicGroupsService
+import by.geth.gethsemane.domain.manager.InitDataManager
 import by.geth.gethsemane.domain.manager.ScheduleManager
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
+import by.geth.gethsemane.ui.route.init.InitViewModel
 import by.geth.gethsemane.ui.route.schedule.ScheduleViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
@@ -94,10 +96,12 @@ val repositoriesModule = module {
     single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get()) }
 }
 
-val useCaseModule = module {
+val managersModule = module {
+    singleOf(::InitDataManager)
     singleOf(::ScheduleManager)
 }
 
 val viewModelsModule = module {
+    viewModelOf(::InitViewModel)
     viewModelOf(::ScheduleViewModel)
 }

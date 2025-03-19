@@ -3,7 +3,10 @@ package by.geth.gethsemane.ui
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Home
+object InitRoute
 
 @Serializable
-object Schedule
+object HomeRoute
+
+@Serializable
+object ScheduleRoute

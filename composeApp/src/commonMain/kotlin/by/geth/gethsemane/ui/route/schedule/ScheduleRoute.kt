@@ -3,6 +3,7 @@ package by.geth.gethsemane.ui.route.schedule
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -56,7 +57,7 @@ fun ScheduleRoute(
                 top = contentPadding.calculateTopPadding(),
                 start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
                 end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
-            ),
+            ).fillMaxSize(),
             isRefreshing = viewModel.uiState.isLoading,
             onRefresh = viewModel::loadData,
         ) {
