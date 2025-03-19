@@ -74,6 +74,8 @@ kotlin {
             implementation(libs.sqlite.bundled)
 
             implementation(libs.kermit)
+
+            api(libs.bundles.datastore)
         }
     }
 }
