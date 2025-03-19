@@ -3,12 +3,12 @@ package by.geth.gethsemane.data.source.local.db
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import by.geth.gethsemane.data.source.local.util.iosDocumentDirectory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import platform.Foundation.NSHomeDirectory
 
 fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
-    val dbFilePath = NSHomeDirectory() + "/geth.db"
+    val dbFilePath = iosDocumentDirectory() + "/geth.db"
     return Room.databaseBuilder<AppDatabase>(
         name = dbFilePath,
     )
