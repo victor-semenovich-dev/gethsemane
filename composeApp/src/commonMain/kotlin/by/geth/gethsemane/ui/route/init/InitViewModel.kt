@@ -23,7 +23,7 @@ class InitViewModel(
     private fun observeDataLoaded() {
         viewModelScope.launch {
             initDataManager.dataLoadedFlow.collectLatest { isLoaded ->
-                uiState = uiState.copy(isDataLoaded = true)
+                uiState = uiState.copy(isDataLoaded = isLoaded)
             }
         }
     }

@@ -15,6 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import by.geth.gethsemane.ui.HomeRoute
 import by.geth.gethsemane.ui.InitRoute
+import gethsemane.composeapp.generated.resources.Res
+import gethsemane.composeapp.generated.resources.failure_data_loading
+import gethsemane.composeapp.generated.resources.retry
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -33,11 +37,14 @@ fun InitRoute(
     Scaffold { contentPadding ->
         Box(Modifier.padding(contentPadding).fillMaxSize()) {
             if (viewModel.uiState.isFailedToLoadData) {
-                Column(Modifier.align(Alignment.Center)) {
-                    Text("Ошибка загрузки данных")
-                }
-                Button(onClick = viewModel::loadData) {
-                    Text("Попробовать снова")
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(stringResource(Res.string.failure_data_loading))
+                    Button(onClick = viewModel::loadData) {
+                        Text(stringResource(Res.string.retry))
+                    }
                 }
             }
             if (viewModel.uiState.isDataLoading) {
