@@ -6,6 +6,7 @@ import by.geth.gethsemane.data.repository.MusicGroupsRepositoryImpl
 import by.geth.gethsemane.data.source.local.db.AppDatabase
 import by.geth.gethsemane.data.source.local.db.dao.EventsDao
 import by.geth.gethsemane.data.source.local.db.dao.MusicGroupsDao
+import by.geth.gethsemane.data.source.remote.service.BirthdaysService
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.data.source.remote.service.MusicGroupsService
 import by.geth.gethsemane.domain.manager.InitDataManager
@@ -74,6 +75,10 @@ val servicesModule = module {
     single<EventsService> {
         val httpClient: HttpClient by inject(qualifier = named("api.geth.by"))
         EventsService(httpClient = httpClient)
+    }
+    single<BirthdaysService> {
+        val httpClient: HttpClient by inject(qualifier = named("api.geth.by"))
+        BirthdaysService(httpClient = httpClient)
     }
     single<MusicGroupsService> {
         val httpClient: HttpClient by inject(qualifier = named("api.gethsemane.by"))
