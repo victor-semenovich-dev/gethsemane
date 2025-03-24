@@ -18,9 +18,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import by.geth.gethsemane.ui.BirthdaysRoute
 import by.geth.gethsemane.ui.ScheduleRoute
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import gethsemane.composeapp.generated.resources.Res
+import gethsemane.composeapp.generated.resources.birthdays
 import gethsemane.composeapp.generated.resources.gethsemane
 import gethsemane.composeapp.generated.resources.menu
 import gethsemane.composeapp.generated.resources.schedule
@@ -43,6 +45,14 @@ fun HomeRoute(
                     onClick = {
                         scope.launch { drawerState.close() }
                         navController.navigate(ScheduleRoute)
+                    },
+                )
+                NavigationDrawerItem(
+                    label = { Text(stringResource(Res.string.birthdays)) },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(BirthdaysRoute)
                     },
                 )
             }

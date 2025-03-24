@@ -12,6 +12,7 @@ import by.geth.gethsemane.domain.manager.InitDataManager
 import by.geth.gethsemane.domain.manager.ScheduleManager
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
+import by.geth.gethsemane.ui.route.birthdays.BirthdaysViewModel
 import by.geth.gethsemane.ui.route.init.InitViewModel
 import by.geth.gethsemane.ui.route.schedule.ScheduleViewModel
 import io.ktor.client.HttpClient
@@ -104,4 +105,5 @@ val managersModule = module {
 val viewModelsModule = module {
     viewModelOf(::InitViewModel)
     viewModelOf(::ScheduleViewModel)
+    viewModelOf(::BirthdaysViewModel)
 }

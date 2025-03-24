@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import by.geth.gethsemane.ui.route.birthdays.BirthdaysRoute
 import by.geth.gethsemane.ui.route.home.HomeRoute
 import by.geth.gethsemane.ui.route.init.InitRoute
 import by.geth.gethsemane.ui.route.schedule.ScheduleRoute
@@ -23,6 +24,9 @@ fun AppNavHost() {
         }
         composable<ScheduleRoute> {
             ScheduleRoute(navController)
+        }
+        composable<BirthdaysRoute> {
+            BirthdaysRoute(navController)
         }
     }
 }

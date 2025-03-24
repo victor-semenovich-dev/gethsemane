@@ -10,3 +10,6 @@ object HomeRoute
 
 @Serializable
 object ScheduleRoute
+
+@Serializable
+object BirthdaysRoute
