@@ -1,6 +1,7 @@
 package by.geth.gethsemane.di
 
 import Gethsemane.composeApp.BuildConfig
+import by.geth.gethsemane.data.repository.BirthdaysRepositoryImpl
 import by.geth.gethsemane.data.repository.EventsRepositoryImpl
 import by.geth.gethsemane.data.repository.MusicGroupsRepositoryImpl
 import by.geth.gethsemane.data.source.local.db.AppDatabase
@@ -11,6 +12,7 @@ import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.data.source.remote.service.MusicGroupsService
 import by.geth.gethsemane.domain.manager.InitDataManager
 import by.geth.gethsemane.domain.manager.ScheduleManager
+import by.geth.gethsemane.domain.repository.BirthdaysRepository
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
 import by.geth.gethsemane.ui.route.birthdays.BirthdaysViewModel
@@ -99,6 +101,7 @@ val daoModule = module {
 
 val repositoriesModule = module {
     single<EventsRepository> { EventsRepositoryImpl(get(), get()) }
+    single<BirthdaysRepository> { BirthdaysRepositoryImpl(get()) }
     single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get()) }
 }
 
