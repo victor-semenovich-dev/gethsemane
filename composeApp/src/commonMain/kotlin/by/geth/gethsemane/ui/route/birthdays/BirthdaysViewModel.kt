@@ -12,7 +12,7 @@ class BirthdaysViewModel(
     init {
         viewModelScope.launch {
             birthdaysRepository.loadBirthdays().onSuccess {
-                Logger.d("MyTag") { "birthdays: $it" }
+                Logger.d("MyTag") { "birthdays loaded" }
             }
         }
     }

@@ -5,6 +5,7 @@ import by.geth.gethsemane.data.repository.BirthdaysRepositoryImpl
 import by.geth.gethsemane.data.repository.EventsRepositoryImpl
 import by.geth.gethsemane.data.repository.MusicGroupsRepositoryImpl
 import by.geth.gethsemane.data.source.local.db.AppDatabase
+import by.geth.gethsemane.data.source.local.db.dao.BirthdaysDao
 import by.geth.gethsemane.data.source.local.db.dao.EventsDao
 import by.geth.gethsemane.data.source.local.db.dao.MusicGroupsDao
 import by.geth.gethsemane.data.source.remote.service.BirthdaysService
@@ -97,11 +98,15 @@ val daoModule = module {
         val appDatabase: AppDatabase = get()
         appDatabase.musicGroupsDao()
     }
+    single<BirthdaysDao> {
+        val appDatabase: AppDatabase = get()
+        appDatabase.birthdaysDao()
+    }
 }
 
 val repositoriesModule = module {
     single<EventsRepository> { EventsRepositoryImpl(get(), get()) }
-    single<BirthdaysRepository> { BirthdaysRepositoryImpl(get()) }
+    single<BirthdaysRepository> { BirthdaysRepositoryImpl(get(), get()) }
     single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get()) }
 }
 
