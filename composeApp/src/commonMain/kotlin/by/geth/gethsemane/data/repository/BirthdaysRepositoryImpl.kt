@@ -4,7 +4,10 @@ import by.geth.gethsemane.data.source.local.db.dao.BirthdaysDao
 import by.geth.gethsemane.data.source.local.db.model.BirthdaysEntity
 import by.geth.gethsemane.data.source.remote.model.BirthdaysDTO
 import by.geth.gethsemane.data.source.remote.service.BirthdaysService
+import by.geth.gethsemane.domain.model.Birthdays
 import by.geth.gethsemane.domain.repository.BirthdaysRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -23,6 +26,13 @@ class BirthdaysRepositoryImpl(
     @OptIn(FormatStringsInDatetimeFormats::class)
     private val dateFormat = LocalDate.Format {
         byUnicodePattern("yyyy-MM-dd")
+    }
+
+    override val birthdaysFlow: Flow<List<Birthdays>> = birthdaysDao.getAll().map { entityList ->
+        entityList.map { it.toDomainModel() }.filter {
+            val dateNow = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            it.date >= dateNow
+        }.sortedBy { it.date }
     }
 
     override suspend fun loadBirthdays(): Result<Unit> {
@@ -44,4 +54,9 @@ class BirthdaysRepositoryImpl(
             persons = this.persons.joinToString("|"),
         )
     }
+
+    private fun BirthdaysEntity.toDomainModel() = Birthdays(
+        date = dateFormat.parse(this.date),
+        persons = this.persons.split("|"),
+    )
 }
