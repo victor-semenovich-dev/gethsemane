@@ -6,4 +6,19 @@
     <string name="birthdays">Дни рождения</string>
     <string name="retry">Попробовать снова</string>
     <string name="failure_data_loading">Ошибка загрузки данных</string>
+
+    <string-array name="months_genitive">
+        <item>января</item>
+        <item>февраля</item>
+        <item>марта</item>
+        <item>апреля</item>
+        <item>мая</item>
+        <item>июня</item>
+        <item>июля</item>
+        <item>августа</item>
+        <item>сентября</item>
+        <item>октября</item>
+        <item>ноября</item>
+        <item>декабря</item>
+    </string-array>
 </resources>

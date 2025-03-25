@@ -30,9 +30,8 @@ import by.geth.gethsemane.ui.widget.BackNavigationTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.birthdays
 import gethsemane.composeapp.generated.resources.failure_data_loading
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.format.FormatStringsInDatetimeFormats
-import kotlinx.datetime.format.byUnicodePattern
+import gethsemane.composeapp.generated.resources.months_genitive
+import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -96,17 +95,17 @@ fun BirthdaysList(
     }
 }
 
-@OptIn(FormatStringsInDatetimeFormats::class)
 @Composable
 fun BirthdaysItem(
     modifier: Modifier = Modifier,
     item: Birthdays,
 ) {
-    val dateTimeFormat = LocalDate.Format { byUnicodePattern("dd MM") }
+    val monthList = stringArrayResource(Res.array.months_genitive)
+    val month = monthList[item.date.monthNumber - 1]
     Row(modifier.padding(8.dp)) {
         Text(
             modifier = Modifier.weight(1f),
-            text = dateTimeFormat.format(item.date),
+            text = "${item.date.dayOfMonth} $month",
         )
         Spacer(Modifier.width(8.dp))
         Column(Modifier.weight(2f)) {
