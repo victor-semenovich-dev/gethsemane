@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -21,6 +19,7 @@ import androidx.navigation.NavController
 import by.geth.gethsemane.ui.BirthdaysRoute
 import by.geth.gethsemane.ui.ScheduleRoute
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
+import by.geth.gethsemane.ui.widget.TopAppBarIconButton
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.birthdays
 import gethsemane.composeapp.generated.resources.gethsemane
@@ -63,12 +62,11 @@ fun HomeRoute(
                 CustomTopAppBar(
                     title = stringResource(Res.string.gethsemane),
                     navigationIcon = {
-                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(Res.string.menu),
-                            )
-                        }
+                        TopAppBarIconButton(
+                            onClick = { scope.launch { drawerState.open() } },
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = stringResource(Res.string.menu),
+                        )
                     }
                 )
             },

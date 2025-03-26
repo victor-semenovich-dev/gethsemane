@@ -21,4 +21,7 @@
         <item>ноября</item>
         <item>декабря</item>
     </string-array>
+
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
 </resources>

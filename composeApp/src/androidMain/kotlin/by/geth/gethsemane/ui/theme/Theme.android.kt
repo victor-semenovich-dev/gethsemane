@@ -35,7 +35,7 @@ actual fun AppTheme(
             WindowCompat.getInsetsController(
                 window,
                 view
-            ).isAppearanceLightStatusBars = !darkTheme
+            ).isAppearanceLightStatusBars = darkTheme
         }
     }
 

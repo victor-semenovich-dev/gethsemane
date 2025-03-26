@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.back
@@ -23,11 +25,14 @@ fun CustomTopAppBar(
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            containerColor = MaterialTheme.colorScheme.primary,
         ),
         navigationIcon = navigationIcon,
         title = {
-            Text(text = title)
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
         },
     )
 }
@@ -40,12 +45,28 @@ fun BackNavigationTopAppBar(
     CustomTopAppBar(
         title = title,
         navigationIcon = {
-            IconButton(onClick = { navController.navigateUp() }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(Res.string.back),
-                )
-            }
+            TopAppBarIconButton(
+                onClick = { navController.navigateUp() },
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(Res.string.back),
+            )
         }
     )
 }
+
+@Composable
+fun TopAppBarIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    imageVector: ImageVector,
+    contentDescription: String? = null,
+) {
+    IconButton(modifier = modifier, onClick = onClick) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+            tint = MaterialTheme.colorScheme.onPrimary,
+        )
+    }
+}
+
