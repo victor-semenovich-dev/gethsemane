@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import by.geth.gethsemane.ui.BirthdaysRoute
 import by.geth.gethsemane.ui.ScheduleRoute
+import by.geth.gethsemane.ui.theme.StatusBarAppearance
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import by.geth.gethsemane.ui.widget.TopAppBarIconButton
 import gethsemane.composeapp.generated.resources.Res
@@ -34,6 +35,8 @@ fun HomeRoute(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    StatusBarAppearance(lightIcons = drawerState.targetValue == DrawerValue.Closed)
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {

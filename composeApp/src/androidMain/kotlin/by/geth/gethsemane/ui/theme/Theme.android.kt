@@ -6,7 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -28,20 +28,24 @@ actual fun AppTheme(
         else -> lightScheme
     }
 
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            WindowCompat.getInsetsController(
-                window,
-                view
-            ).isAppearanceLightStatusBars = darkTheme
-        }
-    }
-
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
         content = content
     )
+}
+
+@Composable
+actual fun StatusBarAppearance(darkTheme: Boolean, lightIcons: Boolean) {
+    val view = LocalView.current
+    val window = (view.context as Activity).window
+    DisposableEffect(darkTheme, lightIcons) {
+        val lightIconsConsideringTheme = darkTheme xor lightIcons
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
+            !lightIconsConsideringTheme
+        onDispose {
+            // Reset the appearance on dispose, so the light icons should appear in the light theme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+        }
+    }
 }

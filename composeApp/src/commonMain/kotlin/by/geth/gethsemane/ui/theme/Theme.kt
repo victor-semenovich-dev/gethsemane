@@ -90,3 +90,14 @@ expect fun AppTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 )
+
+/**
+ * Allows to change the status bar appearance. For Android only.
+ * @param darkTheme is app in the dark mode
+ * @param lightIcons the status bar icons should be light in the light theme and dark in the dark theme
+ */
+@Composable
+expect fun StatusBarAppearance(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    lightIcons: Boolean = true,
+)

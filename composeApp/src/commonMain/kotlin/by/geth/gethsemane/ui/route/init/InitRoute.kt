@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import by.geth.gethsemane.ui.HomeRoute
 import by.geth.gethsemane.ui.InitRoute
+import by.geth.gethsemane.ui.theme.StatusBarAppearance
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.failure_data_loading
 import gethsemane.composeapp.generated.resources.retry
@@ -27,6 +28,7 @@ fun InitRoute(
     viewModel: InitViewModel = koinViewModel(),
 ) {
     val isDataLoaded = viewModel.uiState.isDataLoaded
+    StatusBarAppearance(lightIcons = false)
     LaunchedEffect(isDataLoaded) {
         if (isDataLoaded) {
             navController.navigate(HomeRoute) {

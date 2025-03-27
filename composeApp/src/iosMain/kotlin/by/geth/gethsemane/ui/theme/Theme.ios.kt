@@ -21,3 +21,8 @@ actual fun AppTheme(
         content = content
     )
 }
+
+@Composable
+actual fun StatusBarAppearance(darkTheme: Boolean, lightIcons: Boolean) {
+    // doesn't work on iOS
+}
