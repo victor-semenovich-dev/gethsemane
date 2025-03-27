@@ -64,14 +64,17 @@ fun BirthdaysRoute(
         PullToRefreshBox(
             modifier = Modifier.padding(
                 top = contentPadding.calculateTopPadding(),
-                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
-                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
-            ).fillMaxSize(),
+            ),
             isRefreshing = viewModel.uiState.isLoading,
             onRefresh = viewModel::loadData,
         ) {
             BirthdaysList(
                 modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+                    bottom = contentPadding.calculateBottomPadding(),
+                ),
                 birthdaysList = viewModel.uiState.birthdays,
             )
         }
@@ -92,10 +95,19 @@ fun BirthdaysList(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     birthdaysList: List<Birthdays>,
 ) {
-    LazyColumn(modifier, contentPadding = contentPadding) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            bottom = contentPadding.calculateBottomPadding(),
+        ),
+    ) {
         items(birthdaysList) { item ->
             BirthdaysItem(
                 modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(
+                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+                ),
                 item = item,
             )
         }
@@ -105,6 +117,7 @@ fun BirthdaysList(
 @Composable
 fun BirthdaysItem(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     item: Birthdays,
 ) {
     val monthList = stringArrayResource(Res.array.months_genitive)
@@ -115,7 +128,7 @@ fun BirthdaysItem(
                 color = if (item.date.isToday()) MaterialTheme.colorScheme.surfaceContainerHighest
                     else if (item.date.isTomorrow()) MaterialTheme.colorScheme.surfaceContainer
                     else Color.Transparent,
-            ).padding(8.dp),
+            ).padding(contentPadding).padding(8.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text("${item.date.dayOfMonth} $month")

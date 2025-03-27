@@ -1,6 +1,7 @@
 package by.geth.gethsemane.ui.route.schedule
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,13 +56,17 @@ fun ScheduleRoute(
         PullToRefreshBox(
             modifier = Modifier.padding(
                 top = contentPadding.calculateTopPadding(),
-                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
-                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
-            ).fillMaxSize(),
+            ),
             isRefreshing = viewModel.uiState.isLoading,
             onRefresh = viewModel::loadData,
         ) {
             ScheduleList(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+                    bottom = contentPadding.calculateBottomPadding(),
+                ),
                 schedule = viewModel.uiState.schedule,
             )
         }
@@ -80,17 +85,27 @@ fun ScheduleRoute(
 @Composable
 fun ScheduleList(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     schedule: Schedule,
 ) {
     val dateTimeFormat = LocalDateTime.Format {
         byUnicodePattern("dd.MM.yyyy HH:mm")
     }
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            bottom = contentPadding.calculateBottomPadding(),
+        ),
+    ) {
         items(schedule.items) { scheduleItem ->
             val dateTime = scheduleItem.dateTime.format(dateTimeFormat)
             val musicGroup = scheduleItem.musicGroup
             val subtitle = if (musicGroup != null) "$dateTime • $musicGroup" else dateTime
             ScheduleListItem(
+                contentPadding = PaddingValues(
+                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+                ),
                 title = scheduleItem.title,
                 subTitle = subtitle,
             )
@@ -101,11 +116,12 @@ fun ScheduleList(
 @Composable
 fun ScheduleListItem(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     title: String,
     subTitle: String,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(contentPadding).padding(8.dp)) {
             Text(text = title)
             Text(text = subTitle)
         }
