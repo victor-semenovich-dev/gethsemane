@@ -59,6 +59,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.material.icons.core)
 
             implementation(libs.bundles.androidx.lifecycle)
             implementation(libs.navigation.compose)
