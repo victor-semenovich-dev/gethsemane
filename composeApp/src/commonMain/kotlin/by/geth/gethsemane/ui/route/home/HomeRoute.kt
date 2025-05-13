@@ -45,16 +45,20 @@ fun HomeRoute(
                     label = { Text(stringResource(Res.string.schedule)) },
                     selected = false,
                     onClick = {
-                        scope.launch { drawerState.close() }
-                        navController.navigate(ScheduleRoute)
+                        scope.launch {
+                            drawerState.snapTo(DrawerValue.Closed)
+                            navController.navigate(ScheduleRoute)
+                        }
                     },
                 )
                 NavigationDrawerItem(
                     label = { Text(stringResource(Res.string.birthdays)) },
                     selected = false,
                     onClick = {
-                        scope.launch { drawerState.close() }
-                        navController.navigate(BirthdaysRoute)
+                        scope.launch {
+                            drawerState.snapTo(DrawerValue.Closed)
+                            navController.navigate(BirthdaysRoute)
+                        }
                     },
                 )
             }
