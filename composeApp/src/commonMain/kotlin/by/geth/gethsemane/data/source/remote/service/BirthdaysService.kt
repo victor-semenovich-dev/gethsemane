@@ -9,18 +9,14 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 class BirthdaysService(private val httpClient: HttpClient) {
-    suspend fun getBirthdays(): Result<List<BirthdaysDTO>> {
+    suspend fun getBirthdays(): Result<List<BirthdaysDTO>> = withContext(Dispatchers.IO) {
         try {
-            val response = withContext(Dispatchers.IO) {
-                httpClient.get("/birthdays")
-            }
-            val body = withContext(Dispatchers.Default) {
-                response.body<List<BirthdaysDTO>>()
-            }
-            return Result.success(body)
+            val response = httpClient.get("/birthdays")
+            val body = withContext(Dispatchers.Default) { response.body<List<BirthdaysDTO>>() }
+            Result.success(body)
         } catch (t: Throwable) {
             t.printStackTrace()
-            return Result.failure(t)
+            Result.failure(t)
         }
     }
 }

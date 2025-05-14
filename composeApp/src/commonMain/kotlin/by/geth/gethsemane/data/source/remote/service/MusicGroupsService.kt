@@ -9,27 +9,25 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 class MusicGroupsService(private val httpClient: HttpClient) {
-    suspend fun getMusicGroups(): Result<List<MusicGroupDTO>> {
+    suspend fun getMusicGroups(): Result<List<MusicGroupDTO>> = withContext(Dispatchers.IO) {
         try {
-            val response = withContext(Dispatchers.IO) {
-                httpClient.get("/MusicGroups")
-            }
-            val body = withContext(Dispatchers.Default) {
-                response.body<List<MusicGroupDTO>>()
-            }
-            return Result.success(body)
+            val response = httpClient.get("/MusicGroups")
+            val body = withContext(Dispatchers.Default) { response.body<List<MusicGroupDTO>>() }
+            Result.success(body)
         } catch (t: Throwable) {
             t.printStackTrace()
-            return Result.failure(t)
+            Result.failure(t)
         }
     }
 
-    suspend fun getMusicGroup(id: Int): Result<MusicGroupDTO> {
+    suspend fun getMusicGroup(id: Int): Result<MusicGroupDTO> = withContext(Dispatchers.IO) {
         try {
-            return Result.success(httpClient.get("/MusicGroups/$id").body())
+            val response = httpClient.get("/MusicGroups/$id")
+            val body = withContext(Dispatchers.Default) { response.body<MusicGroupDTO>() }
+            Result.success(body)
         } catch (t: Throwable) {
             t.printStackTrace()
-            return Result.failure(t)
+            Result.failure(t)
         }
     }
 }

@@ -2,6 +2,7 @@ package by.geth.gethsemane.data.source.local.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import by.geth.gethsemane.data.source.local.db.model.EventEntity
 import kotlinx.coroutines.flow.Flow
@@ -16,4 +17,10 @@ interface EventsDao {
 
     @Query("DELETE FROM ${EventEntity.TABLE_NAME}")
     suspend fun clear()
+
+    @Transaction
+    suspend fun replaceAll(events: List<EventEntity>) {
+        clear()
+        insertOrUpdate(*events.toTypedArray())
+    }
 }

@@ -6,8 +6,11 @@ import by.geth.gethsemane.data.source.remote.model.BirthdaysDTO
 import by.geth.gethsemane.data.source.remote.service.BirthdaysService
 import by.geth.gethsemane.domain.model.Birthdays
 import by.geth.gethsemane.domain.repository.BirthdaysRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -35,11 +38,10 @@ class BirthdaysRepositoryImpl(
         }.sortedBy { it.date }
     }
 
-    override suspend fun loadBirthdays(): Result<Unit> {
-        return birthdaysService.getBirthdays().onSuccess { dtoList ->
+    override suspend fun loadBirthdays(): Result<Unit> = withContext(Dispatchers.IO) {
+        birthdaysService.getBirthdays().onSuccess { dtoList ->
             val dbEntitiesList = dtoList.map { dto -> dto.toDbModel() }
-            birthdaysDao.clear()
-            birthdaysDao.insertOrUpdate(*dbEntitiesList.toTypedArray())
+            birthdaysDao.replaceAll(dbEntitiesList)
         }.map {  }
     }
 
