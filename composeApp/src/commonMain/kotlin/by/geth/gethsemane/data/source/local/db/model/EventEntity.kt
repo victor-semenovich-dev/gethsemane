@@ -7,30 +7,41 @@ import androidx.room.PrimaryKey
 @Entity(tableName = EventEntity.TABLE_NAME)
 data class EventEntity(
     @PrimaryKey
-    @ColumnInfo("id")
+    @ColumnInfo(COLUMN_ID)
     val id: Int,
-    @ColumnInfo("categoryId")
+    @ColumnInfo(COLUMN_CATEGORY_ID)
     val categoryId: Int,
-    @ColumnInfo("title")
+    @ColumnInfo(COLUMN_TITLE)
     val title: String,
-    @ColumnInfo("date")
+    @ColumnInfo(COLUMN_DATE)
     val date: String,
-    @ColumnInfo("note")
+    @ColumnInfo(COLUMN_NOTE)
     val note: String? = null,
-    @ColumnInfo("audio")
+    @ColumnInfo(COLUMN_AUDIO)
     val audio: String? = null,
-    @ColumnInfo("shortDesc")
+    @ColumnInfo(COLUMN_SHORT_DESC)
     val shortDesc: String? = null,
-    @ColumnInfo("isDraft")
+    @ColumnInfo(COLUMN_IS_DRAFT)
     val isDraft: Boolean,
-    @ColumnInfo("isArchive")
+    @ColumnInfo(COLUMN_IS_ARCHIVE)
     val isArchive: Boolean,
-    @ColumnInfo("musicGroupId")
+    @ColumnInfo(COLUMN_MUSIC_GROUP_ID)
     val musicGroupId: Int? = null,
-    @ColumnInfo("video")
+    @ColumnInfo(COLUMN_VIDEO)
     val video: String? = null,
 ) {
     companion object {
         const val TABLE_NAME = "Events"
+        const val COLUMN_ID = "id"
+        const val COLUMN_CATEGORY_ID = "categoryId"
+        const val COLUMN_TITLE = "title"
+        const val COLUMN_DATE = "date"
+        const val COLUMN_NOTE = "note"
+        const val COLUMN_AUDIO = "audio"
+        const val COLUMN_SHORT_DESC = "shortDesc"
+        const val COLUMN_IS_DRAFT = "isDraft"
+        const val COLUMN_IS_ARCHIVE = "isArchive"
+        const val COLUMN_MUSIC_GROUP_ID = "musicGroupId"
+        const val COLUMN_VIDEO = "video"
     }
 }

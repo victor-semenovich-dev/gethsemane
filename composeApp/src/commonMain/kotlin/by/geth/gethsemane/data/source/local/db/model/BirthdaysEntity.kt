@@ -7,12 +7,14 @@ import androidx.room.PrimaryKey
 @Entity(tableName = BirthdaysEntity.TABLE_NAME)
 data class BirthdaysEntity(
     @PrimaryKey
-    @ColumnInfo("date")
+    @ColumnInfo(COLUMN_DATE)
     val date: String,
-    @ColumnInfo("persons")
+    @ColumnInfo(COLUMN_PERSONS)
     val persons: String,
 ) {
     companion object {
         const val TABLE_NAME = "Birthdays"
+        const val COLUMN_DATE = "date"
+        const val COLUMN_PERSONS = "persons"
     }
 }

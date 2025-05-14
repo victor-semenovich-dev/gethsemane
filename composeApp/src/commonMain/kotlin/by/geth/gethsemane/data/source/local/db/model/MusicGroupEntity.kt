@@ -7,20 +7,26 @@ import androidx.room.PrimaryKey
 @Entity(tableName = MusicGroupEntity.TABLE_NAME)
 data class MusicGroupEntity(
     @PrimaryKey
-    @ColumnInfo("id")
+    @ColumnInfo(COLUMN_ID)
     val id: Int,
-    @ColumnInfo("title")
+    @ColumnInfo(COLUMN_TITLE)
     val title: String,
-    @ColumnInfo("history")
+    @ColumnInfo(COLUMN_HISTORY)
     val history: String? = null,
-    @ColumnInfo("leader")
+    @ColumnInfo(COLUMN_LEADER)
     val leader: String? = null,
-    @ColumnInfo("image")
+    @ColumnInfo(COLUMN_IMAGE)
     val image: String? = null,
-    @ColumnInfo("isActive")
+    @ColumnInfo(COLUMN_IS_ACTIVE)
     val isActive: Boolean,
 ) {
     companion object {
         const val TABLE_NAME = "MusicGroups"
+        const val COLUMN_ID = "id"
+        const val COLUMN_TITLE = "title"
+        const val COLUMN_HISTORY = "history"
+        const val COLUMN_LEADER = "leader"
+        const val COLUMN_IMAGE = "image"
+        const val COLUMN_IS_ACTIVE = "isActive"
     }
 }
