@@ -11,6 +11,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
@@ -23,15 +24,27 @@ class EventsRepositoryImpl(
     private val dateTimeFormat = LocalDateTime.Format {
         byUnicodePattern("yyyy-MM-dd HH:mm:ss")
     }
+    @OptIn(FormatStringsInDatetimeFormats::class)
+    private val dateFormat = LocalDate.Format {
+        byUnicodePattern("yyyy-MM-dd")
+    }
 
     override val eventsFlow: Flow<List<Event>> = eventsDao.getAll().map { entityList ->
         entityList.map { it.toDomainModel() }
     }
 
-    override suspend fun loadEvents(): Result<Unit> = withContext(Dispatchers.IO) {
-        eventsService.getEvents().map { dtoList ->
+    override fun getEventsFromDate(date: LocalDate): Flow<List<Event>> {
+        val dateFormatted = dateFormat.format(date)
+        return eventsDao.getFromDate(dateFormatted).map { entityList ->
+            entityList.map { it.toDomainModel() }
+        }
+    }
+
+    override suspend fun loadEvents(dateFrom: LocalDate): Result<Unit> = withContext(Dispatchers.IO) {
+        val dateFormatted = dateFormat.format(dateFrom)
+        eventsService.getEvents(dateFormatted).map { dtoList ->
             val entityList = dtoList.map { it.toDbModel() }
-            eventsDao.replaceAll(entityList)
+            eventsDao.replaceFromDate(dateFormatted, entityList)
         }
     }
     

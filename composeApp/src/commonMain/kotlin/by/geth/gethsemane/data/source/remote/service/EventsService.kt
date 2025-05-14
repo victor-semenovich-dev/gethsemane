@@ -9,9 +9,13 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 class EventsService(private val httpClient: HttpClient) {
-    suspend fun getEvents(): Result<List<EventDTO>> = withContext(Dispatchers.IO) {
+    suspend fun getEvents(date: String?): Result<List<EventDTO>> = withContext(Dispatchers.IO) {
         try {
-            val response = httpClient.get("/events")
+            val response = httpClient.get("/events") {
+                url {
+                    date?.let { parameters.append("date", it) }
+                }
+            }
             val body = withContext(Dispatchers.Default) { response.body<List<EventDTO>>() }
             Result.success(body)
         } catch (t: Throwable) {

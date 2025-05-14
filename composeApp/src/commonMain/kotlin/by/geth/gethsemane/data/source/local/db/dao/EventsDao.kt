@@ -15,12 +15,18 @@ interface EventsDao {
     @Query("SELECT * FROM ${EventEntity.TABLE_NAME}")
     fun getAll(): Flow<List<EventEntity>>
 
+    @Query("SELECT * FROM ${EventEntity.TABLE_NAME} WHERE ${EventEntity.COLUMN_DATE} >= :from")
+    fun getFromDate(from: String): Flow<List<EventEntity>>
+
     @Query("DELETE FROM ${EventEntity.TABLE_NAME}")
     suspend fun clear()
 
+    @Query("DELETE FROM ${EventEntity.TABLE_NAME} WHERE ${EventEntity.COLUMN_DATE} >= :from")
+    suspend fun clearFromDate(from: String)
+
     @Transaction
-    suspend fun replaceAll(events: List<EventEntity>) {
-        clear()
+    suspend fun replaceFromDate(from: String, events: List<EventEntity>) {
+        clearFromDate(from)
         insertOrUpdate(*events.toTypedArray())
     }
 }
