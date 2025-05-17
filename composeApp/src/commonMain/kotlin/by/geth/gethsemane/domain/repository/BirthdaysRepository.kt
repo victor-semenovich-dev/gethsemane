@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface BirthdaysRepository {
     val birthdaysFlow: Flow<List<Birthdays>>
 
-    suspend fun loadBirthdays(): Result<Unit>
+    suspend fun loadBirthdays(): Result<List<Birthdays>>
 }

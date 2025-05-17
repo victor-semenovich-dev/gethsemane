@@ -35,11 +35,12 @@ class BirthdaysRepositoryImpl(
         }.sortedBy { it.date }
     }
 
-    override suspend fun loadBirthdays(): Result<Unit> {
-        return birthdaysService.getBirthdays().onSuccess { dtoList ->
+    override suspend fun loadBirthdays(): Result<List<Birthdays>> {
+        return birthdaysService.getBirthdays().map { dtoList ->
             val dbEntitiesList = dtoList.map { dto -> dto.toDbModel() }
             birthdaysDao.replaceAll(dbEntitiesList)
-        }.map {  }
+            dbEntitiesList.map { it.toDomainModel() }
+        }
     }
 
     private fun BirthdaysDTO.toDbModel(): BirthdaysEntity {

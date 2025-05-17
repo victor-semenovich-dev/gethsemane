@@ -30,18 +30,12 @@ class EventsRepositoryImpl(
         entityList.map { it.toDomainModel() }
     }
 
-    override fun getEventsFromDate(date: LocalDate): Flow<List<Event>> {
-        val dateFormatted = dateFormat.format(date)
-        return eventsDao.getFromDate(dateFormatted).map { entityList ->
-            entityList.map { it.toDomainModel() }
-        }
-    }
-
-    override suspend fun loadEvents(dateFrom: LocalDate): Result<Unit> {
+    override suspend fun loadEvents(dateFrom: LocalDate): Result<List<Event>> {
         val dateFormatted = dateFormat.format(dateFrom)
         return eventsService.getEvents(dateFormatted).map { dtoList ->
             val entityList = dtoList.map { it.toDbModel() }
             eventsDao.replaceFromDate(dateFormatted, entityList)
+            entityList.map { it.toDomainModel() }
         }
     }
     

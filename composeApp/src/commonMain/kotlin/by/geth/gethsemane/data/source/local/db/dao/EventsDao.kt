@@ -15,9 +15,6 @@ interface EventsDao {
     @Query("SELECT * FROM ${EventEntity.TABLE_NAME}")
     fun getAll(): Flow<List<EventEntity>>
 
-    @Query("SELECT * FROM ${EventEntity.TABLE_NAME} WHERE ${EventEntity.COLUMN_DATE} >= :from")
-    fun getFromDate(from: String): Flow<List<EventEntity>>
-
     @Query("DELETE FROM ${EventEntity.TABLE_NAME}")
     suspend fun clear()
 

@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface MusicGroupsRepository {
     val musicGroupsFlow: Flow<List<MusicGroup>>
 
-    suspend fun loadMusicGroups(): Result<Unit>
-    suspend fun loadMusicGroup(id: Int): Result<Unit>
+    suspend fun loadMusicGroups(useCache: Boolean = false): Result<List<MusicGroup>>
+    suspend fun loadMusicGroup(id: Int): Result<MusicGroup>
 }

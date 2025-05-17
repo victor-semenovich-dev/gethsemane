@@ -8,7 +8,5 @@ import kotlinx.datetime.LocalDate
 interface EventsRepository {
     val eventsFlow: Flow<List<Event>>
 
-    fun getEventsFromDate(date: LocalDate): Flow<List<Event>>
-
-    suspend fun loadEvents(dateFrom: LocalDate = dateNow): Result<Unit>
+    suspend fun loadEvents(dateFrom: LocalDate = dateNow): Result<List<Event>>
 }

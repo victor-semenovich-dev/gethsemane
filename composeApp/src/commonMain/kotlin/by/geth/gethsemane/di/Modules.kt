@@ -105,7 +105,7 @@ val daoModule = module {
 val repositoriesModule = module {
     single<EventsRepository> { EventsRepositoryImpl(get(), get()) }
     single<BirthdaysRepository> { BirthdaysRepositoryImpl(get(), get()) }
-    single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get()) }
+    single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get(), get()) }
 }
 
 val managersModule = module {

@@ -1,28 +1,71 @@
 package by.geth.gethsemane.domain.manager
 
-import by.geth.gethsemane.data.source.local.datastore.AppPreferences
+import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.domain.model.MusicGroup
 import by.geth.gethsemane.domain.model.Schedule
 import by.geth.gethsemane.domain.model.ScheduleItem
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
-import by.geth.gethsemane.domain.util.dateNow
+import by.geth.gethsemane.domain.util.dateTimeNow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 
 class ScheduleManager(
     private val eventsRepository: EventsRepository,
     private val musicGroupsRepository: MusicGroupsRepository,
-    private val appPreferences: AppPreferences,
 ) {
-    private val eventsFlow = eventsRepository.getEventsFromDate(dateNow)
-
     val scheduleFlow: Flow<Schedule> = combine(
-        eventsFlow,
+        eventsRepository.eventsFlow,
         musicGroupsRepository.musicGroupsFlow
-    ) { events, musicGroups ->
-        val scheduleItemList = events.map { event ->
+    ) { events, musicGroups -> buildSchedule(events, musicGroups) }
+
+    suspend fun loadSchedule(): Result<Unit> = coroutineScope {
+        val musicGroupsListResultDeferred = async {
+            musicGroupsRepository.loadMusicGroups(useCache = true)
+        }
+        val eventsListResultDeferred = async {
+            eventsRepository.loadEvents()
+        }
+
+        val musicGroupsListResult = musicGroupsListResultDeferred.await()
+        val eventsListResult = eventsListResultDeferred.await()
+
+        if (musicGroupsListResult.isSuccess && eventsListResult.isSuccess) {
+            val eventsList = eventsListResult.getOrThrow()
+            val musicGroupsList = musicGroupsListResult.getOrThrow()
+
+            val missingMusicGroupIds = withContext(Dispatchers.Default) {
+                eventsList.filter {
+                    it.musicGroupId != null &&
+                            musicGroupsList.none { musicGroup -> musicGroup.id == it.musicGroupId }
+                }.map { it.musicGroupId!! }.distinct()
+            }
+
+            val loadMissingMusicGroupsDeferredList = missingMusicGroupIds.map { async {
+                musicGroupsRepository.loadMusicGroup(it)
+            } }
+            loadMissingMusicGroupsDeferredList.awaitAll()
+
+            Result.success(Unit)
+        } else {
+            Result.failure(
+                musicGroupsListResult.exceptionOrNull() ?:
+                eventsListResult.exceptionOrNull() ?:
+                Exception()
+            )
+        }
+    }
+
+    private suspend fun buildSchedule(
+        events: List<Event>, musicGroups: List<MusicGroup>
+    ): Schedule = withContext(Dispatchers.Default) {
+        val scheduleEvents = events.filter { it.dateTime > dateTimeNow }
+        val scheduleItemList = scheduleEvents.map { event ->
             ScheduleItem(
                 id = event.id,
                 title = event.title,
@@ -31,29 +74,5 @@ class ScheduleManager(
             )
         }
         Schedule(items = scheduleItemList)
-    }
-
-    suspend fun loadSchedule(): Result<Unit> {
-        // TODO parallel execution
-        val musicGroupsList = checkAndLoadMusicGroups()
-        return eventsRepository.loadEvents().onSuccess {
-            val eventsList = eventsFlow.first()
-            for (event in eventsList) {
-                val musicGroup = musicGroupsList.firstOrNull { event.musicGroupId == it.id }
-                if (event.musicGroupId != null && musicGroup == null) {
-                    musicGroupsRepository.loadMusicGroup(event.musicGroupId)
-                }
-            }
-        }
-    }
-
-    private suspend fun checkAndLoadMusicGroups(): List<MusicGroup> {
-        val musicGroupsLoaded = appPreferences.musicGroupsLoaded.first()
-        if (!musicGroupsLoaded) {
-            musicGroupsRepository.loadMusicGroups().onSuccess {
-                appPreferences.setMusicGroupsLoaded()
-            }
-        }
-        return musicGroupsRepository.musicGroupsFlow.first()
     }
 }
