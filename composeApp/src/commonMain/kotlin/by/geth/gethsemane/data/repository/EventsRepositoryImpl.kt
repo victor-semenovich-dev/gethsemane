@@ -6,11 +6,8 @@ import by.geth.gethsemane.data.source.remote.model.EventDTO
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.domain.repository.EventsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
@@ -40,9 +37,9 @@ class EventsRepositoryImpl(
         }
     }
 
-    override suspend fun loadEvents(dateFrom: LocalDate): Result<Unit> = withContext(Dispatchers.IO) {
+    override suspend fun loadEvents(dateFrom: LocalDate): Result<Unit> {
         val dateFormatted = dateFormat.format(dateFrom)
-        eventsService.getEvents(dateFormatted).map { dtoList ->
+        return eventsService.getEvents(dateFormatted).map { dtoList ->
             val entityList = dtoList.map { it.toDbModel() }
             eventsDao.replaceFromDate(dateFormatted, entityList)
         }
