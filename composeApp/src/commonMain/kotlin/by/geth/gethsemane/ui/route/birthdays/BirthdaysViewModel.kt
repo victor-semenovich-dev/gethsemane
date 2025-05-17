@@ -18,7 +18,6 @@ class BirthdaysViewModel(
 
     init {
         observeData()
-        loadData()
     }
 
     private fun observeData() {
@@ -48,5 +47,5 @@ class BirthdaysViewModel(
 data class BirthdaysUiState(
     val birthdays: List<Birthdays> = emptyList(),
     val isLoading: Boolean = false,
-    val error: Throwable? = null,
+    val error: Throwable? = null, // TODO use channels for one-time events
 )

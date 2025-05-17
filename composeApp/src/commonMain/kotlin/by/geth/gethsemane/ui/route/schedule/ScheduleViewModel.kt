@@ -18,7 +18,6 @@ class ScheduleViewModel(
 
     init {
         observeData()
-        loadData()
     }
 
     private fun observeData() {
@@ -48,5 +47,5 @@ class ScheduleViewModel(
 data class ScheduleUiState(
     val schedule: Schedule = Schedule(items = emptyList()),
     val isLoading: Boolean = false,
-    val error: Throwable? = null,
+    val error: Throwable? = null, // TODO use channels for one-time events
 )

@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Schedule
 import by.geth.gethsemane.ui.widget.BackNavigationTopAppBar
@@ -78,6 +79,11 @@ fun ScheduleRoute(
             snackbarHostState.showSnackbar(errorMessage)
             viewModel.consumeError()
         }
+    }
+
+    LifecycleStartEffect(Unit) {
+        viewModel.loadData()
+        onStopOrDispose {}
     }
 }
 

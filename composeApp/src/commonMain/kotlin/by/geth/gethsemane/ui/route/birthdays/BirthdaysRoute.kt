@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Birthdays
 import by.geth.gethsemane.domain.util.isToday
@@ -86,6 +87,11 @@ fun BirthdaysRoute(
             snackbarHostState.showSnackbar(errorMessage)
             viewModel.consumeError()
         }
+    }
+
+    LifecycleStartEffect(Unit) {
+        viewModel.loadData()
+        onStopOrDispose {}
     }
 }
 

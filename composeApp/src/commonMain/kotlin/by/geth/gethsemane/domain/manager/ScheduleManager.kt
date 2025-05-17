@@ -18,7 +18,6 @@ class ScheduleManager(
     private val musicGroupsRepository: MusicGroupsRepository,
     private val appPreferences: AppPreferences,
 ) {
-    // TODO consider the date can be changed on the screen start
     private val eventsFlow = eventsRepository.getEventsFromDate(dateNow)
 
     val scheduleFlow: Flow<Schedule> = combine(
