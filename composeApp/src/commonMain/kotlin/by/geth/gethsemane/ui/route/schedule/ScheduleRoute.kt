@@ -17,7 +17,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Schedule
+import by.geth.gethsemane.ui.util.ObserveAsEvents
 import by.geth.gethsemane.ui.widget.BackNavigationTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.failure_data_loading
@@ -74,10 +74,11 @@ fun ScheduleRoute(
     }
 
     val errorMessage = stringResource(Res.string.failure_data_loading)
-    LaunchedEffect(viewModel.uiState.error) {
-        if (viewModel.uiState.error != null) {
-            snackbarHostState.showSnackbar(errorMessage)
-            viewModel.consumeError()
+    ObserveAsEvents(viewModel.eventsFlow) {
+        when (it) {
+            is ScheduleEvent.ErrorEvent -> {
+                snackbarHostState.showSnackbar(errorMessage)
+            }
         }
     }
 

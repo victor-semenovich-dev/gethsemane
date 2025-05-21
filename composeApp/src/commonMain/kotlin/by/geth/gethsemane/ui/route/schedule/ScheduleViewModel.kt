@@ -7,12 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.geth.gethsemane.domain.manager.ScheduleManager
 import by.geth.gethsemane.domain.model.Schedule
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class ScheduleViewModel(
     private val scheduleManager: ScheduleManager,
 ): ViewModel() {
+    private val eventsChannel = Channel<ScheduleEvent>()
+    val eventsFlow = eventsChannel.receiveAsFlow()
+
     var uiState: ScheduleUiState by mutableStateOf(ScheduleUiState())
         private set
 
@@ -30,22 +35,22 @@ class ScheduleViewModel(
 
     fun loadData() {
         viewModelScope.launch {
-            uiState = uiState.copy(isLoading = true, error = null)
+            uiState = uiState.copy(isLoading = true)
             scheduleManager.loadSchedule().onSuccess {
-                uiState = uiState.copy(isLoading = false, error = null)
+                uiState = uiState.copy(isLoading = false)
             }.onFailure { error ->
-                uiState = uiState.copy(isLoading = false, error = error)
+                uiState = uiState.copy(isLoading = false)
+                eventsChannel.send(ScheduleEvent.ErrorEvent(error))
             }
         }
-    }
-
-    fun consumeError() {
-        uiState = uiState.copy(error = null)
     }
 }
 
 data class ScheduleUiState(
     val schedule: Schedule = Schedule(items = emptyList()),
     val isLoading: Boolean = false,
-    val error: Throwable? = null, // TODO use channels for one-time events
 )
+
+sealed interface ScheduleEvent {
+    data class ErrorEvent(val error: Throwable): ScheduleEvent
+}

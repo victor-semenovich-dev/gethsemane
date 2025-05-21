@@ -22,7 +22,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +32,7 @@ import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Birthdays
 import by.geth.gethsemane.domain.util.isToday
 import by.geth.gethsemane.domain.util.isTomorrow
+import by.geth.gethsemane.ui.util.ObserveAsEvents
 import by.geth.gethsemane.ui.widget.BackNavigationTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.birthdays
@@ -82,10 +82,11 @@ fun BirthdaysRoute(
     }
 
     val errorMessage = stringResource(Res.string.failure_data_loading)
-    LaunchedEffect(viewModel.uiState.error) {
-        if (viewModel.uiState.error != null) {
-            snackbarHostState.showSnackbar(errorMessage)
-            viewModel.consumeError()
+    ObserveAsEvents(viewModel.eventsFlow) { event ->
+        when (event) {
+            is BirthdaysEvent.ErrorEvent -> {
+                snackbarHostState.showSnackbar(errorMessage)
+            }
         }
     }
 

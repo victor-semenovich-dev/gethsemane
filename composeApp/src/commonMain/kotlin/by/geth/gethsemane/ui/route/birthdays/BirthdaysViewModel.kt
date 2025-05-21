@@ -7,12 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.geth.gethsemane.domain.model.Birthdays
 import by.geth.gethsemane.domain.repository.BirthdaysRepository
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class BirthdaysViewModel(
     private val birthdaysRepository: BirthdaysRepository,
 ): ViewModel() {
+    private val eventsChannel = Channel<BirthdaysEvent>()
+    val eventsFlow = eventsChannel.receiveAsFlow()
+
     var uiState: BirthdaysUiState by mutableStateOf(BirthdaysUiState())
         private set
 
@@ -30,22 +35,22 @@ class BirthdaysViewModel(
 
     fun loadData() {
         viewModelScope.launch {
-            uiState = uiState.copy(isLoading = true, error = null)
+            uiState = uiState.copy(isLoading = true)
             birthdaysRepository.loadBirthdays().onSuccess {
-                uiState = uiState.copy(isLoading = false, error = null)
+                uiState = uiState.copy(isLoading = false)
             }.onFailure { error ->
-                uiState = uiState.copy(isLoading = false, error = error)
+                uiState = uiState.copy(isLoading = false)
+                eventsChannel.send(BirthdaysEvent.ErrorEvent(error))
             }
         }
-    }
-
-    fun consumeError() {
-        uiState = uiState.copy(error = null)
     }
 }
 
 data class BirthdaysUiState(
     val birthdays: List<Birthdays> = emptyList(),
     val isLoading: Boolean = false,
-    val error: Throwable? = null, // TODO use channels for one-time events
 )
+
+sealed interface BirthdaysEvent {
+    data class ErrorEvent(val error: Throwable): BirthdaysEvent
+}
