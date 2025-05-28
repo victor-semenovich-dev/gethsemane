@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleStartEffect
-import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Birthdays
 import by.geth.gethsemane.domain.util.isToday
 import by.geth.gethsemane.domain.util.isTomorrow
@@ -47,7 +46,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BirthdaysRoute(
-    navController: NavController,
     viewModel: BirthdaysViewModel = koinViewModel(),
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -58,7 +56,6 @@ fun BirthdaysRoute(
         topBar = {
             BackNavigationTopAppBar(
                 title = stringResource(Res.string.birthdays),
-                navController = navController,
             )
         },
     ) { contentPadding ->

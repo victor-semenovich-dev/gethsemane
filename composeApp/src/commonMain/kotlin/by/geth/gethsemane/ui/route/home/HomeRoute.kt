@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import by.geth.gethsemane.ui.BirthdaysRoute
+import by.geth.gethsemane.ui.LocalNavController
 import by.geth.gethsemane.ui.ScheduleRoute
 import by.geth.gethsemane.ui.theme.StatusBarAppearance
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
@@ -30,9 +30,8 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun HomeRoute(
-    navController: NavController,
-) {
+fun HomeRoute() {
+    val navController = LocalNavController.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 

@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleStartEffect
-import androidx.navigation.NavController
 import by.geth.gethsemane.domain.model.Schedule
 import by.geth.gethsemane.ui.util.ObserveAsEvents
 import by.geth.gethsemane.ui.widget.BackNavigationTopAppBar
@@ -39,7 +38,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleRoute(
-    navController: NavController,
     viewModel: ScheduleViewModel = koinViewModel()
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -50,7 +48,6 @@ fun ScheduleRoute(
         topBar = {
             BackNavigationTopAppBar(
                 title = stringResource(Res.string.schedule),
-                navController = navController,
             )
         },
     ) { contentPadding ->
