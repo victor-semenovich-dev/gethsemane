@@ -55,8 +55,10 @@ class EventsRepositoryImpl(
 
     private fun EventEntity.toDomainModel() = Event(
         id = this.id,
+        categoryId = this.categoryId,
         musicGroupId = this.musicGroupId,
         title = this.title,
-        dateTime = dateTimeFormat.parse(this.date)
+        dateTime = dateTimeFormat.parse(this.date),
+        isDraft = this.isDraft,
     )
 }

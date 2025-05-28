@@ -46,10 +46,9 @@ class ScheduleManager(
                 }.map { it.musicGroupId!! }.distinct()
             }
 
-            val loadMissingMusicGroupsDeferredList = missingMusicGroupIds.map { async {
+            missingMusicGroupIds.map { async {
                 musicGroupsRepository.loadMusicGroup(it)
-            } }
-            loadMissingMusicGroupsDeferredList.awaitAll()
+            } }.awaitAll()
 
             Result.success(Unit)
         } else {

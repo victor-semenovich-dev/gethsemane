@@ -1,6 +1,5 @@
 package by.geth.gethsemane.ui.route.home
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -9,15 +8,19 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import by.geth.gethsemane.ui.BirthdaysRoute
 import by.geth.gethsemane.ui.LocalNavController
 import by.geth.gethsemane.ui.ScheduleRoute
+import by.geth.gethsemane.ui.route.home.events.WorshipListWidget
 import by.geth.gethsemane.ui.theme.StatusBarAppearance
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import by.geth.gethsemane.ui.widget.TopAppBarIconButton
@@ -63,6 +66,7 @@ fun HomeRoute() {
             }
         }
     ) {
+        val snackbarHostState = remember { SnackbarHostState() }
         Scaffold(
             topBar = {
                 CustomTopAppBar(
@@ -76,11 +80,14 @@ fun HomeRoute() {
                     }
                 )
             },
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
         ) { contentPadding ->
-            Column(
+            WorshipListWidget(
                 modifier = Modifier.padding(contentPadding).padding(horizontal = 8.dp),
-            ) {
-            }
+                snackbarHostState = snackbarHostState,
+            )
         }
     }
 }
