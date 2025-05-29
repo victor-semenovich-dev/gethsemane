@@ -1,4 +1,4 @@
-package by.geth.gethsemane.ui.route.home.events
+package by.geth.gethsemane.ui.route.home.worshipList
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

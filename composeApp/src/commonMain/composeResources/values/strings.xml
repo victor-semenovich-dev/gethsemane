@@ -6,6 +6,7 @@
     <string name="birthdays">Дни рождения</string>
     <string name="retry">Попробовать снова</string>
     <string name="failure_data_loading">Ошибка загрузки данных</string>
+    <string name="failure_worship_list_loading">Ошибка загрузки списка служений</string>
 
     <string-array name="months_genitive">
         <item>января</item>

@@ -13,14 +13,16 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import by.geth.gethsemane.ui.BirthdaysRoute
 import by.geth.gethsemane.ui.LocalNavController
+import by.geth.gethsemane.ui.LocalSnackbarHostState
 import by.geth.gethsemane.ui.ScheduleRoute
-import by.geth.gethsemane.ui.route.home.events.WorshipListWidget
+import by.geth.gethsemane.ui.route.home.worshipList.WorshipListWidget
 import by.geth.gethsemane.ui.theme.StatusBarAppearance
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import by.geth.gethsemane.ui.widget.TopAppBarIconButton
@@ -84,10 +86,11 @@ fun HomeRoute() {
                 SnackbarHost(hostState = snackbarHostState)
             },
         ) { contentPadding ->
-            WorshipListWidget(
-                modifier = Modifier.padding(contentPadding).padding(horizontal = 8.dp),
-                snackbarHostState = snackbarHostState,
-            )
+            CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+                WorshipListWidget(
+                    modifier = Modifier.padding(contentPadding).padding(horizontal = 8.dp),
+                )
+            }
         }
     }
 }
