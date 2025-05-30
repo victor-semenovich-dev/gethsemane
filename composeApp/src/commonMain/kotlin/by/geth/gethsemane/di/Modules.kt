@@ -16,6 +16,7 @@ import by.geth.gethsemane.domain.repository.BirthdaysRepository
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
 import by.geth.gethsemane.ui.route.birthdays.BirthdaysViewModel
+import by.geth.gethsemane.ui.route.home.HomeViewModel
 import by.geth.gethsemane.ui.route.home.worshipList.WorshipListViewModel
 import by.geth.gethsemane.ui.route.schedule.ScheduleViewModel
 import io.ktor.client.HttpClient
@@ -114,7 +115,9 @@ val managersModule = module {
 }
 
 val viewModelsModule = module {
+    viewModelOf(::HomeViewModel)
+    viewModelOf(::WorshipListViewModel)
+
     viewModelOf(::ScheduleViewModel)
     viewModelOf(::BirthdaysViewModel)
-    viewModelOf(::WorshipListViewModel)
 }

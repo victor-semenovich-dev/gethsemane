@@ -24,6 +24,7 @@ import by.geth.gethsemane.ui.LocalSnackbarHostState
 import by.geth.gethsemane.ui.ScheduleRoute
 import by.geth.gethsemane.ui.route.home.worshipList.WorshipListWidget
 import by.geth.gethsemane.ui.theme.StatusBarAppearance
+import by.geth.gethsemane.ui.util.formattedTitle
 import by.geth.gethsemane.ui.widget.CustomTopAppBar
 import by.geth.gethsemane.ui.widget.TopAppBarIconButton
 import gethsemane.composeapp.generated.resources.Res
@@ -33,9 +34,12 @@ import gethsemane.composeapp.generated.resources.menu
 import gethsemane.composeapp.generated.resources.schedule
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeRoute() {
+fun HomeRoute(
+    viewModel: HomeViewModel = koinViewModel(),
+) {
     val navController = LocalNavController.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -72,7 +76,8 @@ fun HomeRoute() {
         Scaffold(
             topBar = {
                 CustomTopAppBar(
-                    title = stringResource(Res.string.gethsemane),
+                    title = viewModel.uiState.currentEvent?.formattedTitle ?:
+                        stringResource(Res.string.gethsemane),
                     navigationIcon = {
                         TopAppBarIconButton(
                             onClick = { scope.launch { drawerState.open() } },

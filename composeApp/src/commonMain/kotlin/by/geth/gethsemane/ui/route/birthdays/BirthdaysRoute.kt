@@ -135,6 +135,7 @@ fun BirthdaysItem(
             ).padding(contentPadding).padding(8.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {
+                // TODO refactor: use a custom LocalDateTime.Format (check the HomeRoute title)
                 Text("${item.date.dayOfMonth} $month")
                 if (item.date.isToday()) {
                     Text(
