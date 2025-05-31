@@ -26,4 +26,10 @@ interface EventsDao {
         clearFromDate(from)
         insertOrUpdate(*events.toTypedArray())
     }
+
+    @Transaction
+    suspend fun replace(events: List<EventEntity>) {
+        clear()
+        insertOrUpdate(*events.toTypedArray())
+    }
 }

@@ -39,6 +39,7 @@ fun WorshipListWidget(
                 // This code can be called while events is not loaded yet (worshipEvents is empty)
                 viewModel.uiState.worshipEvents.getOrNull(page)?.let { event ->
                     homeViewModel.updateCurrentEvent(event)
+                    viewModel.onCurrentPageChanged(page)
                 }
             }
     }
