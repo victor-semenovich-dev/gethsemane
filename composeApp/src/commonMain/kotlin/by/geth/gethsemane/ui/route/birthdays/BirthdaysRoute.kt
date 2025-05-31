@@ -32,14 +32,13 @@ import by.geth.gethsemane.domain.model.Birthdays
 import by.geth.gethsemane.domain.util.isToday
 import by.geth.gethsemane.domain.util.isTomorrow
 import by.geth.gethsemane.ui.util.ObserveAsEvents
+import by.geth.gethsemane.ui.util.formattedDate
 import by.geth.gethsemane.ui.widget.BackNavigationTopAppBar
 import gethsemane.composeapp.generated.resources.Res
 import gethsemane.composeapp.generated.resources.birthdays
 import gethsemane.composeapp.generated.resources.failure_data_loading
-import gethsemane.composeapp.generated.resources.months_genitive
 import gethsemane.composeapp.generated.resources.today
 import gethsemane.composeapp.generated.resources.tomorrow
-import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -124,8 +123,6 @@ fun BirthdaysItem(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     item: Birthdays,
 ) {
-    val monthList = stringArrayResource(Res.array.months_genitive)
-    val month = monthList[item.date.monthNumber - 1]
     Column {
         Row(
             modifier = modifier.background(
@@ -135,8 +132,7 @@ fun BirthdaysItem(
             ).padding(contentPadding).padding(8.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                // TODO refactor: use a custom LocalDateTime.Format (check the HomeRoute title)
-                Text("${item.date.dayOfMonth} $month")
+                Text(item.formattedDate)
                 if (item.date.isToday()) {
                     Text(
                         text = stringResource(Res.string.today),
