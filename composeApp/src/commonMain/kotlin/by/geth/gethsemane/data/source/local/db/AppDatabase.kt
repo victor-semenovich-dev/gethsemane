@@ -10,11 +10,13 @@ import by.geth.gethsemane.data.source.local.db.dao.MusicGroupsDao
 import by.geth.gethsemane.data.source.local.db.model.BirthdaysEntity
 import by.geth.gethsemane.data.source.local.db.model.EventEntity
 import by.geth.gethsemane.data.source.local.db.model.MusicGroupEntity
+import by.geth.gethsemane.data.source.local.db.model.SongEntity
 
 @Database(entities = [
     EventEntity::class,
     MusicGroupEntity::class,
     BirthdaysEntity::class,
+    SongEntity::class,
 ], version = 1)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase: RoomDatabase() {

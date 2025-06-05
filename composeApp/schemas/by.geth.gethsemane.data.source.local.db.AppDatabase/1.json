@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "aee859c512ef9a0d7be7768b22783a49",
+    "identityHash": "a07b579a527be2794e22f8c237f73fd7",
     "entities": [
       {
         "tableName": "Events",
@@ -145,11 +145,58 @@
             "date"
           ]
         }
+      },
+      {
+        "tableName": "Songs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `music_group_id` INTEGER NOT NULL, `worship_id` INTEGER, `title` TEXT NOT NULL, `audio` TEXT NOT NULL, `show_in_list` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "musicGroupId",
+            "columnName": "music_group_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "worshipId",
+            "columnName": "worship_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "audio",
+            "columnName": "audio",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showInList",
+            "columnName": "show_in_list",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aee859c512ef9a0d7be7768b22783a49')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a07b579a527be2794e22f8c237f73fd7')"
     ]
   }
 }
