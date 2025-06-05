@@ -63,7 +63,7 @@ class ScheduleManager(
     private suspend fun buildSchedule(
         events: List<Event>, musicGroups: List<MusicGroup>
     ): Schedule = withContext(Dispatchers.Default) {
-        val scheduleEvents = events.filter { it.dateTime > dateTimeNow }
+        val scheduleEvents = events.filter { it.dateTime > dateTimeNow }.sortedBy { it.dateTime }
         val scheduleItemList = scheduleEvents.map { event ->
             ScheduleItem(
                 id = event.id,
