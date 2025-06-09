@@ -23,7 +23,7 @@ data class PhotoEntity(
     val showInMedia: Boolean,
 ) {
     companion object {
-        const val TABLE_NAME = "Photo"
+        const val TABLE_NAME = "Photos"
         const val COLUMN_ID = "id"
         const val COLUMN_EVENT_ID = "eventId"
         const val COLUMN_TITLE = "title"

@@ -21,7 +21,7 @@ data class MusicGroupEntity(
     val isActive: Boolean,
 ) {
     companion object {
-        const val TABLE_NAME = "MusicGroup"
+        const val TABLE_NAME = "MusicGroups"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_HISTORY = "history"

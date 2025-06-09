@@ -31,7 +31,7 @@ data class EventEntity(
     val video: String? = null,
 ) {
     companion object {
-        const val TABLE_NAME = "Event"
+        const val TABLE_NAME = "Events"
         const val COLUMN_ID = "id"
         const val COLUMN_CATEGORY_ID = "categoryId"
         const val COLUMN_TITLE = "title"
