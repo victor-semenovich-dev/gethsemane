@@ -20,9 +20,9 @@ data class WorshipDTO(
     @SerialName("songs")
     val songs: List<SongDTO>,
     @SerialName("sermons")
-    val sermons: List<SermonDTO>,
+    val sermons: List<SpeechDTO>,
     @SerialName("witnesses")
-    val witnesses: List<SermonDTO>,
+    val witnesses: List<SpeechDTO>,
     @SerialName("photos")
     val photos: List<PhotoDTO>,
 ) {
@@ -39,7 +39,7 @@ data class WorshipDTO(
     )
 
     @Serializable
-    data class SermonDTO(
+    data class SpeechDTO(
         @SerialName("id")
         val id: Int,
         @SerialName("title")

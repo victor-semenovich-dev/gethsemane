@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a07b579a527be2794e22f8c237f73fd7",
+    "identityHash": "9bbacd47c9e9111d6be0edf97b124c7d",
     "entities": [
       {
-        "tableName": "Events",
+        "tableName": "Event",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `title` TEXT NOT NULL, `date` TEXT NOT NULL, `note` TEXT, `audio` TEXT, `shortDesc` TEXT, `isDraft` INTEGER NOT NULL, `isArchive` INTEGER NOT NULL, `musicGroupId` INTEGER, `video` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -78,7 +78,7 @@
         }
       },
       {
-        "tableName": "MusicGroups",
+        "tableName": "MusicGroup",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `history` TEXT, `leader` TEXT, `image` TEXT, `isActive` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -147,8 +147,8 @@
         }
       },
       {
-        "tableName": "Songs",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `music_group_id` INTEGER NOT NULL, `worship_id` INTEGER, `title` TEXT NOT NULL, `audio` TEXT NOT NULL, `show_in_list` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "Song",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `music_group_id` INTEGER NOT NULL, `event_id` INTEGER, `title` TEXT NOT NULL, `audio` TEXT NOT NULL, `show_in_list` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -163,8 +163,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "worshipId",
-            "columnName": "worship_id",
+            "fieldPath": "eventId",
+            "columnName": "event_id",
             "affinity": "INTEGER"
           },
           {
@@ -180,8 +180,114 @@
             "notNull": true
           },
           {
-            "fieldPath": "showInList",
+            "fieldPath": "showInMedia",
             "columnName": "show_in_list",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "Speech",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `author_id` INTEGER NOT NULL, `event_id` INTEGER, `title` TEXT NOT NULL, `audio` TEXT NOT NULL, `type` TEXT NOT NULL, `show_in_media` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "authorId",
+            "columnName": "author_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventId",
+            "columnName": "event_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "audio",
+            "columnName": "audio",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showInMedia",
+            "columnName": "show_in_media",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "Photo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `eventId` INTEGER, `title` TEXT NOT NULL, `preview` TEXT NOT NULL, `photo` TEXT NOT NULL, `date` TEXT NOT NULL, `show_in_media` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventId",
+            "columnName": "eventId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preview",
+            "columnName": "preview",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photo",
+            "columnName": "photo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showInMedia",
+            "columnName": "show_in_media",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -196,7 +302,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a07b579a527be2794e22f8c237f73fd7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9bbacd47c9e9111d6be0edf97b124c7d')"
     ]
   }
 }

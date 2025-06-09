@@ -11,22 +11,22 @@ data class SongEntity(
     val id: Int,
     @ColumnInfo(COLUMN_MUSIC_GROUP_ID)
     val musicGroupId: Int,
-    @ColumnInfo(COLUMN_WORSHIP_ID)
-    val worshipId: Int?,
+    @ColumnInfo(COLUMN_EVENT_ID)
+    val eventId: Int?,
     @ColumnInfo(COLUMN_TITLE)
     val title: String,
     @ColumnInfo(COLUMN_AUDIO)
     val audio: String,
-    @ColumnInfo(COLUMN_SHOW_IN_LIST)
-    val showInList: Boolean,
+    @ColumnInfo(COLUMN_SHOW_IN_MEDIA)
+    val showInMedia: Boolean,
 ) {
     companion object {
-        const val TABLE_NAME = "Songs"
+        const val TABLE_NAME = "Song"
         const val COLUMN_ID = "id"
         const val COLUMN_MUSIC_GROUP_ID = "music_group_id"
-        const val COLUMN_WORSHIP_ID = "worship_id"
+        const val COLUMN_EVENT_ID = "event_id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_AUDIO = "audio"
-        const val COLUMN_SHOW_IN_LIST = "show_in_list"
+        const val COLUMN_SHOW_IN_MEDIA = "show_in_list"
     }
 }

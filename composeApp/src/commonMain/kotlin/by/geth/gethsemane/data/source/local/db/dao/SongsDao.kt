@@ -14,6 +14,6 @@ interface SongsDao {
     @Query("SELECT * FROM ${SongEntity.TABLE_NAME} WHERE ${SongEntity.COLUMN_ID} = :id")
     fun getById(id: Int): Flow<SongEntity?>
 
-    @Query("SELECT * FROM ${SongEntity.TABLE_NAME} WHERE ${SongEntity.COLUMN_WORSHIP_ID} = :worshipId")
+    @Query("SELECT * FROM ${SongEntity.TABLE_NAME} WHERE ${SongEntity.COLUMN_EVENT_ID} = :worshipId")
     fun getByWorshipId(worshipId: Int): Flow<List<SongEntity>>
 }
