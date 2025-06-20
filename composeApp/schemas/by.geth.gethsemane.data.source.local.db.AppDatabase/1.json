@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9bbacd47c9e9111d6be0edf97b124c7d",
+    "identityHash": "4a23378ccccbdcdb3867866d76c1e2c9",
     "entities": [
       {
-        "tableName": "Event",
+        "tableName": "Events",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `title` TEXT NOT NULL, `date` TEXT NOT NULL, `note` TEXT, `audio` TEXT, `shortDesc` TEXT, `isDraft` INTEGER NOT NULL, `isArchive` INTEGER NOT NULL, `musicGroupId` INTEGER, `video` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -78,7 +78,7 @@
         }
       },
       {
-        "tableName": "MusicGroup",
+        "tableName": "MusicGroups",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `history` TEXT, `leader` TEXT, `image` TEXT, `isActive` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -147,8 +147,8 @@
         }
       },
       {
-        "tableName": "Song",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `music_group_id` INTEGER NOT NULL, `event_id` INTEGER, `title` TEXT NOT NULL, `audio` TEXT NOT NULL, `show_in_list` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "Songs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `music_group_id` INTEGER NOT NULL, `event_id` INTEGER, `title` TEXT NOT NULL, `audio_remote` TEXT NOT NULL, `audio_local` TEXT, `show_in_list` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -174,10 +174,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "audio",
-            "columnName": "audio",
+            "fieldPath": "audioRemote",
+            "columnName": "audio_remote",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "audioLocal",
+            "columnName": "audio_local",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "showInMedia",
@@ -194,8 +199,8 @@
         }
       },
       {
-        "tableName": "Speech",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `author_id` INTEGER NOT NULL, `event_id` INTEGER, `title` TEXT NOT NULL, `audio` TEXT NOT NULL, `type` TEXT NOT NULL, `show_in_media` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "Speeches",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `author_id` INTEGER NOT NULL, `event_id` INTEGER, `title` TEXT NOT NULL, `audioRemote` TEXT NOT NULL, `audioLocal` TEXT, `type` TEXT NOT NULL, `show_in_media` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -221,10 +226,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "audio",
-            "columnName": "audio",
+            "fieldPath": "audioRemote",
+            "columnName": "audioRemote",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "audioLocal",
+            "columnName": "audioLocal",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "type",
@@ -247,7 +257,7 @@
         }
       },
       {
-        "tableName": "Photo",
+        "tableName": "Photos",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `eventId` INTEGER, `title` TEXT NOT NULL, `preview` TEXT NOT NULL, `photo` TEXT NOT NULL, `date` TEXT NOT NULL, `show_in_media` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -298,11 +308,40 @@
             "id"
           ]
         }
+      },
+      {
+        "tableName": "Authors",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `biography` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "biography",
+            "columnName": "biography",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9bbacd47c9e9111d6be0edf97b124c7d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a23378ccccbdcdb3867866d76c1e2c9')"
     ]
   }
 }

@@ -20,8 +20,8 @@ class MusicGroupsRepositoryImpl(
         entityList.map { it.toDomainModel() }
     }
 
-    override suspend fun loadMusicGroups(useCache: Boolean): Result<List<MusicGroup>> {
-        if (useCache && appPreferences.musicGroupsLoaded.first()) {
+    override suspend fun loadAllMusicGroups(): Result<List<MusicGroup>> {
+        if (appPreferences.musicGroupsLoaded.first()) {
             return Result.success(musicGroupsFlow.first())
         }
 
@@ -30,9 +30,7 @@ class MusicGroupsRepositoryImpl(
             musicGroupsDao.replaceAll(dbEntityList)
             dbEntityList.map { it.toDomainModel() }
         }.onSuccess {
-            if (!appPreferences.musicGroupsLoaded.first()) {
-                appPreferences.setMusicGroupsLoaded()
-            }
+            appPreferences.setMusicGroupsLoaded()
         }
     }
 

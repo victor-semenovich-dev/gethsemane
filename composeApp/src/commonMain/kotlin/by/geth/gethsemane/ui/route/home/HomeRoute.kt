@@ -1,8 +1,11 @@
 package by.geth.gethsemane.ui.route.home
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -16,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import by.geth.gethsemane.ui.BirthdaysRoute
@@ -40,6 +44,22 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeRoute(
     viewModel: HomeViewModel = koinViewModel(),
 ) {
+    if (!viewModel.uiState.initialDataLoaded) {
+        HomeRouteProgress()
+    } else {
+        HomeRouteContent(viewModel)
+    }
+}
+
+@Composable
+private fun HomeRouteProgress() {
+    Box(Modifier.fillMaxSize()) {
+        CircularProgressIndicator(Modifier.align(Alignment.Center))
+    }
+}
+
+@Composable
+private fun HomeRouteContent(viewModel: HomeViewModel) {
     val navController = LocalNavController.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()

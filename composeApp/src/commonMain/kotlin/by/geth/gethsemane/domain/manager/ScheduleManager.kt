@@ -26,7 +26,7 @@ class ScheduleManager(
 
     suspend fun loadSchedule(): Result<Unit> = coroutineScope {
         val musicGroupsListResultDeferred = async {
-            musicGroupsRepository.loadMusicGroups(useCache = true)
+            musicGroupsRepository.loadAllMusicGroups()
         }
         val eventsListResultDeferred = async {
             eventsRepository.loadEvents()

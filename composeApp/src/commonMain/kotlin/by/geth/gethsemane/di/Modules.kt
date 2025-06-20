@@ -1,21 +1,26 @@
 package by.geth.gethsemane.di
 
 import Gethsemane.composeApp.BuildConfig
+import by.geth.gethsemane.data.repository.AuthorsRepositoryImpl
 import by.geth.gethsemane.data.repository.BirthdaysRepositoryImpl
 import by.geth.gethsemane.data.repository.EventsRepositoryImpl
 import by.geth.gethsemane.data.repository.MusicGroupsRepositoryImpl
 import by.geth.gethsemane.data.source.local.db.AppDatabase
+import by.geth.gethsemane.data.source.local.db.dao.AuthorsDao
 import by.geth.gethsemane.data.source.local.db.dao.BirthdaysDao
 import by.geth.gethsemane.data.source.local.db.dao.EventsDao
 import by.geth.gethsemane.data.source.local.db.dao.MusicGroupsDao
+import by.geth.gethsemane.data.source.remote.service.AuthorsService
 import by.geth.gethsemane.data.source.remote.service.BirthdaysService
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.data.source.remote.service.MusicGroupsService
 import by.geth.gethsemane.data.source.remote.service.WorshipService
 import by.geth.gethsemane.domain.manager.ScheduleManager
+import by.geth.gethsemane.domain.repository.AuthorsRepository
 import by.geth.gethsemane.domain.repository.BirthdaysRepository
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
+import by.geth.gethsemane.domain.usecase.LoadInitialDataUseCase
 import by.geth.gethsemane.ui.route.birthdays.BirthdaysViewModel
 import by.geth.gethsemane.ui.route.home.HomeViewModel
 import by.geth.gethsemane.ui.route.home.worshipList.WorshipListViewModel
@@ -92,6 +97,10 @@ val servicesModule = module {
         val httpClient: HttpClient by inject(qualifier = named("api.gethsemane.by"))
         MusicGroupsService(httpClient = httpClient)
     }
+    single<AuthorsService> {
+        val httpClient: HttpClient by inject(qualifier = named("api.geth.by"))
+        AuthorsService(httpClient)
+    }
 }
 
 val daoModule = module {
@@ -107,16 +116,22 @@ val daoModule = module {
         val appDatabase: AppDatabase = get()
         appDatabase.birthdaysDao()
     }
+    single<AuthorsDao> {
+        val appDatabase: AppDatabase = get()
+        appDatabase.authorsDao()
+    }
 }
 
 val repositoriesModule = module {
     single<EventsRepository> { EventsRepositoryImpl(get(), get()) }
     single<BirthdaysRepository> { BirthdaysRepositoryImpl(get(), get()) }
     single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get(), get()) }
+    single<AuthorsRepository> { AuthorsRepositoryImpl(get(), get(), get()) }
 }
 
 val managersModule = module {
     singleOf(::ScheduleManager)
+    singleOf(::LoadInitialDataUseCase)
 }
 
 val viewModelsModule = module {
