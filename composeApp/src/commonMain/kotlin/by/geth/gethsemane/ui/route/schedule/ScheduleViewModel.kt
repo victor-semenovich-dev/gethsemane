@@ -5,15 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import by.geth.gethsemane.domain.manager.ScheduleManager
 import by.geth.gethsemane.domain.model.Schedule
+import by.geth.gethsemane.domain.usecase.LoadScheduleUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class ScheduleViewModel(
-    private val scheduleManager: ScheduleManager,
+    private val loadSchedule: LoadScheduleUseCase,
 ): ViewModel() {
     private val eventsChannel = Channel<ScheduleEvent>()
     val eventsFlow = eventsChannel.receiveAsFlow()
@@ -27,7 +27,7 @@ class ScheduleViewModel(
 
     private fun observeData() {
         viewModelScope.launch {
-            scheduleManager.scheduleFlow.collectLatest { schedule ->
+            loadSchedule.dataFlow.collectLatest { schedule ->
                 uiState = uiState.copy(schedule = schedule)
             }
         }
@@ -36,7 +36,7 @@ class ScheduleViewModel(
     fun loadData() {
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true)
-            scheduleManager.loadSchedule().onSuccess {
+            loadSchedule().onSuccess {
                 uiState = uiState.copy(isLoading = false)
             }.onFailure { error ->
                 uiState = uiState.copy(isLoading = false)

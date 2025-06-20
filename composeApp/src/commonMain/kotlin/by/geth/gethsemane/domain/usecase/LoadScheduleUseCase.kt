@@ -1,4 +1,4 @@
-package by.geth.gethsemane.domain.manager
+package by.geth.gethsemane.domain.usecase
 
 import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.domain.model.MusicGroup
@@ -6,6 +6,7 @@ import by.geth.gethsemane.domain.model.Schedule
 import by.geth.gethsemane.domain.model.ScheduleItem
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
+import by.geth.gethsemane.domain.usecase.base.BaseUseCase
 import by.geth.gethsemane.domain.util.dateTimeNow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -13,31 +14,21 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
-class ScheduleManager(
+class LoadScheduleUseCase(
     private val eventsRepository: EventsRepository,
     private val musicGroupsRepository: MusicGroupsRepository,
-) {
-    val scheduleFlow: Flow<Schedule> = combine(
+): BaseUseCase {
+    val dataFlow: Flow<Schedule> = combine(
         eventsRepository.eventsFlow,
         musicGroupsRepository.musicGroupsFlow
     ) { events, musicGroups -> buildSchedule(events, musicGroups) }
 
-    suspend fun loadSchedule(): Result<Unit> = coroutineScope {
-        val musicGroupsListResultDeferred = async {
-            musicGroupsRepository.loadAllMusicGroups()
-        }
-        val eventsListResultDeferred = async {
-            eventsRepository.loadEvents()
-        }
-
-        val musicGroupsListResult = musicGroupsListResultDeferred.await()
-        val eventsListResult = eventsListResultDeferred.await()
-
-        if (musicGroupsListResult.isSuccess && eventsListResult.isSuccess) {
-            val eventsList = eventsListResult.getOrThrow()
-            val musicGroupsList = musicGroupsListResult.getOrThrow()
+    override suspend fun invoke(): Result<Unit> = coroutineScope {
+        eventsRepository.loadEvents().map { eventsList ->
+            val musicGroupsList = musicGroupsRepository.musicGroupsFlow.first()
 
             val missingMusicGroupIds = withContext(Dispatchers.Default) {
                 eventsList.filter {
@@ -50,13 +41,7 @@ class ScheduleManager(
                 musicGroupsRepository.loadMusicGroup(it)
             } }.awaitAll()
 
-            Result.success(Unit)
-        } else {
-            Result.failure(
-                musicGroupsListResult.exceptionOrNull() ?:
-                eventsListResult.exceptionOrNull() ?:
-                Exception()
-            )
+            Unit
         }
     }
 

@@ -15,12 +15,12 @@ import by.geth.gethsemane.data.source.remote.service.BirthdaysService
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.data.source.remote.service.MusicGroupsService
 import by.geth.gethsemane.data.source.remote.service.WorshipService
-import by.geth.gethsemane.domain.manager.ScheduleManager
 import by.geth.gethsemane.domain.repository.AuthorsRepository
 import by.geth.gethsemane.domain.repository.BirthdaysRepository
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
 import by.geth.gethsemane.domain.usecase.LoadInitialDataUseCase
+import by.geth.gethsemane.domain.usecase.LoadScheduleUseCase
 import by.geth.gethsemane.ui.route.birthdays.BirthdaysViewModel
 import by.geth.gethsemane.ui.route.home.HomeViewModel
 import by.geth.gethsemane.ui.route.home.worshipList.WorshipListViewModel
@@ -129,8 +129,8 @@ val repositoriesModule = module {
     single<AuthorsRepository> { AuthorsRepositoryImpl(get(), get(), get()) }
 }
 
-val managersModule = module {
-    singleOf(::ScheduleManager)
+val useCaseModule = module {
+    singleOf(::LoadScheduleUseCase)
     singleOf(::LoadInitialDataUseCase)
 }
 
