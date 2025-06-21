@@ -1,4 +1,4 @@
-package by.geth.gethsemane.di
+package by.geth.gethsemane.di.module
 
 import by.geth.gethsemane.data.source.local.datastore.AppPreferences
 import by.geth.gethsemane.data.source.local.datastore.createDataStore
