@@ -26,7 +26,6 @@ class WorshipListViewModel(
 ): ViewModel() {
     companion object {
         private const val LOG_TAG = "WorshipListViewModel"
-        private const val WORSHIP_CATEGORY_ID = 10
         val loadMoreEventsDatePeriod = DatePeriod(months = 1)
     }
 
@@ -44,7 +43,7 @@ class WorshipListViewModel(
     private val worshipEventsFlow = eventsRepository.eventsFlow.map { allEvents ->
         withContext(Dispatchers.Default) {
             allEvents.filter { event ->
-                event.categoryId == WORSHIP_CATEGORY_ID && !event.isDraft
+                event.categoryId == Event.WORSHIP_CATEGORY_ID && !event.isDraft
             }.sortedByDescending { it.dateTime }
         }
     }

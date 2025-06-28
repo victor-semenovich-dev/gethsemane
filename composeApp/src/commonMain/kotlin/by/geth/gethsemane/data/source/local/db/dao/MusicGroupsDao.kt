@@ -15,6 +15,9 @@ interface MusicGroupsDao {
     @Query("SELECT * FROM ${MusicGroupEntity.TABLE_NAME}")
     fun getAll(): Flow<List<MusicGroupEntity>>
 
+    @Query("SELECT * FROM ${MusicGroupEntity.TABLE_NAME} WHERE ${MusicGroupEntity.COLUMN_ID} == :id")
+    fun getById(id: Int): Flow<MusicGroupEntity?>
+
     @Query("DELETE FROM ${MusicGroupEntity.TABLE_NAME}")
     suspend fun clear()
 

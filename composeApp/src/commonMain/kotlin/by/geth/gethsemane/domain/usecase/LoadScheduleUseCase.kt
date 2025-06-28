@@ -6,7 +6,6 @@ import by.geth.gethsemane.domain.model.Schedule
 import by.geth.gethsemane.domain.model.ScheduleItem
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
-import by.geth.gethsemane.domain.usecase.base.BaseUseCase
 import by.geth.gethsemane.domain.util.dateTimeNow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -20,13 +19,13 @@ import kotlinx.coroutines.withContext
 class LoadScheduleUseCase(
     private val eventsRepository: EventsRepository,
     private val musicGroupsRepository: MusicGroupsRepository,
-): BaseUseCase {
+) {
     val dataFlow: Flow<Schedule> = combine(
         eventsRepository.eventsFlow,
         musicGroupsRepository.musicGroupsFlow
     ) { events, musicGroups -> buildSchedule(events, musicGroups) }
 
-    override suspend fun invoke(): Result<Unit> = coroutineScope {
+    suspend operator fun invoke(): Result<Unit> = coroutineScope {
         eventsRepository.loadEvents().map { eventsList ->
             val musicGroupsList = musicGroupsRepository.musicGroupsFlow.first()
 

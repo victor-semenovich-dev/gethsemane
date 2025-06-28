@@ -6,8 +6,11 @@ import by.geth.gethsemane.data.source.remote.model.EventDTO
 import by.geth.gethsemane.data.source.remote.service.EventsService
 import by.geth.gethsemane.domain.model.Event
 import by.geth.gethsemane.domain.repository.EventsRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
@@ -34,10 +37,23 @@ class EventsRepositoryImpl(
         val dateFormatted = dateFormat.format(dateFrom)
         return eventsService.getEvents(dateFormatted).map { dtoList ->
             val entityList = dtoList.map { it.toDbModel() }
+
+            val oldEntityList = if (replaceAll) eventsDao.getAll().first() else eventsDao.getFromDate(dateFormatted).first()
+            val newEntityList = withContext(Dispatchers.Default) {
+                entityList.map { entity ->
+                    oldEntityList.firstOrNull { it.id == entity.id }?.let { oldEntity ->
+                        entity.copy(
+                            audioLocal = oldEntity.audioLocal,
+                            poster = oldEntity.poster,
+                        )
+                    } ?: entity
+                }
+            }
+
             if (replaceAll) {
-                eventsDao.replace(entityList)
+                eventsDao.replace(newEntityList)
             } else {
-                eventsDao.replaceFromDate(dateFormatted, entityList)
+                eventsDao.replaceFromDate(dateFormatted, newEntityList)
             }
             entityList.map { it.toDomainModel() }
         }
@@ -47,14 +63,16 @@ class EventsRepositoryImpl(
         id = this.id,
         categoryId = this.categoryId,
         title = this.title,
-        date = this.date,
+        date = dateTimeFormat.parse(this.date),
         note = this.note,
-        audio = this.audio,
+        audioRemote = this.audio,
+        audioLocal = null, // missing
         shortDesc = this.shortDesc,
         isDraft = this.isDraft != 0,
         isArchive = this.isArchive != 0,
         musicGroupId = this.musicGroupId,
         video = this.video,
+        poster = null, // missing
     )
 
     private fun EventEntity.toDomainModel() = Event(
@@ -62,7 +80,7 @@ class EventsRepositoryImpl(
         categoryId = this.categoryId,
         musicGroupId = this.musicGroupId,
         title = this.title,
-        dateTime = dateTimeFormat.parse(this.date),
+        dateTime = this.date,
         isDraft = this.isDraft,
     )
 }

@@ -12,6 +12,9 @@ interface AuthorsDao {
     @Query("SELECT * FROM ${AuthorEntity.TABLE_NAME}")
     fun getAll(): Flow<List<AuthorEntity>>
 
+    @Query("SELECT * FROM ${AuthorEntity.TABLE_NAME} WHERE ${AuthorEntity.COLUMN_ID} == :id")
+    fun getById(id: Int): Flow<AuthorEntity?>
+
     @Query("DELETE FROM ${AuthorEntity.TABLE_NAME}")
     suspend fun clear()
 

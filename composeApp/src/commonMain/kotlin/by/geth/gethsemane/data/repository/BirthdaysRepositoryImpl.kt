@@ -12,9 +12,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.FormatStringsInDatetimeFormats
-import kotlinx.datetime.format.byUnicodePattern
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 
@@ -22,11 +19,6 @@ class BirthdaysRepositoryImpl(
     private val birthdaysService: BirthdaysService,
     private val birthdaysDao: BirthdaysDao,
 ): BirthdaysRepository {
-
-    @OptIn(FormatStringsInDatetimeFormats::class)
-    private val dateFormat = LocalDate.Format {
-        byUnicodePattern("yyyy-MM-dd")
-    }
 
     override val birthdaysFlow: Flow<List<Birthdays>> = birthdaysDao.getAll().map { entityList ->
         val dateNow = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -50,13 +42,13 @@ class BirthdaysRepositoryImpl(
             birthdaysDate = birthdaysDate.plus(1, DateTimeUnit.YEAR)
         }
         return BirthdaysEntity(
-            date = birthdaysDate.format(dateFormat),
+            date = birthdaysDate,
             persons = this.persons.joinToString("|"),
         )
     }
 
     private fun BirthdaysEntity.toDomainModel() = Birthdays(
-        date = dateFormat.parse(this.date),
+        date = this.date,
         persons = this.persons.split("|"),
     )
 }

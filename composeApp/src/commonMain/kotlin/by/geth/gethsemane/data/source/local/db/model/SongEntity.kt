@@ -3,6 +3,7 @@ package by.geth.gethsemane.data.source.local.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.datetime.LocalDate
 
 @Entity(tableName = SongEntity.TABLE_NAME)
 data class SongEntity(
@@ -15,6 +16,8 @@ data class SongEntity(
     val eventId: Int?,
     @ColumnInfo(COLUMN_TITLE)
     val title: String,
+    @ColumnInfo(COLUMN_DATE)
+    val date: LocalDate?,
     @ColumnInfo(COLUMN_AUDIO_REMOTE)
     val audioRemote: String,
     @ColumnInfo(COLUMN_AUDIO_LOCAL)
@@ -28,6 +31,7 @@ data class SongEntity(
         const val COLUMN_MUSIC_GROUP_ID = "music_group_id"
         const val COLUMN_EVENT_ID = "event_id"
         const val COLUMN_TITLE = "title"
+        const val COLUMN_DATE = "date"
         const val COLUMN_AUDIO_REMOTE = "audio_remote"
         const val COLUMN_AUDIO_LOCAL = "audio_local"
         const val COLUMN_SHOW_IN_MEDIA = "show_in_list"

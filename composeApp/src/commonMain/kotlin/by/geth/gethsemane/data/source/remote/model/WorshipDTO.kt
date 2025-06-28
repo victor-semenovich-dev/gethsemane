@@ -13,10 +13,12 @@ data class WorshipDTO(
     val title: String,
     @SerialName("short_desc")
     val shortDesc: String?,
+    @SerialName("audio")
+    val audio: String?,
     @SerialName("video")
-    val video: String,
+    val video: String?,
     @SerialName("poster")
-    val poster: String,
+    val poster: String?,
     @SerialName("songs")
     val songs: List<SongDTO>,
     @SerialName("sermons")

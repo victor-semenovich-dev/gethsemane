@@ -8,4 +8,5 @@ interface MusicGroupsRepository {
 
     suspend fun loadAllMusicGroups(): Result<List<MusicGroup>>
     suspend fun loadMusicGroup(id: Int): Result<MusicGroup>
+    fun getMusicGroup(id: Int): Flow<MusicGroup?>
 }

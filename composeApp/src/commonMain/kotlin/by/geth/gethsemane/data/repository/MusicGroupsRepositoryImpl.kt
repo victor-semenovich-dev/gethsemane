@@ -42,6 +42,10 @@ class MusicGroupsRepositoryImpl(
         }
     }
 
+    override fun getMusicGroup(id: Int): Flow<MusicGroup?> {
+        return musicGroupsDao.getById(id).map { it?.toDomainModel() }
+    }
+
     private fun MusicGroupEntity.toDomainModel() = MusicGroup(
         id = this.id,
         title = this.title,

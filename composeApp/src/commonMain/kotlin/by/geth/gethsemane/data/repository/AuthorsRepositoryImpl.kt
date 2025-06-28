@@ -42,6 +42,10 @@ class AuthorsRepositoryImpl(
         }
     }
 
+    override fun getAuthor(id: Int): Flow<Author?> {
+        return authorsDao.getById(id).map { it?.toDomainModel() }
+    }
+
     private fun AuthorEntity.toDomainModel() = Author(
         id = this.id,
         name = this.name,

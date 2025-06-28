@@ -4,6 +4,7 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.room.TypeConverters
 import by.geth.gethsemane.data.source.local.db.dao.AuthorsDao
 import by.geth.gethsemane.data.source.local.db.dao.BirthdaysDao
 import by.geth.gethsemane.data.source.local.db.dao.EventsDao
@@ -19,6 +20,7 @@ import by.geth.gethsemane.data.source.local.db.model.PhotoEntity
 import by.geth.gethsemane.data.source.local.db.model.SongEntity
 import by.geth.gethsemane.data.source.local.db.model.SpeechEntity
 
+// TODO add indexes for tables
 @Database(entities = [
     EventEntity::class,
     MusicGroupEntity::class,
@@ -29,12 +31,13 @@ import by.geth.gethsemane.data.source.local.db.model.SpeechEntity
     AuthorEntity::class,
 ], version = 1)
 @ConstructedBy(AppDatabaseConstructor::class)
+@TypeConverters(DbConverters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun eventsDao(): EventsDao
     abstract fun musicGroupsDao(): MusicGroupsDao
     abstract fun birthdaysDao(): BirthdaysDao
     abstract fun songsDao(): SongsDao
-    abstract fun speechesDao(): SpeechDao
+    abstract fun speechDao(): SpeechDao
     abstract fun photosDao(): PhotosDao
     abstract fun authorsDao(): AuthorsDao
 }

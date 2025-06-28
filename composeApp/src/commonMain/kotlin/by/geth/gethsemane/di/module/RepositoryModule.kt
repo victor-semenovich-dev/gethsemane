@@ -4,10 +4,12 @@ import by.geth.gethsemane.data.repository.AuthorsRepositoryImpl
 import by.geth.gethsemane.data.repository.BirthdaysRepositoryImpl
 import by.geth.gethsemane.data.repository.EventsRepositoryImpl
 import by.geth.gethsemane.data.repository.MusicGroupsRepositoryImpl
+import by.geth.gethsemane.data.repository.WorshipRepositoryImpl
 import by.geth.gethsemane.domain.repository.AuthorsRepository
 import by.geth.gethsemane.domain.repository.BirthdaysRepository
 import by.geth.gethsemane.domain.repository.EventsRepository
 import by.geth.gethsemane.domain.repository.MusicGroupsRepository
+import by.geth.gethsemane.domain.repository.WorshipRepository
 import org.koin.dsl.module
 
 val repositoriesModule = module {
@@ -15,4 +17,5 @@ val repositoriesModule = module {
     single<BirthdaysRepository> { BirthdaysRepositoryImpl(get(), get()) }
     single<MusicGroupsRepository> { MusicGroupsRepositoryImpl(get(), get(), get()) }
     single<AuthorsRepository> { AuthorsRepositoryImpl(get(), get(), get()) }
+    single<WorshipRepository> { WorshipRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
 }

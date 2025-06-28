@@ -9,4 +9,8 @@ data class Event(
     val title: String,
     val dateTime: LocalDateTime,
     val isDraft: Boolean,
-)
+) {
+    companion object {
+        const val WORSHIP_CATEGORY_ID = 10
+    }
+}

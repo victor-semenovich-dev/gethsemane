@@ -8,4 +8,5 @@ interface AuthorsRepository {
 
     suspend fun loadAllAuthors(): Result<List<Author>>
     suspend fun loadAuthor(id: Int): Result<Author>
+    fun getAuthor(id: Int): Flow<Author?>
 }
