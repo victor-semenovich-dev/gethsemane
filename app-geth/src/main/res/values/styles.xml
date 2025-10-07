@@ -1,0 +1,79 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:windowBackground">@color/bg_window</item>
+        <item name="android:textColor">@color/color_text_main</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
+        <item name="documentView_textSize">@dimen/default_text_size</item>
+        <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">-4.0dip</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+    </style>
+
+    <style name="TransparentActivity" parent="@style/AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.TranslucentStatus" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="CardLayout">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="CardTitleText">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="ItemTitleText">
+        <item name="android:textSize">@dimen/text_item_title</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/color_text_item_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ItemSubtitleText">
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/text_item_subtitle</item>
+    </style>
+
+    <style name="CoverImage">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@color/bg_image_cover</item>
+        <item name="aspectRatioWidth">16</item>
+        <item name="aspectRatioHeight">9</item>
+    </style>
+
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+    </style>
+</resources>

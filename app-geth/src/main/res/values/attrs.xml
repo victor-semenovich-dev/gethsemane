@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AspectRatioImageView">
+        <attr name="aspectRatioWidth" format="integer"/>
+        <attr name="aspectRatioHeight" format="integer"/>
+        <attr name="aspectRatioWidthBased" format="boolean"/>
+        <attr name="aspectRatioHeightBased" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="StrokeTextView">
+        <attr name="stroke" format="dimension"/>
+    </declare-styleable>
+</resources>

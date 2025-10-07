@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notif_birthday_key" translatable="false">pref_notif_birthday</string>
+    <string name="pref_notif_birthday_time_key" translatable="false">pref_notif_birthday_time</string>
+    <string name="pref_notif_schedule_key" translatable="false">pref_notif_schedule</string>
+    <string name="pref_notif_live_video_key" translatable="false">pref_notif_live_video</string>
+    <string name="pref_notif_news_key" translatable="false">pref_notif_news</string>
+    <string name="pref_notif_worship_notes_key" translatable="false">pref_notif_worship_notes</string>
+    <string name="pref_notif_photos_key" translatable="false">pref_notif_photos</string>
+    <string name="pref_data_cellular_key" translatable="false">pref_data_cellular</string>
+    <string name="pref_data_not_downloaded_key" translatable="false">pref_data_not_downloaded</string>
+    <string name="pref_data_auto_play_key" translatable="false">pref_data_auto_play</string>
+    <string name="pref_data_auto_download_key" translatable="false">pref_data_auto_download</string>
+</resources>

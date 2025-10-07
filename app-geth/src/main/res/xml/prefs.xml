@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_notif">
+
+        <SwitchPreference
+            android:key="@string/pref_notif_live_video_key"
+            android:summary="@string/pref_notif_live_video_title"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="@string/pref_notif_schedule_key"
+            android:summary="@string/pref_notif_schedule_title"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="@string/pref_notif_birthday_key"
+            android:summary="@string/pref_notif_birthday_title"
+            android:defaultValue="true"/>
+
+        <by.geth.gethsemane.ui.view.TimePreference
+            android:key="@string/pref_notif_birthday_time_key"
+            android:defaultValue="9:00"
+            android:summary="@string/pref_notif_birthday_time_summary"
+            android:dependency="@string/pref_notif_birthday_key"/>
+
+        <SwitchPreference
+            android:key="@string/pref_notif_news_key"
+            android:summary="@string/pref_notif_news_title"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="@string/pref_notif_worship_notes_key"
+            android:summary="@string/pref_notif_worship_notes_title"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="@string/pref_notif_photos_key"
+            android:summary="@string/pref_notif_photos_title"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_data">
+
+        <SwitchPreference
+            android:key="@string/pref_data_cellular_key"
+            android:summary="@string/pref_data_warning_cellular"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="@string/pref_data_not_downloaded_key"
+            android:summary="@string/pref_data_not_downloaded"
+            android:defaultValue="true"
+            android:disableDependentsState="true"/>
+
+        <SwitchPreference
+            android:key="@string/pref_data_auto_play_key"
+            android:summary="@string/pref_data_auto_play"
+            android:defaultValue="false"
+            android:dependency="@string/pref_data_not_downloaded_key"/>
+
+        <SwitchPreference
+            android:key="@string/pref_data_auto_download_key"
+            android:summary="@string/pref_data_auto_download"
+            android:defaultValue="false"
+            android:dependency="@string/pref_data_not_downloaded_key"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

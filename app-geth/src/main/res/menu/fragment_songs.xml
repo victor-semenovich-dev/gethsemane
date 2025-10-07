@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_search"
+          android:title="@string/fragment_sermon_list_ab_search"
+          app:actionViewClass="androidx.appcompat.widget.SearchView"
+          app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_sort"
+        android:title="Сортировка"
+        android:icon="@drawable/ic_sort_24dp"
+        app:showAsAction="ifRoom">
+
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item android:id="@+id/action_sort_by_name"
+                    android:title="По алфавиту"/>
+                <item android:id="@+id/action_sort_by_date"
+                    android:title="По дате"/>
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_history"
+        android:title="@string/group_history"
+        android:icon="@drawable/ic_history_24dp"
+        app:showAsAction="ifRoom"/>
+</menu>

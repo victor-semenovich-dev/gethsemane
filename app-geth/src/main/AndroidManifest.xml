@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
+
+    <application
+        android:name=".app.App"
+        android:allowBackup="false"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:icon="@mipmap/ic_launcher"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="n">
+
+        <activity android:name=".ui.activity.MainActivity"
+                  android:theme="@style/AppTheme.NoActionBar"
+                  android:launchMode="singleTask"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="geth.by" android:pathPrefix="/gallery/album/"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.PreferenceActivity"/>
+
+        <activity android:name=".ui.activity.HtmlActivity"/>
+        <activity android:name=".ui.activity.PhotosFullscreenActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ui.activity.PhotoSimpleFullscreenActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ui.activity.GalleryPhotosGridActivity"/>
+
+        <service android:name=".service.ApiService" android:exported="false"/>
+        <service android:name=".service.AudioService" android:exported="false" android:foregroundServiceType="mediaPlayback"/>
+
+        <service android:name=".service.FirebaseMessagingService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".download.DownloadNotificationClickedReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".download.DownloadCompleteReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.BirthdaysNotificationReceiver"/>
+        
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths"/>
+        </provider>
+
+        <!-- Database -->
+        <meta-data android:name="AA_DB_NAME" android:value="geth.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="14" />
+        <meta-data android:name="AA_MODELS"
+                   android:value="by.geth.gethsemane.data.Worship,
+                                  by.geth.gethsemane.data.Song,
+                                  by.geth.gethsemane.data.Author,
+                                  by.geth.gethsemane.data.MusicGroup,
+                                  by.geth.gethsemane.data.Event,
+                                  by.geth.gethsemane.data.Sermon,
+                                  by.geth.gethsemane.data.Witness,
+                                  by.geth.gethsemane.data.model.Birthday,
+                                  by.geth.gethsemane.data.Category,
+                                  by.geth.gethsemane.data.Album,
+                                  by.geth.gethsemane.data.CategoryAlbum,
+                                  by.geth.gethsemane.data.Photo,
+                                  by.geth.gethsemane.data.model.news.NewsListItem,
+                                  by.geth.gethsemane.data.model.news.NewsDetails,
+                                  by.geth.gethsemane.data.model.articles.ArticleListItem,
+                                  by.geth.gethsemane.data.model.articles.ArticleDetails"/>
+        <meta-data android:name="AA_SQL_PARSER" android:value="delimited"/>
+
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="${applicationId}"
+            android:exported="false" />
+    </application>
+</manifest>

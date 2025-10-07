@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "869870220239",
+    "firebase_url": "https://geth-church.firebaseio.com",
+    "project_id": "geth-church",
+    "storage_bucket": "geth-church.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869870220239:android:f7ef593172389bdf",
+        "android_client_info": {
+          "package_name": "by.geth.gethsemane"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869870220239-69i4isnv2q35jbu7r6512kdlfbuccpoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAxSLQf9cv0Ku0sadDAj814U8ErVULy-8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-55488185-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869870220239:android:f8b750a2a32f18b7",
+        "android_client_info": {
+          "package_name": "by.geth.gethsemane.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869870220239-69i4isnv2q35jbu7r6512kdlfbuccpoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAxSLQf9cv0Ku0sadDAj814U8ErVULy-8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

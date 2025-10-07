@@ -1,0 +1,202 @@
+<resources>
+    <string name="app_name">Гефсимания</string>
+    <string name="app_title">Гефсимания</string>
+    <string name="live">Прямая трансляция</string>
+    <string name="info">Информация</string>
+
+    <string name="activity_main_navigation_drawer_open">Открыть</string>
+    <string name="activity_main_navigation_drawer_close">Закрыть</string>
+    <string name="activity_main_navigation_item_video">Видеотрансляция</string>
+    <string name="activity_main_navigation_item_audio">Аудиотрансляция</string>
+    <string name="activity_main_navigation_item_schedule">Расписание</string>
+    <string name="activity_main_navigation_item_birthdays">Дни рождения</string>
+    <string name="activity_main_navigation_item_gallery">Фотогалерея</string>
+    <string name="activity_main_navigation_item_worships">Богослужения</string>
+    <string name="activity_main_navigation_item_sermons">Проповеди</string>
+    <string name="activity_main_navigation_item_witnesses">Свидетельства</string>
+    <string name="activity_main_navigation_item_settings">Настройки</string>
+
+    <string name="fragment_init_text_authors">Загрузка информации о проповедниках&#8230;</string>
+    <string name="fragment_init_text_events">Загрузка списка богослужений&#8230;</string>
+    <string name="fragment_init_text_sermons">Загрузка списка проповедей&#8230;</string>
+    <string name="fragment_init_text_witnesses">Загрузка списка свидетельств&#8230;</string>
+    <string name="fragment_init_reload">Повторная загрузка</string>
+
+    <string name="fragment_worship_pattern_item_sermon_subtitle">%1$s • Проповедь</string>
+    <string name="fragment_worship_pattern_item_sermon_subtitle_no_author">Проповедь</string>
+    <string name="fragment_worship_pattern_item_witness_subtitle">%1$s • Свидетельство</string>
+    <string name="fragment_worship_pattern_item_witness_subtitle_no_author">Свидетельство</string>
+    <string name="fragment_worship_pattern_item_song_subtitle">%1$s • Псалом</string>
+    <string name="fragment_worship_pattern_item_song_subtitle_no_group">Псалом</string>
+    <string name="fragment_worship_pattern_item_worship_subtitle">Гефсимания • Богослужение</string>
+    <string name="fragment_worship_menu_audio">Прослушать</string>
+    <string name="fragment_worship_no_video">Видеозапись для данного Богослужения отсутствует</string>
+
+    <string name="fragment_worship_list_ab_title">Богослужения</string>
+
+    <string name="fragment_sermon_list_ab_title">Проповеди</string>
+    <string name="fragment_sermon_list_ab_search">Поиск</string>
+
+    <string name="fragment_witness_list_ab_title">Свидетельства</string>
+    <string name="fragment_witness_list_ab_search">Поиск</string>
+
+    <string name="fragment_sermon_menu_font_size">Размер шрифта</string>
+    <string-array name="fragment_sermon_menu_font_size_items">
+        <item>Маленький</item>
+        <item>Средний</item>
+        <item>Большой</item>
+        <item>Огромный</item>
+    </string-array>
+
+    <string name="fragment_witness_menu_font_size">Размер шрифта</string>
+    <string-array name="fragment_witness_menu_font_size_items">
+        <item>Маленький</item>
+        <item>Средний</item>
+        <item>Большой</item>
+        <item>Огромный</item>
+    </string-array>
+
+    <string name="fragment_event_list_ab_title">Расписание</string>
+
+    <string name="fragment_event_changes_ab_title">Изменения в расписании</string>
+    <string name="fragment_event_changes_header_added">Новые события</string>
+    <string name="fragment_event_changes_header_deleted">Удалённые события</string>
+    <string name="fragment_event_changes_header_modified">Изменённые события</string>
+
+    <string name="birthdays_title">Ближайшие дни рождения</string>
+    <string name="birthdays_header_today">Сегодня</string>
+    <string name="birthdays_header_soon">Скоро</string>
+    <string name="birthdays_update_error">Не удалось обновить информацию</string>
+    
+    <string name="gallery_title">Фотогалерея</string>
+    <string name="gallery_photo_not_loaded">Ошибка загрузки фотографии</string>
+    <string name="new_photos_title">Новые фотографии</string>
+    <plurals name="new_photos_notif">
+        <item quantity="one">%d новая фотография</item>
+        <item quantity="few">%d новые фотографии</item>
+        <item quantity="many">%d новых фотографий</item>
+        <item quantity="other">%d новых фотографий</item>
+    </plurals>
+    <string name="send_to">Отправить</string>
+    <string name="categories">Категории</string>
+    <string name="recent_photos">Последние фотографии</string>
+
+    <string name="psalms">Псалмы</string>
+    <string name="music_groups">Музыкальные группы</string>
+
+    <string name="downloads">Загрузки</string>
+    <string name="downloads_empty_sermon">Нет загруженных проповедей</string>
+    <string name="downloads_empty_witness">Нет загруженных свидетельств</string>
+    <string name="downloads_empty_song">Нет загруженных псалмов</string>
+
+    <string name="fragment_video_message_live_complete">Видеотрансляция остановлена.</string>
+
+    <string name="dialog_yes">Да</string>
+    <string name="dialog_no">Нет</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="dialog_apply">Применить</string>
+    <string name="dialog_settings">Перейти к настройкам</string>
+
+    <string name="notification_schedule">Произошли изменения в расписании</string>
+    <plurals name="notification_schedule_added">
+        <item quantity="one">%1$d событие добавлено</item>
+        <item quantity="few">%1$d события добавлено</item>
+        <item quantity="many">%1$d событий добавлено</item>
+        <item quantity="other">%1$d событий добавлено</item>
+    </plurals>
+    <plurals name="notification_schedule_deleted">
+        <item quantity="one">%1$d событие удалено</item>
+        <item quantity="few">%1$d события удалено</item>
+        <item quantity="many">%1$d событий удалено</item>
+        <item quantity="other">%1$d событий удалено</item>
+    </plurals>
+    <plurals name="notification_schedule_modified">
+        <item quantity="one">%1$d событие изменено</item>
+        <item quantity="few">%1$d события изменено</item>
+        <item quantity="many">%1$d событий изменено</item>
+        <item quantity="other">%1$d событий изменено</item>
+    </plurals>
+    <plurals name="notification_birthdays">
+        <item quantity="one">У %1$d члена церкви сегодня день рождения</item>
+        <item quantity="few">У %1$d членов церкви сегодня день рождения</item>
+        <item quantity="many">У %1$d членов церкви сегодня день рождения</item>
+        <item quantity="other">У %1$d членов церкви сегодня день рождения</item>
+    </plurals>
+    <string name="notification_live_start">Началась прямая трансляция богослужения. Коснитесь для просмотра.</string>
+    <string name="notification_live_start_short">Началась прямая трансляция богослужения.</string>
+    <string name="notification_download_pending">Ожидание загрузки…</string>
+    <string name="notification_download_progress">Загрузка…</string>
+    <string name="notification_download_success">Загрузка завершена</string>
+    <string name="notification_download_error">Ошибка загрузки</string>
+
+    <string name="worship_author">Гефсимания</string>
+
+    <string name="share">Поделиться</string>
+
+    <string name="pref_ab_title">Настройки</string>
+    <string name="pref_notif">Уведомления</string>
+    <string name="pref_notif_birthday_title">Показывать уведомления о днях рождения.</string>
+    <string name="pref_notif_birthday_time_summary">Уведомлять о днях рождения в %s</string>
+    <string name="pref_notif_birthday_time_button_set">Установить</string>
+    <string name="pref_notif_birthday_time_button_cancel">Отмена</string>
+    <string name="pref_notif_schedule_title">Показывать уведомления об изменениях в расписании.</string>
+    <string name="pref_notif_live_video_title">Показывать уведомления о начале видеотрансляции.</string>
+    <string name="pref_notif_news_title">Уведомлять о новых новостях</string>
+    <string name="pref_notif_worship_notes_title">Уведомлять о новых заметках на служении</string>
+    <string name="pref_notif_photos_title">Уведомлять о новых фотографиях</string>
+    <string name="pref_data">Данные</string>
+    <string name="pref_data_warning_cellular">Предупреждать о передаче данных через мобильный интернет</string>
+    <string name="pref_data_not_downloaded">Предупреждать о том, что аудиофайл не загружен</string>
+    <string name="pref_data_auto_play">Проигрывать незагруженные аудиофайлы через интернет</string>
+    <string name="pref_data_auto_download">Автоматически скачивать незагруженные аудиофайлы перед прослушиванием</string>
+
+    <string name="warning_cellular">Использовать мобильный интернет для передачи данных? (может взиматься плата за интернет)</string>
+
+    <string name="error_data_load">Не удалось загрузить данные.</string>
+    <string name="error_no_internet">Отсутствует подключение к интернету.</string>
+    <string name="error_data_load_connection_missing">Невозможно загрузить данные. Отсутствует подключение к интернету.</string>
+    <string name="error_worship_load">Ошибка загрузки Богослужения.</string>
+    <string name="error_worship_load_connection_missing">Ошибка загрузки Богослужения. Отсутствует подключение к интернету.</string>
+    <string name="error_worship_load_timeout">Невозможно загрузить Богослужение. Сервер недоступен.</string>
+    <string name="error_play_audio_connection_missing">Ошибка воспроизведения. Отсутствует подключение к интернету.</string>
+    <string name="error_download_connection_missing">Ошибка загрузки. Отсутствует подключение к интернету.</string>
+
+    <string name="download_error">Ошибка загрузки</string>
+    <string name="download_file_error">Ошибка загрузки файла</string>
+    <string name="download_error_no_internet">Ошибка загрузки. Отсутствует подключение к интернету.</string>
+    <string name="download_success">Файл загружен</string>
+    <string name="download_deleted">Файл удалён</string>
+    <string name="download_delete_warning">Вы действительно хотите удалить файл?</string>
+
+    <!-- Notification channels -->
+    <string name="notification_channel_live">Начало прямой трансляции</string>
+    <string name="notification_channel_birthdays">Дни рождения</string>
+    <string name="notification_channel_news">Новости</string>
+    <string name="notification_channel_photos">Новые фотографии</string>
+    <string name="notification_channel_schedule">Изменения в расписании</string>
+    <string name="notification_channel_info">Рассылка</string>
+    <string name="notification_channel_audio">Проигрывание аудио</string>
+
+    <string name="warning_download_audio_permissions">Для того чтобы скачивать аудиозаписи, предоставьте приложению доступ к памяти в настройках (Разрешения -> Память).</string>
+    <string name="warning_delete_audio_permissions">Для того чтобы удалять аудиозаписи, предоставьте приложению доступ к памяти в настройках (Разрешения -> Память).</string>
+    <string name="warning_play_audio_permissions">Для того чтобы проигрывать аудиозаписи, предоставьте приложению доступ к памяти в настройках (Разрешения -> Память).</string>
+    <string name="warning_photos_permissions">Для того чтобы просматривать фотографии, предоставьте приложению доступ к памяти в настройках (Разрешения -> Память).</string>
+    <string name="warning_audio_not_downloaded_message">Загрузить файл на устройство?</string>
+    <string name="warning_audio_not_downloaded_option_download">Загрузить</string>
+    <string name="warning_audio_not_downloaded_option_play">Слушать онлайн</string>
+    <string name="warning_file_not_exist">Файл был изменён или удалён. Загрузить заново?</string>
+
+    <string name="dont_ask_again">Больше не спрашивать</string>
+
+    <string name="news">Новости</string>
+    <string name="worship_notes">Заметки на служении</string>
+    <string name="to_see_christ">Увидеть Христа</string>
+    <string name="refresh">Обновить</string>
+
+    <string name="play">Запустить</string>
+    <string name="pause">Пауза</string>
+    <string name="stop">Остановить</string>
+
+    <string name="group_history">История группы</string>
+</resources>

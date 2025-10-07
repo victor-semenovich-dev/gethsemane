@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Supporting of the Let's Encrypt SSL certificate for Android 7
+    Look at the https://voxelmanip.se/2024/09/17/installing-lets-encrypt-certificates-on-old-android/ for details
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">geth.by</domain>
+        <trust-anchors>
+            <certificates src="@raw/isrgrootx1"/>
+        </trust-anchors>
+    </domain-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">api.geth.by</domain>
+        <trust-anchors>
+            <certificates src="@raw/isrgrootx1"/>
+        </trust-anchors>
+    </domain-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">api.gethsemane.by</domain>
+        <trust-anchors>
+            <certificates src="@raw/isrgrootx1"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

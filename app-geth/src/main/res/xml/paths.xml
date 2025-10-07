@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path name="photo" path="Гефсимания/Фотографии"/>
+    <external-files-path name="photo" path="Гефсимания/Фотографии"/>
+    <external-files-path name="sermon" path="Гефсимания/Проповеди"/>
+    <external-files-path name="witness" path="Гефсимания/Свидетельства"/>
+    <external-files-path name="song" path="Гефсимания/Псалмы"/>
+</paths>

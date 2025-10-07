@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="page_size">40</integer>
+    <integer name="news_list_span_count">1</integer>
+    <item name="news_image_width_percentage" type="integer" format="float">1.0</item>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_primary">#C5564E</color>
+    <color name="color_primary_dark">#99433D</color>
+    <color name="color_accent">#C5564E</color>
+    <color name="color_text_main">#000000</color>
+    <color name="color_divider">#E2E2E2</color>
+
+    <color name="bg_window">#DDDDDD</color>
+    <color name="bg_window_dark">#000000</color>
+    <color name="bg_navigation_drawer">#DDDDDD</color>
+    <color name="bg_image_cover">#CCCCCC</color>
+
+    <color name="color_text_item_title">#CA5F55</color>
+
+    <color name="birthdays_header_background">#D96A62</color>
+</resources>
