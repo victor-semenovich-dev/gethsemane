@@ -100,6 +100,8 @@ android {
 dependencies {
     def lifecycle_version = "2.4.1"
 
+    implementation project(':domain')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
