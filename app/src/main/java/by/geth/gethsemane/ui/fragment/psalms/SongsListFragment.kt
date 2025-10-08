@@ -314,8 +314,8 @@ class SongsListFragment: AudioFragment() {
     private inner class FilterTask : AsyncTask<String?, Void?, List<Song>>() {
         override fun doInBackground(vararg params: String?): List<Song> {
             val filteredList = allSongs.filter { song ->
-                song.getTitle().toLowerCase(Locale.getDefault())
-                        .contains(query.toLowerCase(Locale.getDefault())) }.toMutableList()
+                song.getTitle().lowercase(Locale.getDefault())
+                        .contains(query.lowercase(Locale.getDefault())) }.toMutableList()
             when (AppPreferences.getInstance().songsSortType) {
                 SortType.NAME -> filteredList.sortBy { song -> song.getTitle() }
                 SortType.DATE -> filteredList.sortByDescending { song -> song.getDate() }
@@ -341,7 +341,7 @@ class SongsListFragment: AudioFragment() {
         }
 
         override fun onQueryTextChange(newText: String): Boolean {
-            query = newText.trim().toLowerCase(Locale.getDefault())
+            query = newText.trim().lowercase(Locale.getDefault())
             executeFilterTask()
             return true
         }
