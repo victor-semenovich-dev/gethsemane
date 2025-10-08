@@ -99,8 +99,10 @@ android {
 
 dependencies {
     def lifecycle_version = "2.4.1"
+    def koin_version = "4.1.1"
 
     implementation project(':domain')
+    implementation project(':data')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -144,6 +146,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
     annotationProcessor 'androidx.annotation:annotation:1.1.0'
+
+    implementation "io.insert-koin:koin-core:$koin_version"
 }
 
 repositories {

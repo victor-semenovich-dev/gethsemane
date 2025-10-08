@@ -14,7 +14,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import org.koin.java.KoinJavaComponent;
+
 import by.geth.gethsemane.R;
+import by.geth.gethsemane.domain.repository.AuthorsRepository;
 import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.ui.fragment.base.BaseFragment;
 import by.geth.gethsemane.util.ConnectionUtils;
@@ -32,6 +36,9 @@ public class InitFragment extends BaseFragment {
         PROGRESS,
         ERROR
     }
+
+    // TODO inject into view model
+    private final AuthorsRepository authorsRepository = KoinJavaComponent.get(AuthorsRepository.class);
 
     private DataInitListener mInitListener;
 

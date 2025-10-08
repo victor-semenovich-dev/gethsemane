@@ -24,6 +24,7 @@ import by.geth.gethsemane.BuildConfig;
 import by.geth.gethsemane.data.Event;
 import by.geth.gethsemane.data.Photo;
 import by.geth.gethsemane.data.model.articles.ArticleListItem;
+import by.geth.gethsemane.di.KoinInitializer;
 import by.geth.gethsemane.download.DownloadController;
 import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.service.GethApi;
@@ -62,6 +63,8 @@ public class App extends Application {
         super.onCreate();
 
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
+
+        KoinInitializer.INSTANCE.init();
 
         DBUtils.createColumnIfNotExists(Cache.getTableInfo(Photo.class).getTableName(), Photo.COLUMN_IS_RECENT);
         DBUtils.createColumnIfNotExists(Cache.getTableInfo(ArticleListItem.class).getTableName(),
