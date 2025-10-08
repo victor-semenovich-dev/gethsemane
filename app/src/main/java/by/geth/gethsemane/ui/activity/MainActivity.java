@@ -45,7 +45,7 @@ import by.geth.gethsemane.ui.controller.DeepLinksController;
 import by.geth.gethsemane.ui.fragment.BirthdaysFragment;
 import by.geth.gethsemane.ui.fragment.EventChangesFragment;
 import by.geth.gethsemane.ui.fragment.EventListFragment;
-import by.geth.gethsemane.ui.fragment.InitFragment;
+import by.geth.gethsemane.ui.fragment.init.InitFragment;
 import by.geth.gethsemane.ui.fragment.WorshipListFragment;
 import by.geth.gethsemane.ui.fragment.WorshipPagerFragment;
 import by.geth.gethsemane.ui.fragment.article.ArticleDetailsFragment;

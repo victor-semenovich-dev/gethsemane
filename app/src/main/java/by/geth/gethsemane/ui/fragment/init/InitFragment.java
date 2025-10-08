@@ -1,4 +1,4 @@
-package by.geth.gethsemane.ui.fragment;
+package by.geth.gethsemane.ui.fragment.init;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,7 +18,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import org.koin.java.KoinJavaComponent;
 
 import by.geth.gethsemane.R;
-import by.geth.gethsemane.domain.repository.AuthorsRepository;
 import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.ui.fragment.base.BaseFragment;
 import by.geth.gethsemane.util.ConnectionUtils;
@@ -37,8 +36,7 @@ public class InitFragment extends BaseFragment {
         ERROR
     }
 
-    // TODO inject into view model
-    private final AuthorsRepository authorsRepository = KoinJavaComponent.get(AuthorsRepository.class);
+    private final InitViewModel initViewModel = KoinJavaComponent.get(InitViewModel.class);
 
     private DataInitListener mInitListener;
 
@@ -51,6 +49,7 @@ public class InitFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        initViewModel.loadAllAuthors();
         return inflater.inflate(R.layout.fragment_init, container, false);
     }
 
