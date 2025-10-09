@@ -1,4 +1,4 @@
-package by.geth.gethsemane.di
+package by.geth.gethsemane.di.app
 
 import by.geth.gethsemane.ui.fragment.init.InitViewModel
 import org.koin.core.module.dsl.viewModelOf

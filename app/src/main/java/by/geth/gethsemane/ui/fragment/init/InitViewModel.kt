@@ -17,7 +17,13 @@ class InitViewModel(
                 Log.d("MyTag", "${authors.size} authors loaded")
             }.onFailure {
                 // TODO failed to load authors
-                Log.e("MyTag", "failed to load authors")
+                Log.e("MyTag", "failed to load authors", it)
+            }
+
+            authorsRepository.loadSingleAuthor(4).onSuccess {
+                Log.d("MyTag", "Loaded an author $it")
+            }.onFailure {
+                Log.e("MyTag", "failed to load a single author", it)
             }
         }
     }
