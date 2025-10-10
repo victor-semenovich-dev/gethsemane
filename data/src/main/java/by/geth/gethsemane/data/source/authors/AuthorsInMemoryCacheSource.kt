@@ -2,10 +2,10 @@ package by.geth.gethsemane.data.source.authors
 
 import by.geth.gethsemane.domain.model.Author
 
-class AuthorsInMemoryCacheSource {
+class AuthorsInMemoryCacheSource: BaseAuthorsLocalSource {
     private val authorsList = mutableListOf<Author>()
 
-    fun getAllAuthors(): List<Author> {
+    override suspend fun getAllAuthors(): List<Author> {
         return authorsList
     }
 
@@ -14,7 +14,7 @@ class AuthorsInMemoryCacheSource {
         authorsList.addAll(authors)
     }
 
-    fun getSingleAuthor(authorId: Long): Author? {
+    override suspend fun getSingleAuthor(authorId: Long): Author? {
         return authorsList.firstOrNull { it.id == authorId }
     }
 
