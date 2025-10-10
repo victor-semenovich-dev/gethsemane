@@ -1,9 +1,9 @@
 package by.geth.gethsemane.di
 
 import by.geth.gethsemane.di.app.viewModelsModule
-import by.geth.gethsemane.di.data.remote.httpModule
-import by.geth.gethsemane.di.data.remote.localSourceModule
-import by.geth.gethsemane.di.data.remote.remoteSourceModule
+import by.geth.gethsemane.di.data.httpModule
+import by.geth.gethsemane.di.data.localSourceModule
+import by.geth.gethsemane.di.data.remoteSourceModule
 import by.geth.gethsemane.di.domain.repositoriesModule
 import org.koin.core.context.startKoin
 
