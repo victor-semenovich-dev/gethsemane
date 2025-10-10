@@ -1,4 +1,4 @@
-package by.geth.gethsemane.data.source.remote
+package by.geth.gethsemane.data.source.authors
 
 import by.geth.gethsemane.data.model.remote.AuthorDTO
 import io.ktor.client.HttpClient

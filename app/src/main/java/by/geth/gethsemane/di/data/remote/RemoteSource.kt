@@ -1,6 +1,6 @@
 package by.geth.gethsemane.di.data.remote
 
-import by.geth.gethsemane.data.source.remote.AuthorsRemoteSource
+import by.geth.gethsemane.data.source.authors.AuthorsRemoteSource
 import io.ktor.client.HttpClient
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

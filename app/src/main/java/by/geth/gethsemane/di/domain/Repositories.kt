@@ -5,5 +5,5 @@ import by.geth.gethsemane.domain.repository.AuthorsRepository
 import org.koin.dsl.module
 
 val repositoriesModule = module {
-    single<AuthorsRepository> { AuthorsRepositoryImpl(get()) }
+    single<AuthorsRepository> { AuthorsRepositoryImpl(get(), get()) }
 }
