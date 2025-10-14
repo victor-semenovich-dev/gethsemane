@@ -1,14 +1,14 @@
 package by.geth.gethsemane.data.repository
 
 import by.geth.gethsemane.data.model.remote.AuthorDTO
-import by.geth.gethsemane.data.source.authors.AuthorsInMemoryCacheSource
 import by.geth.gethsemane.data.source.authors.AuthorsRemoteSource
+import by.geth.gethsemane.data.source.authors.BaseAuthorsLocalSource
 import by.geth.gethsemane.domain.model.Author
 import by.geth.gethsemane.domain.repository.AuthorsRepository
 
 // TODO save data to the database
 class AuthorsRepositoryImpl(
-    private val authorsLocalSource: AuthorsInMemoryCacheSource,
+    private val authorsLocalSource: BaseAuthorsLocalSource,
     private val authorsRemoteSource: AuthorsRemoteSource,
 ): AuthorsRepository {
 
@@ -23,14 +23,14 @@ class AuthorsRepositoryImpl(
     override suspend fun loadAllAuthors(): Result<List<Author>> {
         return authorsRemoteSource.loadAllAuthors().map { dtoList ->
             dtoList.map { it.toDomainModel() }
-        }.onSuccess { authors -> authorsLocalSource.setAllAuthors(authors) }
+        }.onSuccess { authors -> authorsLocalSource.putAllAuthors(authors) }
     }
 
     override suspend fun loadSingleAuthor(authorId: Long): Result<Author> {
         return authorsRemoteSource.loadSingleAuthor(authorId).mapCatching { dtoList ->
             dtoList.first().toDomainModel()
         }.onSuccess { author ->
-            authorsLocalSource.setSingleAuthor(author)
+            authorsLocalSource.putSingleAuthor(author)
         }
     }
 

@@ -9,7 +9,7 @@ class AuthorsInMemoryCacheSource: BaseAuthorsLocalSource {
         return authorsList
     }
 
-    fun setAllAuthors(authors: List<Author>) {
+    override suspend fun putAllAuthors(authors: List<Author>) {
         authorsList.clear()
         authorsList.addAll(authors)
     }
@@ -18,7 +18,7 @@ class AuthorsInMemoryCacheSource: BaseAuthorsLocalSource {
         return authorsList.firstOrNull { it.id == authorId }
     }
 
-    fun setSingleAuthor(author: Author) {
+    override suspend fun putSingleAuthor(author: Author) {
         val index = authorsList.indexOfFirst { it.id == author.id }
         if (index >= 0) {
             authorsList[index] = author
