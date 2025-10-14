@@ -2,6 +2,8 @@ plugins {
     id("java-library")
     id("org.jetbrains.kotlin.jvm")
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -11,6 +13,9 @@ kotlin {
     compilerOptions {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
+}
+room {
+    schemaDirectory("$projectDir/roomSchemas")
 }
 dependencies {
     implementation(project(":domain"))
