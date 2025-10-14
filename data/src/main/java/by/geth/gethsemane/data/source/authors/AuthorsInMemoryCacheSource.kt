@@ -1,29 +1,38 @@
 package by.geth.gethsemane.data.source.authors
 
 import by.geth.gethsemane.domain.model.Author
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 
 class AuthorsInMemoryCacheSource: BaseAuthorsLocalSource {
-    private val authorsList = mutableListOf<Author>()
+    private val authorsListFlow = MutableStateFlow<List<Author>>(emptyList())
 
-    override suspend fun getAllAuthors(): List<Author> {
-        return authorsList
+    override fun getAllAuthors(): Flow<List<Author>> {
+        return authorsListFlow.asStateFlow()
+    }
+
+    override fun getSingleAuthor(authorId: Long): Flow<Author> {
+        return flow {
+            val authorsList = authorsListFlow.value
+            val author = authorsList.firstOrNull { it.id == authorId }
+            author?.let { emit(it) }
+        }
     }
 
     override suspend fun putAllAuthors(authors: List<Author>) {
-        authorsList.clear()
-        authorsList.addAll(authors)
-    }
-
-    override suspend fun getSingleAuthor(authorId: Long): Author? {
-        return authorsList.firstOrNull { it.id == authorId }
+        authorsListFlow.value = authors
     }
 
     override suspend fun putSingleAuthor(author: Author) {
-        val index = authorsList.indexOfFirst { it.id == author.id }
+        val authorsList = authorsListFlow.value
+        val newAuthorsList = authorsList.toMutableList()
+        val index = newAuthorsList.indexOfFirst { it.id == author.id }
         if (index >= 0) {
-            authorsList[index] = author
+            newAuthorsList[index] = author
         } else {
-            authorsList.add(author)
+            newAuthorsList.add(author)
         }
     }
 }

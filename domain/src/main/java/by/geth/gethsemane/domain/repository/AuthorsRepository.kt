@@ -1,12 +1,13 @@
 package by.geth.gethsemane.domain.repository
 
 import by.geth.gethsemane.domain.model.Author
+import kotlinx.coroutines.flow.Flow
 
 interface AuthorsRepository {
 
-    suspend fun getAllAuthors(): List<Author>
+    fun getAllAuthors(): Flow<List<Author>>
 
-    suspend fun getSingleAuthor(authorId: Long): Author?
+    fun getSingleAuthor(authorId: Long): Flow<Author>
 
     suspend fun loadAllAuthors(): Result<List<Author>>
 

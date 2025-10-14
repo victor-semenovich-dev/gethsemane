@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.geth.gethsemane.domain.repository.AuthorsRepository
+import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.launch
 
 class InitViewModel(
@@ -12,18 +13,13 @@ class InitViewModel(
 
     fun loadAllAuthors() {
         viewModelScope.launch {
+            Log.d("MyTag", "author: ${authorsRepository.getSingleAuthor(4).singleOrNull()}")
+            Log.d("MyTag", "load data")
             authorsRepository.loadAllAuthors().onSuccess { authors ->
-                // TODO authors loaded
                 Log.d("MyTag", "${authors.size} authors loaded")
+                Log.d("MyTag", "author: ${authorsRepository.getSingleAuthor(4).singleOrNull()}")
             }.onFailure {
-                // TODO failed to load authors
                 Log.e("MyTag", "failed to load authors", it)
-            }
-
-            authorsRepository.loadSingleAuthor(4).onSuccess {
-                Log.d("MyTag", "Loaded an author $it")
-            }.onFailure {
-                Log.e("MyTag", "failed to load a single author", it)
             }
         }
     }

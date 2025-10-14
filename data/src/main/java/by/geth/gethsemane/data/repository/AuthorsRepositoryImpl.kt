@@ -5,6 +5,7 @@ import by.geth.gethsemane.data.source.authors.AuthorsRemoteSource
 import by.geth.gethsemane.data.source.authors.BaseAuthorsLocalSource
 import by.geth.gethsemane.domain.model.Author
 import by.geth.gethsemane.domain.repository.AuthorsRepository
+import kotlinx.coroutines.flow.Flow
 
 // TODO save data to the database
 class AuthorsRepositoryImpl(
@@ -12,11 +13,11 @@ class AuthorsRepositoryImpl(
     private val authorsRemoteSource: AuthorsRemoteSource,
 ): AuthorsRepository {
 
-    override suspend fun getAllAuthors(): List<Author> {
+    override fun getAllAuthors(): Flow<List<Author>> {
         return authorsLocalSource.getAllAuthors()
     }
 
-    override suspend fun getSingleAuthor(authorId: Long): Author? {
+    override fun getSingleAuthor(authorId: Long): Flow<Author> {
         return authorsLocalSource.getSingleAuthor(authorId)
     }
 
