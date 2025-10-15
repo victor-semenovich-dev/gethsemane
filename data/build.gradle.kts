@@ -18,6 +18,7 @@ room {
     schemaDirectory("$projectDir/roomSchemas")
 }
 dependencies {
+    api(files("libs/activeandroid-3.1.0-SNAPSHOT.jar"))
     implementation(project(":domain"))
     api(libs.bundles.ktor)
 }

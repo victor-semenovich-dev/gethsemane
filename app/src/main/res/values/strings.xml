@@ -16,10 +16,7 @@
     <string name="activity_main_navigation_item_witnesses">Свидетельства</string>
     <string name="activity_main_navigation_item_settings">Настройки</string>
 
-    <string name="fragment_init_text_authors">Загрузка информации о проповедниках&#8230;</string>
     <string name="fragment_init_text_events">Загрузка списка богослужений&#8230;</string>
-    <string name="fragment_init_text_sermons">Загрузка списка проповедей&#8230;</string>
-    <string name="fragment_init_text_witnesses">Загрузка списка свидетельств&#8230;</string>
     <string name="fragment_init_reload">Повторная загрузка</string>
 
     <string name="fragment_worship_pattern_item_sermon_subtitle">%1$s • Проповедь</string>

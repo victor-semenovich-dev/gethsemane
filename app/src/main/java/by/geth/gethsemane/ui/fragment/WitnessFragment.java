@@ -31,8 +31,8 @@ import java.util.Locale;
 
 import by.geth.gethsemane.R;
 import by.geth.gethsemane.app.AppPreferences;
-import by.geth.gethsemane.data.Author;
 import by.geth.gethsemane.data.Witness;
+import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
 import by.geth.gethsemane.download.DownloadController;
 import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.ui.fragment.base.AudioFragment;
@@ -53,7 +53,7 @@ public class WitnessFragment extends AudioFragment implements View.OnClickListen
 
     private long mWitnessId;
     private Witness mWitness;
-    private Author mAuthor;
+    private AuthorEntity mAuthor;
 
     private DocumentView mContentView;
 
@@ -75,8 +75,8 @@ public class WitnessFragment extends AudioFragment implements View.OnClickListen
                     .where(Witness.COLUMN_ID + " = ?", mWitnessId)
                     .executeSingle();
             mAuthor = new Select()
-                    .from(Author.class)
-                    .where(Author.COLUMN_ID + " = ?", mWitness.getAuthorId())
+                    .from(AuthorEntity.class)
+                    .where(AuthorEntity.COLUMN_ID + " = ?", mWitness.getAuthorId())
                     .executeSingle();
         }
 

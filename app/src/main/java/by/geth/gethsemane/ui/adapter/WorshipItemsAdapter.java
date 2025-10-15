@@ -1,5 +1,7 @@
 package by.geth.gethsemane.ui.adapter;
 
+import static by.geth.gethsemane.util.UtilsKt.share;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,19 +20,16 @@ import java.util.List;
 import by.geth.gethsemane.R;
 import by.geth.gethsemane.api.GetMusicGroupsRequest;
 import by.geth.gethsemane.api.Server;
-import by.geth.gethsemane.app.AppTaskManager;
-import by.geth.gethsemane.data.Author;
 import by.geth.gethsemane.data.MusicGroup;
 import by.geth.gethsemane.data.Sermon;
 import by.geth.gethsemane.data.Song;
 import by.geth.gethsemane.data.Witness;
 import by.geth.gethsemane.data.Worship;
 import by.geth.gethsemane.data.base.AudioItem;
+import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
 import by.geth.gethsemane.download.DownloadController;
 import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.ui.view.AnimatableImageView;
-
-import static by.geth.gethsemane.util.UtilsKt.share;
 
 public class WorshipItemsAdapter extends BaseAdapter {
     public interface OnAudioClickListener {
@@ -154,9 +153,9 @@ public class WorshipItemsAdapter extends BaseAdapter {
         viewHolder.downloadGroup.setVisibility(View.VISIBLE);
         if (item instanceof Sermon) {
             final Sermon sermon = (Sermon) item;
-            final Author author = new Select()
-                    .from(Author.class)
-                    .where(Author.COLUMN_ID + " = ?", sermon.getAuthorId())
+            final AuthorEntity author = new Select()
+                    .from(AuthorEntity.class)
+                    .where(AuthorEntity.COLUMN_ID + " = ?", sermon.getAuthorId())
                     .executeSingle();
             rowView.setEnabled(true);
 //            rowView.setOnClickListener(new View.OnClickListener() {
@@ -170,10 +169,7 @@ public class WorshipItemsAdapter extends BaseAdapter {
             if (author == null) {
                 viewHolder.subtitleView.setText(
                         R.string.fragment_worship_pattern_item_sermon_subtitle_no_author);
-                AppTaskManager.Task task = new AppTaskManager.Task(
-                        ApiService.REQUEST_GET_AUTHOR_LIST);
-                if (!AppTaskManager.getInstance().contains(task))
-                    ApiService.getAuthor(context, sermon.getAuthorId());
+                ApiService.getAuthor(context, sermon.getAuthorId());
             } else {
                 viewHolder.subtitleView.setText(context.getString(
                         R.string.fragment_worship_pattern_item_sermon_subtitle, author.getName()));
@@ -219,9 +215,9 @@ public class WorshipItemsAdapter extends BaseAdapter {
             });
         } else if (item instanceof Witness) {
             final Witness witness = (Witness) item;
-            final Author author = new Select()
-                    .from(Author.class)
-                    .where(Author.COLUMN_ID + " = ?", witness.getAuthorId())
+            final AuthorEntity author = new Select()
+                    .from(AuthorEntity.class)
+                    .where(AuthorEntity.COLUMN_ID + " = ?", witness.getAuthorId())
                     .executeSingle();
             rowView.setEnabled(true);
 //            rowView.setOnClickListener(new View.OnClickListener() {
@@ -235,10 +231,7 @@ public class WorshipItemsAdapter extends BaseAdapter {
             if (author == null) {
                 viewHolder.subtitleView.setText(
                         R.string.fragment_worship_pattern_item_witness_subtitle_no_author);
-                AppTaskManager.Task task = new AppTaskManager.Task(
-                        ApiService.REQUEST_GET_AUTHOR_LIST);
-                if (!AppTaskManager.getInstance().contains(task))
-                    ApiService.getAuthor(context, witness.getAuthorId());
+                ApiService.getAuthor(context, witness.getAuthorId());
             } else {
                 viewHolder.subtitleView.setText(context.getString(
                         R.string.fragment_worship_pattern_item_witness_subtitle, author.getName()));
@@ -283,7 +276,7 @@ public class WorshipItemsAdapter extends BaseAdapter {
             final Song song = (Song) item;
             final MusicGroup group = new Select()
                     .from(MusicGroup.class)
-                    .where(Author.COLUMN_ID + " = ?", song.getGroupID())
+                    .where(AuthorEntity.COLUMN_ID + " = ?", song.getGroupID())
                     .executeSingle();
             rowView.setEnabled(false);
             viewHolder.titleView.setText(song.getTitle());

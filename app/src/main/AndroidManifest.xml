@@ -101,7 +101,7 @@
         <meta-data android:name="AA_MODELS"
                    android:value="by.geth.gethsemane.data.Worship,
                                   by.geth.gethsemane.data.Song,
-                                  by.geth.gethsemane.data.Author,
+                                  by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity,
                                   by.geth.gethsemane.data.MusicGroup,
                                   by.geth.gethsemane.data.Event,
                                   by.geth.gethsemane.data.Sermon,

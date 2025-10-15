@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 
 import by.geth.gethsemane.data.base.AudioItem;
+import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
 
 @SuppressWarnings({"WeakerAccess", "unused", "SimplifiableIfStatement"})
 @Table(name = "Sermons", id = "_id")
@@ -167,9 +168,9 @@ public class Sermon extends Model implements AudioItem {
         if (mAuthor != null) {
             return mAuthor;
         }
-        Author author = new Select()
-                .from(Author.class)
-                .where(Author.COLUMN_ID + " = ?", getAuthorId())
+        AuthorEntity author = new Select()
+                .from(AuthorEntity.class)
+                .where(AuthorEntity.COLUMN_ID + " = ?", getAuthorId())
                 .executeSingle();
         return author == null ? null : author.getName();
     }

@@ -1,5 +1,7 @@
 package by.geth.gethsemane.data;
 
+import androidx.annotation.NonNull;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -10,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-import androidx.annotation.NonNull;
 import by.geth.gethsemane.data.base.AudioItem;
+import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
 
 @SuppressWarnings("unused")
 @Table(name = "Witnesses", id = "_id")
@@ -91,9 +93,9 @@ public class Witness extends Model implements AudioItem {
         if (mAuthor != null) {
             return mAuthor;
         }
-        Author author = new Select()
-                .from(Author.class)
-                .where(Author.COLUMN_ID + " = ?", getAuthorId())
+        AuthorEntity author = new Select()
+                .from(AuthorEntity.class)
+                .where(AuthorEntity.COLUMN_ID + " = ?", getAuthorId())
                 .executeSingle();
         return author == null ? null : author.getName();
     }

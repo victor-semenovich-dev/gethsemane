@@ -8,13 +8,13 @@ import com.activeandroid.query.Select;
 
 import java.util.List;
 
-import by.geth.gethsemane.data.Author;
 import by.geth.gethsemane.data.Event;
 import by.geth.gethsemane.data.Photo;
 import by.geth.gethsemane.data.Sermon;
 import by.geth.gethsemane.data.Song;
 import by.geth.gethsemane.data.Witness;
 import by.geth.gethsemane.data.Worship;
+import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
 
 public class DBUtils {
     public static Worship getWorship(long id) {
@@ -48,7 +48,7 @@ public class DBUtils {
     }
 
     public static boolean isAuthorsLoaded() {
-        return new Select().from(Author.class).exists();
+        return new Select().from(AuthorEntity.class).exists();
     }
 
     public static boolean isEventsLoaded() {

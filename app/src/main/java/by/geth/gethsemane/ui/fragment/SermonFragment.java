@@ -31,8 +31,8 @@ import java.util.Locale;
 
 import by.geth.gethsemane.R;
 import by.geth.gethsemane.app.AppPreferences;
-import by.geth.gethsemane.data.Author;
 import by.geth.gethsemane.data.Sermon;
+import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
 import by.geth.gethsemane.download.DownloadController;
 import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.ui.fragment.base.AudioFragment;
@@ -55,7 +55,7 @@ public class SermonFragment extends AudioFragment implements View.OnClickListene
 
     private long mSermonId;
     private Sermon mSermon;
-    private Author mAuthor;
+    private AuthorEntity mAuthor;
 
     private DocumentView mContentView;
 
@@ -80,8 +80,8 @@ public class SermonFragment extends AudioFragment implements View.OnClickListene
                 .where(Sermon.COLUMN_ID + " = ?", mSermonId)
                 .executeSingle();
         mAuthor = new Select()
-				.from(Author.class)
-				.where(Author.COLUMN_ID + " = ?", mSermon.getAuthorId())
+				.from(AuthorEntity.class)
+				.where(AuthorEntity.COLUMN_ID + " = ?", mSermon.getAuthorId())
                 .executeSingle();
 
         setHasOptionsMenu(true);

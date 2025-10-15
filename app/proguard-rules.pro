@@ -27,3 +27,5 @@
 
 -keep public class by.geth.gethsemane.data.** { *; }
 -keep public class by.geth.gethsemane.api.response.** { *; }
+-keep public class by.geth.gethsemane.domain.model.** { *; }
+-keep public class by.geth.gethsemane.data.model.** { *; }

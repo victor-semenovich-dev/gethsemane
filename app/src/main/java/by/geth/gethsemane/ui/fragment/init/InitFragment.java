@@ -36,7 +36,7 @@ public class InitFragment extends BaseFragment {
         ERROR
     }
 
-    private final InitViewModel initViewModel = KoinJavaComponent.get(InitViewModel.class);
+    private final InitViewModel viewModel = KoinJavaComponent.get(InitViewModel.class);
 
     private DataInitListener mInitListener;
 
@@ -66,6 +66,21 @@ public class InitFragment extends BaseFragment {
         });
 
         tstamp = System.currentTimeMillis();
+
+        viewModel.getEventLiveData().observe(getViewLifecycleOwner(), event -> {
+            if (event instanceof InitViewModel.OneTimeEvent.DataLoaded) {
+                mLoadingTextView.setText(null);
+                if (DBUtils.isDataInitialized()) {
+                    mInitListener.onDataInitSuccess();
+                } else {
+                    doRequest();
+                }
+            } else if (event instanceof InitViewModel.OneTimeEvent.DataLoadingError) {
+                Toast.makeText(getContext(), R.string.error_data_load, Toast.LENGTH_LONG).show();
+                setUIState(UI_STATE.ERROR);
+            }
+            viewModel.getEventLiveData();
+        });
     }
 
     @Override
@@ -93,7 +108,7 @@ public class InitFragment extends BaseFragment {
             if (!DBUtils.isEventsLoaded())
                 ApiService.getEvents(getContext(), "2019-01-01");
             else if (!DBUtils.isAuthorsLoaded())
-                ApiService.getAuthorList(getContext());
+                viewModel.loadData();
         } else {
             DialogUtils.showAlertDialog(getContext(), R.string.error_data_load_connection_missing);
             setUIState(UI_STATE.ERROR);
@@ -121,17 +136,8 @@ public class InitFragment extends BaseFragment {
             switch (intent.getAction()) {
                 case ApiService.ACTION_REQUEST_STARTED:
                     switch (intent.getStringExtra(ApiService.EXTRA_REQUEST_TYPE)) {
-                        case ApiService.REQUEST_GET_AUTHOR_LIST:
-                            mLoadingTextView.setText(R.string.fragment_init_text_authors);
-                            break;
                         case ApiService.REQUEST_GET_EVENTS:
                             mLoadingTextView.setText(R.string.fragment_init_text_events);
-                            break;
-                        case ApiService.REQUEST_GET_SERMONS_LIST:
-                            mLoadingTextView.setText(R.string.fragment_init_text_sermons);
-                            break;
-                        case ApiService.REQUEST_GET_WITNESSES_LIST:
-                            mLoadingTextView.setText(R.string.fragment_init_text_witnesses);
                             break;
                     }
                     break;

@@ -83,7 +83,6 @@ public class ApiService extends IntentService {
     public static final String EXTRA_PAGE = "EXTRA_PAGE";
     public static final String EXTRA_PER_PAGE = "EXTRA_PER_PAGE";
 
-    public static final String REQUEST_GET_AUTHOR_LIST = "REQUEST_GET_AUTHOR_LIST";
     public static final String REQUEST_GET_AUTHOR = "REQUEST_GET_AUTHOR";
     public static final String REQUEST_GET_WORSHIP = "REQUEST_GET_WORSHIP";
     public static final String REQUEST_GET_EVENTS = "REQUEST_GET_EVENTS";
@@ -103,13 +102,6 @@ public class ApiService extends IntentService {
         filter.addAction(ACTION_REQUEST_SUCCESSFUL);
         filter.addAction(ACTION_REQUEST_ERROR);
         return filter;
-    }
-
-    public static void getAuthorList(Context context) {
-        Intent intent = new Intent(context, ApiService.class);
-        intent.putExtra(EXTRA_REQUEST_TYPE, REQUEST_GET_AUTHOR_LIST);
-        processRequestState(context, intent, ACTION_REQUEST_STARTED);
-        context.startService(intent);
     }
 
     public static void getAuthor(Context context, long id) {
@@ -256,9 +248,6 @@ public class ApiService extends IntentService {
             String requestType = intent.getStringExtra(EXTRA_REQUEST_TYPE);
             Log.d(TAG, "handle " + requestType);
             switch (requestType) {
-                case REQUEST_GET_AUTHOR_LIST:
-                    getAuthorList(intent);
-                    break;
                 case REQUEST_GET_AUTHOR:
                     getAuthor(intent);
                     break;
@@ -302,30 +291,6 @@ public class ApiService extends IntentService {
         }
     }
 
-    private void getAuthorList(Intent intent) {
-        try {
-            GethApi api = App.getGethAPI();
-            Response<List<Author>> response = api.getAuthorList().execute();
-            if (response.isSuccessful()) {
-                ActiveAndroid.beginTransaction();
-                List<Author> authorList = response.body();
-                new Delete().from(Author.class).execute();
-                for (Author author : authorList)
-                    author.save();
-                ActiveAndroid.setTransactionSuccessful();
-                ActiveAndroid.endTransaction();
-                processRequestState(this, intent, ACTION_REQUEST_SUCCESSFUL);
-                if (BuildConfig.DB_DUMP_ENABLED)
-                    FileUtils.dumbDBFile(this);
-            } else {
-                processRequestState(this, intent, ACTION_REQUEST_ERROR);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            processRequestState(this, intent, ACTION_REQUEST_ERROR);
-        }
-    }
-
     private void getAuthor(Intent intent) {
         try {
             GethApi api = App.getGethAPI();
@@ -334,7 +299,7 @@ public class ApiService extends IntentService {
             if (response.isSuccessful()) {
                 List<Author> authorList = response.body();
                 if (!authorList.isEmpty()) {
-                    authorList.get(0).save();
+                    authorList.get(0).toEntity().save();
                     intent.putExtra(EXTRA_BODY, authorList.get(0));
                     processRequestState(this, intent, ACTION_REQUEST_SUCCESSFUL);
                     if (BuildConfig.DB_DUMP_ENABLED) {

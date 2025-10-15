@@ -3,13 +3,19 @@ package by.geth.gethsemane.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.SerializedName;
 
-@Table(name = "Authors", id = "_id")
-public class Author extends Model implements Parcelable {
+import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
+
+public class Author implements Parcelable {
+
+    public static Author fromEntity(AuthorEntity entity) {
+        return new Author(entity.getId(), entity.getName(), entity.getBiography());
+    }
+
+    public AuthorEntity toEntity() {
+        return new AuthorEntity(getID(), getName(), getBiography());
+    }
 
     public static final Creator<Author> CREATOR = new Creator<Author>() {
         @Override
@@ -23,20 +29,13 @@ public class Author extends Model implements Parcelable {
         }
     };
 
-	public static final String COLUMN_ID = "id";
-	public static final String COLUMN_NAME = "name";
-	public static final String COLUMN_BIOGRAPHY = "biography";
-
     @SerializedName("id")
-    @Column(name = COLUMN_ID)
     private long mID;
 
     @SerializedName("name")
-    @Column(name = COLUMN_NAME)
     private String mName;
 
     @SerializedName("biography")
-    @Column(name = COLUMN_BIOGRAPHY)
     private String mBiography;
 
     private Author(Parcel in) {
