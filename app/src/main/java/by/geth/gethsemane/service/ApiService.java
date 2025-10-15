@@ -86,9 +86,7 @@ public class ApiService extends IntentService {
     public static final String REQUEST_GET_AUTHOR = "REQUEST_GET_AUTHOR";
     public static final String REQUEST_GET_WORSHIP = "REQUEST_GET_WORSHIP";
     public static final String REQUEST_GET_EVENTS = "REQUEST_GET_EVENTS";
-    public static final String REQUEST_GET_SERMONS_LIST = "REQUEST_GET_SERMONS_LIST";
     public static final String REQUEST_GET_SERMON = "REQUEST_GET_SERMON";
-    public static final String REQUEST_GET_WITNESSES_LIST = "REQUEST_GET_WITNESSES_LIST";
     public static final String REQUEST_GET_WITNESS = "REQUEST_GET_WITNESS";
     public static final String REQUEST_GET_CATEGORY_LIST = "REQUEST_GET_CATEGORY_LIST";
     public static final String REQUEST_GET_ALBUM_LIST = "REQUEST_GET_ALBUM_LIST";
@@ -140,40 +138,10 @@ public class ApiService extends IntentService {
         context.startService(intent);
     }
 
-    public static void getSermonsList(Context context) {
-        Intent intent = new Intent(context, ApiService.class);
-        intent.putExtra(EXTRA_REQUEST_TYPE, REQUEST_GET_SERMONS_LIST);
-        processRequestState(context, intent, ACTION_REQUEST_STARTED);
-        context.startService(intent);
-    }
-
-    public static void getSermonsList(Context context, String from) {
-        Intent intent = new Intent(context, ApiService.class);
-        intent.putExtra(EXTRA_REQUEST_TYPE, REQUEST_GET_SERMONS_LIST);
-        intent.putExtra(EXTRA_FROM, from);
-        processRequestState(context, intent, ACTION_REQUEST_STARTED);
-        context.startService(intent);
-    }
-
     public static void getSermon(Context context, long id) {
         Intent intent = new Intent(context, ApiService.class);
         intent.putExtra(EXTRA_REQUEST_TYPE, REQUEST_GET_SERMON);
         intent.putExtra(EXTRA_ID, id);
-        processRequestState(context, intent, ACTION_REQUEST_STARTED);
-        context.startService(intent);
-    }
-
-    public static void getWitnessesList(Context context) {
-        Intent intent = new Intent(context, ApiService.class);
-        intent.putExtra(EXTRA_REQUEST_TYPE, REQUEST_GET_WITNESSES_LIST);
-        processRequestState(context, intent, ACTION_REQUEST_STARTED);
-        context.startService(intent);
-    }
-
-    public static void getWitnessesList(Context context, String from) {
-        Intent intent = new Intent(context, ApiService.class);
-        intent.putExtra(EXTRA_REQUEST_TYPE, REQUEST_GET_WITNESSES_LIST);
-        intent.putExtra(EXTRA_FROM, from);
         processRequestState(context, intent, ACTION_REQUEST_STARTED);
         context.startService(intent);
     }
@@ -257,14 +225,8 @@ public class ApiService extends IntentService {
                 case REQUEST_GET_EVENTS:
                     getEvents(intent);
                     break;
-                case REQUEST_GET_SERMONS_LIST:
-                    getSermonsList(intent);
-                    break;
                 case REQUEST_GET_SERMON:
                     getSermon(intent);
-                    break;
-                case REQUEST_GET_WITNESSES_LIST:
-                    getWitnessesList(intent);
                     break;
                 case REQUEST_GET_WITNESS:
                     getWitness(intent);
@@ -759,40 +721,6 @@ public class ApiService extends IntentService {
         return null;
     }
 
-    private void getSermonsList(Intent intent) {
-        String from = intent.getStringExtra(EXTRA_FROM);
-        GethApi api = App.getGethAPI();
-        try {
-            Response<List<Sermon>> response;
-            if (from == null)
-                response = api.getSermonsList().execute();
-            else
-                response = api.getSermonsList(from).execute();
-
-            if (response.isSuccessful()) {
-                List<Sermon> sermonList = response.body();
-
-                ActiveAndroid.beginTransaction();
-                for (Sermon sermon : sermonList) {
-                    apply(sermon);
-                }
-                ActiveAndroid.setTransactionSuccessful();
-                ActiveAndroid.endTransaction();
-
-                if (BuildConfig.DB_DUMP_ENABLED)
-                    FileUtils.dumbDBFile(this);
-
-                AppPreferences.getInstance().onSermonsUpdated();
-                processRequestState(this, intent, ACTION_REQUEST_SUCCESSFUL);
-            } else {
-                processRequestState(this, intent, ACTION_REQUEST_ERROR);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            processRequestState(this, intent, ACTION_REQUEST_ERROR);
-        }
-    }
-
     private void getSermon(Intent intent) {
         long id = intent.getLongExtra(EXTRA_ID, 0);
         GethApi api = App.getGethAPI();
@@ -805,40 +733,6 @@ public class ApiService extends IntentService {
                 if (BuildConfig.DB_DUMP_ENABLED)
                     FileUtils.dumbDBFile(this);
 
-                processRequestState(this, intent, ACTION_REQUEST_SUCCESSFUL);
-            } else {
-                processRequestState(this, intent, ACTION_REQUEST_ERROR);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            processRequestState(this, intent, ACTION_REQUEST_ERROR);
-        }
-    }
-
-    private void getWitnessesList(Intent intent) {
-        String from = intent.getStringExtra(EXTRA_FROM);
-        GethApi api = App.getGethAPI();
-        try {
-            Response<List<Witness>> response;
-            if (from == null)
-                response = api.getWitnessesList().execute();
-            else
-                response = api.getWitnessesList(from).execute();
-
-            if (response.isSuccessful()) {
-                List<Witness> witnessesList = response.body();
-
-                ActiveAndroid.beginTransaction();
-                for (Witness witness : witnessesList) {
-                    apply(witness);
-                }
-                ActiveAndroid.setTransactionSuccessful();
-                ActiveAndroid.endTransaction();
-
-                if (BuildConfig.DB_DUMP_ENABLED)
-                    FileUtils.dumbDBFile(this);
-
-                AppPreferences.getInstance().onWitnessesUpdated();
                 processRequestState(this, intent, ACTION_REQUEST_SUCCESSFUL);
             } else {
                 processRequestState(this, intent, ACTION_REQUEST_ERROR);

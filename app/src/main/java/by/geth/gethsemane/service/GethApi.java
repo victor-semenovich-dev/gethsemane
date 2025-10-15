@@ -16,8 +16,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GethApi {
-    @GET("/sermoners")
-    Call<List<Author>> getAuthorList();
 
     @GET("/sermoners")
     Call<List<Author>> getAuthor(@Query("id") long id);
@@ -31,20 +29,8 @@ public interface GethApi {
     @GET("/events")
     Call<List<by.geth.gethsemane.data.Event>> getEvents(@Query("date") String from);
 
-    @GET("/mobile/sermons")
-    Call<List<Sermon>> getSermonsList();
-
-    @GET("/mobile/sermons")
-    Call<List<Sermon>> getSermonsList(@Query("from_date") String from);
-
     @GET("/mobile/sermon/{id}")
     Call<Sermon> getSermon(@Path("id") long id);
-
-    @GET("/mobile/witnesses")
-    Call<List<Witness>> getWitnessesList();
-
-    @GET("/mobile/witnesses")
-    Call<List<Witness>> getWitnessesList(@Query("from_date") String from);
 
     @GET("/mobile/witness/{id}")
     Call<Witness> getWitness(@Path("id") long id);
