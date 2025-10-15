@@ -49,7 +49,6 @@ public class InitFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        initViewModel.loadAllAuthors();
         return inflater.inflate(R.layout.fragment_init, container, false);
     }
 

@@ -1,11 +1,10 @@
-package by.geth.gethsemane.data.source.authors
+package by.geth.gethsemane.data.source.authors.base
 
 import by.geth.gethsemane.domain.model.Author
-import kotlinx.coroutines.flow.Flow
 
 interface BaseAuthorsLocalSource {
-    fun getAllAuthors(): Flow<List<Author>>
-    fun getSingleAuthor(authorId: Long): Flow<Author>
+    suspend fun getAllAuthors(): List<Author>
+    suspend fun getSingleAuthor(authorId: Long): Author?
 
     suspend fun putAllAuthors(authors: List<Author>)
     suspend fun putSingleAuthor(author: Author)
