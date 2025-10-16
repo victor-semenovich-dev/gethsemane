@@ -1,4 +1,4 @@
-package by.geth.gethsemane.ui.fragment;
+package by.geth.gethsemane.ui.fragment.worship;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.jetbrains.annotations.NotNull;
+import org.koin.java.KoinJavaComponent;
 
 import by.geth.gethsemane.R;
 import by.geth.gethsemane.api.BaseRequest;
@@ -39,11 +40,13 @@ import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.ui.activity.PhotosFullscreenActivity;
 import by.geth.gethsemane.ui.adapter.WorshipItemsAdapter;
 import by.geth.gethsemane.ui.adapter.WorshipPhotosAdapter;
+import by.geth.gethsemane.ui.fragment.SermonFragment;
+import by.geth.gethsemane.ui.fragment.WitnessFragment;
 import by.geth.gethsemane.ui.fragment.base.AudioFragment;
 import by.geth.gethsemane.ui.style.HorizontalSpaceItemDecoration;
 import by.geth.gethsemane.ui.view.ScheduleView;
 import by.geth.gethsemane.util.ConnectionUtils;
-import by.geth.gethsemane.util.DBUtils;
+import kotlin.Unit;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class WorshipFragment extends AudioFragment implements
@@ -64,8 +67,9 @@ public class WorshipFragment extends AudioFragment implements
 
     private static final int REQUEST_CODE_PHOTOS = 1;
 
+    private final WorshipViewModel viewModel = KoinJavaComponent.get(WorshipViewModel.class);
+
     private long mWorshipId;
-    private Worship mWorship;
 
     private ViewGroup mCardViewGroup;
     private View mVideoView;
@@ -117,6 +121,18 @@ public class WorshipFragment extends AudioFragment implements
         mPhotosRecyclerView.setAdapter(mPhotosAdapter);
 
         mRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+
+        viewModel.listenDataState(getViewLifecycleOwner(), (dataState) -> {
+            onDataStateUpdated(dataState);
+            return Unit.INSTANCE;
+        });
+    }
+
+    private void onDataStateUpdated(WorshipViewModel.DataState dataState) {
+        if (dataState.getWorship() != null && getParentFragment() == null) {
+            new Handler().post(() -> setTitle(dataState.getWorship().getName()));
+        }
+        updateCardView();
     }
 
     @Override
@@ -131,21 +147,17 @@ public class WorshipFragment extends AudioFragment implements
         Bundle args = getArguments();
         if (args != null && args.containsKey(ARGS_WORSHIP_ID)) {
             mWorshipId = args.getLong(ARGS_WORSHIP_ID);
-            mWorship = DBUtils.getWorship(mWorshipId);
-            if (mWorship != null && getParentFragment() == null) {
-                new Handler().post(() -> setTitle(mWorship.getName()));
-            }
+            viewModel.getWorship(mWorshipId);
             if (ConnectionUtils.isNetworkConnected(getContext())) {
                 mIsFailedNoInternet = false;
-                boolean isSilent = mWorship != null;
+                boolean isSilent = viewModel.getWorship() != null;
                 ApiService.getWorship(getContext(), mWorshipId, isSilent);
-            } else if (mWorship == null) {
+            } else if (viewModel.getWorship() == null) {
                 mIsFailedNoInternet = true;
                 mCommonErrorView.setVisibility(View.GONE);
                 mConnectionErrorView.setVisibility(View.VISIBLE);
             }
         }
-        updateCardView();
 
         getContext().registerReceiver(mNetworkBroadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         Server.INSTANCE.addCallback(serverCallback);
@@ -241,35 +253,37 @@ public class WorshipFragment extends AudioFragment implements
     }
 
     private void updateCardView() {
-        if (mWorship != null) {
+        Worship worship = viewModel.getWorship();
+        if (worship != null) {
             mCardViewGroup.setVisibility(View.VISIBLE);
 
-            if (!TextUtils.isEmpty(mWorship.getPosterUri())) {
-                GlideApp.with(this).load(mWorship.getPosterUri())
+            if (!TextUtils.isEmpty(worship.getPosterUri())) {
+                GlideApp.with(this).load(worship.getPosterUri())
                         .placeholder(R.drawable.cover_worship).into(mCoverView);
             } else {
                 mCoverView.setImageResource(R.drawable.cover_worship);
             }
 
-            if (mWorship.getPhotoList() == null || mWorship.getPhotoList().isEmpty()) {
+            if (worship.getPhotoList() == null || worship.getPhotoList().isEmpty()) {
                 mPhotosRecyclerView.setVisibility(View.GONE);
             } else {
                 mPhotosRecyclerView.setVisibility(View.VISIBLE);
-                mPhotosAdapter.setWorship(mWorship);
+                mPhotosAdapter.setWorship(worship);
             }
 
-            if (TextUtils.isEmpty(mWorship.getDescription())) {
+            if (TextUtils.isEmpty(worship.getDescription())) {
                 mDescriptionView.setVisibility(View.GONE);
             } else {
-                mDescriptionView.setText(mWorship.getDescription());
+                mDescriptionView.setText(worship.getDescription());
                 mDescriptionView.setVisibility(View.VISIBLE);
             }
 
-            mItemsListAdapter.setSermonList(mWorship.getSermonList());
-            mItemsListAdapter.setWitnessList(mWorship.getWitnessList());
-            mItemsListAdapter.setSongList(mWorship.getSongList());
-            if (!TextUtils.isEmpty(mWorship.getAudioUri())) {
-                mItemsListAdapter.setWorship(mWorship);
+            mItemsListAdapter.setSermonList(worship.getSermonList());
+            mItemsListAdapter.setWitnessList(worship.getWitnessList());
+            mItemsListAdapter.setSongList(worship.getSongList());
+            mItemsListAdapter.setAuthors(viewModel.getAuthors());
+            if (!TextUtils.isEmpty(worship.getAudioUri())) {
+                mItemsListAdapter.setWorship(worship);
             }
             mItemsListAdapter.notifyDataSetChanged();
         }
@@ -278,10 +292,11 @@ public class WorshipFragment extends AudioFragment implements
     private View.OnClickListener mOnVideoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (mWorship != null && !TextUtils.isEmpty(mWorship.getVideoUri())) {
+            Worship worship = viewModel.getWorship();
+            if (worship != null && !TextUtils.isEmpty(worship.getVideoUri())) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(String.format("https://www.youtube.com/watch?v=%s", mWorship.getVideoUri())));
+                    intent.setData(Uri.parse(String.format("https://www.youtube.com/watch?v=%s", worship.getVideoUri())));
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -293,8 +308,11 @@ public class WorshipFragment extends AudioFragment implements
     private WorshipPhotosAdapter.OnClickListener mOnPhotoClickListener = new WorshipPhotosAdapter.OnClickListener() {
         @Override
         public void onClick(int position) {
-            PhotosFullscreenActivity.startForResult(WorshipFragment.this, REQUEST_CODE_PHOTOS,
-                    mWorship.getPhotoList(), position);
+            Worship worship = viewModel.getWorship();
+            if (worship != null) {
+                PhotosFullscreenActivity.startForResult(WorshipFragment.this,
+                        REQUEST_CODE_PHOTOS, worship.getPhotoList(), position);
+            }
         }
     };
 
@@ -306,7 +324,7 @@ public class WorshipFragment extends AudioFragment implements
                 ApiService.getWorship(getContext(), mWorshipId);
             } else {
                 mRefreshLayout.setRefreshing(false);
-                if (mWorship == null) {
+                if (viewModel.getWorship() == null) {
                     mIsFailedNoInternet = true;
                     mCommonErrorView.setVisibility(View.GONE);
                     mConnectionErrorView.setVisibility(View.VISIBLE);
@@ -324,11 +342,6 @@ public class WorshipFragment extends AudioFragment implements
                     case ApiService.REQUEST_GET_WORSHIP:
                         onLoadWorship(intent);
                         break;
-                    case ApiService.REQUEST_GET_AUTHOR:
-                        if (intent.getAction().equals(ApiService.ACTION_REQUEST_SUCCESSFUL)) {
-                            updateCardView();
-                        }
-                        break;
                 }
             }
         }
@@ -342,22 +355,13 @@ public class WorshipFragment extends AudioFragment implements
                         break;
                     case ApiService.ACTION_REQUEST_SUCCESSFUL:
                         mRefreshLayout.setRefreshing(false);
-                        mWorship = DBUtils.getWorship(mWorshipId);
-                        if (mWorship != null) {
-                            mConnectionErrorView.setVisibility(View.GONE);
-                            mCommonErrorView.setVisibility(View.GONE);
-                            if (getParentFragment() == null) {
-                                setTitle(mWorship.getName());
-                            }
-                            updateCardView();
-                        } else {
-                            mConnectionErrorView.setVisibility(View.GONE);
-                            mCommonErrorView.setVisibility(View.VISIBLE);
-                        }
+                        viewModel.getWorship(mWorshipId);
+                        mConnectionErrorView.setVisibility(View.GONE);
+                        mCommonErrorView.setVisibility(View.GONE);
                         break;
                     case ApiService.ACTION_REQUEST_ERROR:
                         mRefreshLayout.setRefreshing(false);
-                        if (mWorship == null) {
+                        if (viewModel.getWorship() == null) {
                             mConnectionErrorView.setVisibility(View.GONE);
                             mCommonErrorView.setVisibility(View.VISIBLE);
                         }

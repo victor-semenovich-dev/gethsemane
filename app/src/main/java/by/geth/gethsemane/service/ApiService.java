@@ -40,7 +40,6 @@ import by.geth.gethsemane.app.App;
 import by.geth.gethsemane.app.AppPreferences;
 import by.geth.gethsemane.app.AppTaskManager;
 import by.geth.gethsemane.data.Album;
-import by.geth.gethsemane.data.Author;
 import by.geth.gethsemane.data.Category;
 import by.geth.gethsemane.data.CategoryAlbum;
 import by.geth.gethsemane.data.Event;
@@ -83,7 +82,6 @@ public class ApiService extends IntentService {
     public static final String EXTRA_PAGE = "EXTRA_PAGE";
     public static final String EXTRA_PER_PAGE = "EXTRA_PER_PAGE";
 
-    public static final String REQUEST_GET_AUTHOR = "REQUEST_GET_AUTHOR";
     public static final String REQUEST_GET_WORSHIP = "REQUEST_GET_WORSHIP";
     public static final String REQUEST_GET_EVENTS = "REQUEST_GET_EVENTS";
     public static final String REQUEST_GET_SERMON = "REQUEST_GET_SERMON";
@@ -100,14 +98,6 @@ public class ApiService extends IntentService {
         filter.addAction(ACTION_REQUEST_SUCCESSFUL);
         filter.addAction(ACTION_REQUEST_ERROR);
         return filter;
-    }
-
-    public static void getAuthor(Context context, long id) {
-        Intent intent = new Intent(context, ApiService.class);
-        intent.putExtra(EXTRA_REQUEST_TYPE, REQUEST_GET_AUTHOR);
-        intent.putExtra(EXTRA_ID, id);
-        processRequestState(context, intent, ACTION_REQUEST_STARTED);
-        context.startService(intent);
     }
 
     public static void getWorship(Context context, long id) {
@@ -216,9 +206,6 @@ public class ApiService extends IntentService {
             String requestType = intent.getStringExtra(EXTRA_REQUEST_TYPE);
             Log.d(TAG, "handle " + requestType);
             switch (requestType) {
-                case REQUEST_GET_AUTHOR:
-                    getAuthor(intent);
-                    break;
                 case REQUEST_GET_WORSHIP:
                     getWorship(intent);
                     break;
@@ -250,32 +237,6 @@ public class ApiService extends IntentService {
         } catch (Exception e) {
             processRequestState(this, intent, ACTION_REQUEST_ERROR);
             e.printStackTrace();
-        }
-    }
-
-    private void getAuthor(Intent intent) {
-        try {
-            GethApi api = App.getGethAPI();
-            long id = intent.getLongExtra(EXTRA_ID, 0);
-            Response<List<Author>> response = api.getAuthor(id).execute();
-            if (response.isSuccessful()) {
-                List<Author> authorList = response.body();
-                if (!authorList.isEmpty()) {
-                    authorList.get(0).toEntity().save();
-                    intent.putExtra(EXTRA_BODY, authorList.get(0));
-                    processRequestState(this, intent, ACTION_REQUEST_SUCCESSFUL);
-                    if (BuildConfig.DB_DUMP_ENABLED) {
-                        FileUtils.dumbDBFile(this);
-                    }
-                } else {
-                    processRequestState(this, intent, ACTION_REQUEST_ERROR);
-                }
-            } else {
-                processRequestState(this, intent, ACTION_REQUEST_ERROR);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            processRequestState(this, intent, ACTION_REQUEST_ERROR);
         }
     }
     

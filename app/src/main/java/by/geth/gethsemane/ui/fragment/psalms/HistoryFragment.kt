@@ -18,7 +18,7 @@ import by.geth.gethsemane.app.GlideApp
 import by.geth.gethsemane.data.MusicGroup
 import by.geth.gethsemane.databinding.FragmentArticleBinding
 import by.geth.gethsemane.ui.activity.PhotoSimpleFullscreenActivity
-import by.geth.gethsemane.ui.fragment.WorshipFragment
+import by.geth.gethsemane.ui.fragment.worship.WorshipFragment
 import by.geth.gethsemane.ui.fragment.article.ArticleDetailsFragment
 import by.geth.gethsemane.ui.fragment.base.BaseFragment
 import by.geth.gethsemane.ui.fragment.gallery.GalleryPhotosGridFragment

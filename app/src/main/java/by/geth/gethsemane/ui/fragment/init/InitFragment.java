@@ -79,7 +79,7 @@ public class InitFragment extends BaseFragment {
                 Toast.makeText(getContext(), R.string.error_data_load, Toast.LENGTH_LONG).show();
                 setUIState(UI_STATE.ERROR);
             }
-            viewModel.getEventLiveData();
+            viewModel.consumeOneTimeEvent();
         });
     }
 

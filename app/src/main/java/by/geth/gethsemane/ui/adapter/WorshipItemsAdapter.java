@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import by.geth.gethsemane.R;
 import by.geth.gethsemane.api.GetMusicGroupsRequest;
@@ -27,8 +29,8 @@ import by.geth.gethsemane.data.Witness;
 import by.geth.gethsemane.data.Worship;
 import by.geth.gethsemane.data.base.AudioItem;
 import by.geth.gethsemane.data.model.local.activeAndroid.AuthorEntity;
+import by.geth.gethsemane.domain.model.Author;
 import by.geth.gethsemane.download.DownloadController;
-import by.geth.gethsemane.service.ApiService;
 import by.geth.gethsemane.ui.view.AnimatableImageView;
 
 public class WorshipItemsAdapter extends BaseAdapter {
@@ -53,6 +55,7 @@ public class WorshipItemsAdapter extends BaseAdapter {
     private List<Sermon> mSermonList = new ArrayList<>();
     private List<Witness> mWitnessList = new ArrayList<>();
     private List<Song> mSongList = new ArrayList<>();
+    private Map<Long, Author> mAuthorsList = new HashMap<>();
 
     private OnAudioClickListener mOnAudioClickListener;
     private OnSermonClickListener mOnSermonClickListener;
@@ -78,6 +81,10 @@ public class WorshipItemsAdapter extends BaseAdapter {
 
     public void setSongList(List<Song> songList) {
         mSongList = songList;
+    }
+
+    public void setAuthors(Map<Long, Author> authorsMap) {
+        mAuthorsList = authorsMap;
     }
 
     public void setOnAudioClickListener(OnAudioClickListener listener) {
@@ -153,10 +160,7 @@ public class WorshipItemsAdapter extends BaseAdapter {
         viewHolder.downloadGroup.setVisibility(View.VISIBLE);
         if (item instanceof Sermon) {
             final Sermon sermon = (Sermon) item;
-            final AuthorEntity author = new Select()
-                    .from(AuthorEntity.class)
-                    .where(AuthorEntity.COLUMN_ID + " = ?", sermon.getAuthorId())
-                    .executeSingle();
+            final Author author = mAuthorsList.get((long) sermon.getAuthorId());
             rowView.setEnabled(true);
 //            rowView.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -169,7 +173,6 @@ public class WorshipItemsAdapter extends BaseAdapter {
             if (author == null) {
                 viewHolder.subtitleView.setText(
                         R.string.fragment_worship_pattern_item_sermon_subtitle_no_author);
-                ApiService.getAuthor(context, sermon.getAuthorId());
             } else {
                 viewHolder.subtitleView.setText(context.getString(
                         R.string.fragment_worship_pattern_item_sermon_subtitle, author.getName()));
@@ -215,10 +218,7 @@ public class WorshipItemsAdapter extends BaseAdapter {
             });
         } else if (item instanceof Witness) {
             final Witness witness = (Witness) item;
-            final AuthorEntity author = new Select()
-                    .from(AuthorEntity.class)
-                    .where(AuthorEntity.COLUMN_ID + " = ?", witness.getAuthorId())
-                    .executeSingle();
+            final Author author = mAuthorsList.get((long) witness.getAuthorId());
             rowView.setEnabled(true);
 //            rowView.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -231,7 +231,6 @@ public class WorshipItemsAdapter extends BaseAdapter {
             if (author == null) {
                 viewHolder.subtitleView.setText(
                         R.string.fragment_worship_pattern_item_witness_subtitle_no_author);
-                ApiService.getAuthor(context, witness.getAuthorId());
             } else {
                 viewHolder.subtitleView.setText(context.getString(
                         R.string.fragment_worship_pattern_item_witness_subtitle, author.getName()));

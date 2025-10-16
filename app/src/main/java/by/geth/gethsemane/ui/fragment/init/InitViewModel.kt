@@ -31,8 +31,4 @@ class InitViewModel(
     fun consumeOneTimeEvent() {
         _eventLiveData.value = null
     }
-
-    private companion object {
-        const val TAG = "InitViewModel"
-    }
 }

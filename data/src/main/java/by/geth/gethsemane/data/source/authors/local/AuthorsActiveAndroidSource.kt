@@ -34,7 +34,14 @@ class AuthorsActiveAndroidSource: BaseAuthorsLocalSource {
 
     override suspend fun putSingleAuthor(author: Author) {
         withContext(Dispatchers.IO) {
+            ActiveAndroid.beginTransaction()
+            Delete()
+                .from(AuthorEntity::class.java)
+                .where("${AuthorEntity.COLUMN_ID} == ${author.id}")
+                .execute<AuthorEntity>()
             author.toDbEntity().save()
+            ActiveAndroid.setTransactionSuccessful()
+            ActiveAndroid.endTransaction()
         }
     }
 

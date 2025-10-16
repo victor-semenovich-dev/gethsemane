@@ -3,7 +3,6 @@ package by.geth.gethsemane.service;
 import java.util.List;
 
 import by.geth.gethsemane.data.Album;
-import by.geth.gethsemane.data.Author;
 import by.geth.gethsemane.data.Category;
 import by.geth.gethsemane.data.Photo;
 import by.geth.gethsemane.data.Sermon;
@@ -16,9 +15,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GethApi {
-
-    @GET("/sermoners")
-    Call<List<Author>> getAuthor(@Query("id") long id);
 
     @GET("/mobile/worship/{id}")
     Call<Worship> getWorship(@Path("id") long id);

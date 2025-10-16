@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.List;
 
 import by.geth.gethsemane.data.Event;
-import by.geth.gethsemane.ui.fragment.WorshipFragment;
+import by.geth.gethsemane.ui.fragment.worship.WorshipFragment;
 import by.geth.gethsemane.ui.fragment.base.BaseFragment;
 
 public class WorshipPagerAdapter extends FragmentStatePagerAdapter {
