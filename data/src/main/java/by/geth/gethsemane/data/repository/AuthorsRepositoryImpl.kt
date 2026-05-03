@@ -5,7 +5,6 @@ import by.geth.gethsemane.data.source.authors.base.BaseAuthorsRemoteSource
 import by.geth.gethsemane.domain.model.Author
 import by.geth.gethsemane.domain.repository.AuthorsRepository
 
-// TODO save data to the database
 class AuthorsRepositoryImpl(
     private val authorsLocalSource: BaseAuthorsLocalSource,
     private val authorsKtorSource: BaseAuthorsRemoteSource,
