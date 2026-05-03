@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,6 @@ public class InitFragment extends BaseFragment {
     private TextView mLoadingTextView;
     private Button mReloadButton;
 
-    private long tstamp = 0;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,21 +64,22 @@ public class InitFragment extends BaseFragment {
             }
         });
 
-        tstamp = System.currentTimeMillis();
-
         viewModel.getEventLiveData().observe(getViewLifecycleOwner(), event -> {
-            if (event instanceof InitViewModel.OneTimeEvent.DataLoaded) {
-                mLoadingTextView.setText(null);
-                if (DBUtils.isDataInitialized()) {
-                    mInitListener.onDataInitSuccess();
-                } else {
-                    doRequest();
+            if (event != null) {
+                Log.d(TAG, "onEvent: " + event);
+                if (event instanceof InitViewModel.OneTimeEvent.DataLoaded) {
+                    mLoadingTextView.setText(null);
+                    if (DBUtils.isDataInitialized()) {
+                        mInitListener.onDataInitSuccess();
+                    } else {
+                        doRequest();
+                    }
+                } else if (event instanceof InitViewModel.OneTimeEvent.DataLoadingError) {
+                    Toast.makeText(getContext(), R.string.error_data_load, Toast.LENGTH_LONG).show();
+                    setUIState(UI_STATE.ERROR);
                 }
-            } else if (event instanceof InitViewModel.OneTimeEvent.DataLoadingError) {
-                Toast.makeText(getContext(), R.string.error_data_load, Toast.LENGTH_LONG).show();
-                setUIState(UI_STATE.ERROR);
+                viewModel.consumeOneTimeEvent();
             }
-            viewModel.consumeOneTimeEvent();
         });
     }
 
@@ -105,10 +105,13 @@ public class InitFragment extends BaseFragment {
 
     private void doRequest() {
         if (ConnectionUtils.isNetworkConnected(getContext())) {
-            if (!DBUtils.isEventsLoaded())
+            if (!DBUtils.isEventsLoaded()) {
+                Log.d(TAG, "doRequest: getEvents");
                 ApiService.getEvents(getContext(), "2019-01-01");
-            else if (!DBUtils.isAuthorsLoaded())
+            } else if (!DBUtils.isAuthorsLoaded()) {
+                Log.d(TAG, "doRequest: loadData");
                 viewModel.loadData();
+            }
         } else {
             DialogUtils.showAlertDialog(getContext(), R.string.error_data_load_connection_missing);
             setUIState(UI_STATE.ERROR);
@@ -137,11 +140,13 @@ public class InitFragment extends BaseFragment {
                 case ApiService.ACTION_REQUEST_STARTED:
                     switch (intent.getStringExtra(ApiService.EXTRA_REQUEST_TYPE)) {
                         case ApiService.REQUEST_GET_EVENTS:
+                            Log.d(TAG, "BroadcastReceiver: start get events");
                             mLoadingTextView.setText(R.string.fragment_init_text_events);
                             break;
                     }
                     break;
                 case ApiService.ACTION_REQUEST_SUCCESSFUL:
+                    Log.d(TAG, "BroadcastReceiver: success");
                     mLoadingTextView.setText(null);
                     if (DBUtils.isDataInitialized()) {
                         mInitListener.onDataInitSuccess();
@@ -149,6 +154,7 @@ public class InitFragment extends BaseFragment {
                         doRequest();
                     break;
                 case ApiService.ACTION_REQUEST_ERROR:
+                    Log.d(TAG, "BroadcastReceiver: error");
                     Toast.makeText(getContext(), R.string.error_data_load, Toast.LENGTH_LONG).show();
                     setUIState(UI_STATE.ERROR);
                     break;
