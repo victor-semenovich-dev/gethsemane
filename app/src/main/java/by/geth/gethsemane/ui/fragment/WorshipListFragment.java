@@ -11,6 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.activeandroid.query.Select;
 
 import java.text.DateFormat;
@@ -21,14 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import by.geth.gethsemane.R;
 import by.geth.gethsemane.app.AppPreferences;
 import by.geth.gethsemane.data.Event;
@@ -70,8 +71,7 @@ public class WorshipListFragment extends AudioFragment implements
 
         mEvents = new Select()
                 .from(Event.class)
-                .where("(" + Event.COLUMN_IS_ARCHIVE + " == 0) AND " +
-						"(" + Event.COLUMN_IS_DRAFT + " == 0) AND " +
+                .where("(" + Event.COLUMN_IS_DRAFT + " == 0) AND " +
                         "(" + Event.COLUMN_CATEGORY_ID + " = ?)", Event.ID_CATEGORY_WORSHIP)
                 .orderBy(Event.COLUMN_DATE + " DESC")
                 .execute();
@@ -227,8 +227,7 @@ public class WorshipListFragment extends AudioFragment implements
 
                         mEvents = new Select()
                                 .from(Event.class)
-                                .where("(" + Event.COLUMN_IS_ARCHIVE + " == 0) AND " +
-                                        "(" + Event.COLUMN_IS_DRAFT + " == 0) AND " +
+                                .where("(" + Event.COLUMN_IS_DRAFT + " == 0) AND " +
                                         "(" + Event.COLUMN_CATEGORY_ID + " = ?)", Event.ID_CATEGORY_WORSHIP)
                                 .orderBy(Event.COLUMN_DATE + " DESC")
                                 .execute();

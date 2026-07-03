@@ -93,8 +93,7 @@ public class WorshipPagerFragment extends BaseFragment {
     private List<Event> getEventsFromDatabase() {
         return new Select()
                 .from(Event.class)
-                .where("(" + Event.COLUMN_IS_ARCHIVE + " == 0) AND " +
-                        "(" + Event.COLUMN_IS_DRAFT + " == 0) AND " +
+                .where("(" + Event.COLUMN_IS_DRAFT + " == 0) AND " +
                         "(" + Event.COLUMN_CATEGORY_ID + " = ?) AND " +
                         "(" + Event.COLUMN_DATE + " < ?)", Event.ID_CATEGORY_WORSHIP, System.currentTimeMillis())
                 .orderBy(Event.COLUMN_DATE + " DESC")

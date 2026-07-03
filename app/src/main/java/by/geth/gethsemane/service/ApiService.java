@@ -632,7 +632,6 @@ public class ApiService extends IntentService {
                     }
                 }
                 new Delete().from(Event.class).where(Event.COLUMN_DATE + " < " + System.currentTimeMillis() + " AND " + Event.COLUMN_CATEGORY_ID + " != " + Event.ID_CATEGORY_WORSHIP).execute();
-                new Delete().from(Event.class).where(Event.COLUMN_CATEGORY_ID + " = " + Event.ID_CATEGORY_WORSHIP + " AND " + Event.COLUMN_IS_ARCHIVE + " = 1");
                 ActiveAndroid.setTransactionSuccessful();
                 ActiveAndroid.endTransaction();
 
