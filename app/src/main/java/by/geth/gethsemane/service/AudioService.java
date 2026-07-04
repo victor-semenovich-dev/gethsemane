@@ -180,6 +180,7 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
         setState(State.STOP);
         stopForeground(true);
         mUri = mTitle = mAuthor = null;
+        stopSelf();
     }
 
     private void setState(State state) {

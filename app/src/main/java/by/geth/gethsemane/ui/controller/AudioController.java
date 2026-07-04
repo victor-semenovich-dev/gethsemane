@@ -62,8 +62,6 @@ public class AudioController implements ServiceConnection, View.OnClickListener,
         mStopButton.setOnClickListener(this);
 
         mProgressBar.setOnSeekBarChangeListener(this);
-
-        mActivity.startService(new Intent(mActivity, AudioService.class));
     }
 
     public void onDestroy() {
