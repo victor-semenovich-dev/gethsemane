@@ -223,12 +223,25 @@ object Server {
 
     fun getSongs(groupId: Long, isSync: Boolean = false): List<Song>? {
         return performRequest(GetSongsRequest(groupId), oldApi.getSongs(groupId), isSync) { response ->
+            val filteredResponse = response.filter { song ->
+                val lastSegment = song.audioUri?.substringAfterLast('/') ?: ""
+                lastSegment.contains('.') && !lastSegment.endsWith('.')
+            }
+
             ActiveAndroid.beginTransaction()
-            response.forEach { song ->
-                val existingSong: Song? = Select()
-                    .from(Song::class.java)
-                    .where("${Song.COLUMN_ID} = ${song.externalId()}")
-                    .executeSingle()
+            val existingSongList: List<Song> = Select()
+                .from(Song::class.java)
+                .where("${Song.COLUMN_GROUP_ID} = $groupId")
+                .execute()
+
+            val responseExternalIds = filteredResponse.map { it.externalId() }.toSet()
+            val missingSongList = existingSongList.filter { it.externalId() !in responseExternalIds }
+            missingSongList.forEach { it.delete() }
+
+            filteredResponse.forEach { song ->
+                val existingSong: Song? = existingSongList.firstOrNull {
+                    it.externalId() == song.externalId()
+                }
                 if (existingSong == null) {
                     song.save()
                 } else {
@@ -241,7 +254,7 @@ object Server {
             }
             ActiveAndroid.setTransactionSuccessful()
             ActiveAndroid.endTransaction()
-            response
+            filteredResponse
         }
     }
 
