@@ -496,9 +496,6 @@ public class MainActivity extends AppCompatActivity implements InitFragment.Data
                 FirebaseMessaging.getInstance().subscribeToTopic(FirebaseMessagingService.WORSHIP_NOTES_TOPIC);
                 FirebaseMessaging.getInstance().subscribeToTopic(FirebaseMessagingService.TO_SEE_CHRIST_TOPIC);
                 FirebaseMessaging.getInstance().subscribeToTopic(FirebaseMessagingService.PHOTOS_TOPIC);
-
-                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task ->
-                        Log.d(TAG, "push token: " + task.getResult()));
             } else {
                 GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
             }
