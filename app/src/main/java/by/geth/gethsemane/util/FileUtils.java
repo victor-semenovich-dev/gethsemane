@@ -133,10 +133,14 @@ public class FileUtils {
         if (dir.exists() || dir.mkdirs()) {
             Uri remoteUri = Uri.parse(song.getAudioUri());
             int pathSegmentsSize = remoteUri.getPathSegments().size();
-            String penultSegment = remoteUri.getPathSegments().get(pathSegmentsSize - 2);
-            String lastSegment = remoteUri.getLastPathSegment();
-            File file = new File(dir, penultSegment + "/" + lastSegment);
-            return Uri.fromFile(file);
+            if (pathSegmentsSize >= 2) {
+                String penultSegment = remoteUri.getPathSegments().get(pathSegmentsSize - 2);
+                String lastSegment = remoteUri.getLastPathSegment();
+                File file = new File(dir, penultSegment + "/" + lastSegment);
+                return Uri.fromFile(file);
+            } else {
+                return null;
+            }
         }
         return null;
     }
