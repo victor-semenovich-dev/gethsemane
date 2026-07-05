@@ -69,7 +69,7 @@ class HistoryFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_arrow)
-        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressedDispatcher?.onBackPressed() }
         binding.toolbar.title = groupTitle
 
         GlideApp.with(this).load(imageUrl).into(binding.imageView)

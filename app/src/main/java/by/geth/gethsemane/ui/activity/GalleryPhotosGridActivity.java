@@ -1,6 +1,9 @@
 package by.geth.gethsemane.ui.activity;
 
 import android.os.Bundle;
+import android.graphics.Color;
+import androidx.activity.EdgeToEdge;
+import androidx.activity.SystemBarStyle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -17,6 +20,7 @@ public class GalleryPhotosGridActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        EdgeToEdge.enable(this, SystemBarStyle.dark(Color.TRANSPARENT), SystemBarStyle.dark(Color.TRANSPARENT));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_photos_grid);
 

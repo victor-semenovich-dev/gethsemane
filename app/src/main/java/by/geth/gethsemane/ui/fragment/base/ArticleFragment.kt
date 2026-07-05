@@ -143,7 +143,7 @@ abstract class ArticleFragment: BaseFragment() {
         }
 
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_arrow)
-        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressedDispatcher?.onBackPressed() }
         binding.toolbar.inflateMenu(R.menu.fragment_article)
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {

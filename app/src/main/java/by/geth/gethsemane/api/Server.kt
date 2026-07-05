@@ -268,7 +268,7 @@ object Server {
             val originalRequest = chain.request()
             val wrappedRequest = originalRequest.newBuilder()
                 .header("X-Api-Key", BuildConfig.X_API_KEY)
-                .method(originalRequest.method(), originalRequest.body())
+                .method(originalRequest.method, originalRequest.body)
                 .build()
             chain.proceed(wrappedRequest)
         }
@@ -299,7 +299,7 @@ object Server {
             val wrappedRequest = originalRequest.newBuilder()
                 .header("Authorization", basic)
                 .header("Accept", "applicaton/json")
-                .method(originalRequest.method(), originalRequest.body())
+                .method(originalRequest.method, originalRequest.body)
                 .build()
             chain.proceed(wrappedRequest)
         }.addInterceptor(loggingInterceptor).build()

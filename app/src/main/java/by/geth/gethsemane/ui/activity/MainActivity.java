@@ -7,9 +7,12 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
+import android.graphics.Color;
+import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.SystemBarStyle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -95,8 +98,34 @@ public class MainActivity extends AppCompatActivity implements InitFragment.Data
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this, SystemBarStyle.dark(Color.TRANSPARENT), SystemBarStyle.dark(Color.TRANSPARENT));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    Fragment baseFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                    try {
+                        if (baseFragment != null && baseFragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
+                            baseFragment.getChildFragmentManager().popBackStack();
+                        } else {
+                            setEnabled(false);
+                            getOnBackPressedDispatcher().onBackPressed();
+                            setEnabled(true);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        setEnabled(false);
+                        getOnBackPressedDispatcher().onBackPressed();
+                        setEnabled(true);
+                    }
+                }
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -246,30 +275,11 @@ public class MainActivity extends AppCompatActivity implements InitFragment.Data
                         mDrawerLayout.openDrawer(GravityCompat.START);
                     }
                 } else {
-                    onBackPressed();
+                    getOnBackPressedDispatcher().onBackPressed();
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            Fragment baseFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            try {
-                if (baseFragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
-                    baseFragment.getChildFragmentManager().popBackStack();
-                } else {
-                    super.onBackPressed();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                super.onBackPressed();
-            }
         }
     }
 

@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
@@ -81,6 +82,16 @@ public class PhotosFullscreenActivity extends FullscreenActivity implements Gall
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos_fullscreen);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent resultData = new Intent();
+                resultData.putExtra(EXTRA_RESULT_POSITION, mPager.getCurrentItem());
+                setResult(RESULT_OK, resultData);
+                finish();
+            }
+        });
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -162,18 +173,10 @@ public class PhotosFullscreenActivity extends FullscreenActivity implements Gall
     }
 
     @Override
-    public void onBackPressed() {
-        Intent resultData = new Intent();
-        resultData.putExtra(EXTRA_RESULT_POSITION, mPager.getCurrentItem());
-        setResult(RESULT_OK, resultData);
-        finish();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
                 return true;
             case R.id.share:
                 share();
