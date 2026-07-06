@@ -113,7 +113,6 @@ public class WorshipFragment extends AudioFragment implements
         mItemsListAdapter.setAudioInfoProvider(this);
         itemsListView.setAdapter(mItemsListAdapter);
 
-        mPhotosRecyclerView.setHasFixedSize(true);
         mPhotosRecyclerView.addItemDecoration(new HorizontalSpaceItemDecoration(
                 getResources().getDimensionPixelSize(R.dimen.space_8), 0));
         mPhotosAdapter = new WorshipPhotosAdapter();
